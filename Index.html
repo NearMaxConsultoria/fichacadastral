@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha Cadastral — Monetz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #B3A369; --gold-light: #cfc08a; --gold-pale: #f5f0e0;
+    --navy: #004F71; --dark: #0d1b2a; --body: #1a2332;
+    --muted: #64748b; --line: #e2e8f0; --bg: #f8f7f4; --white: #ffffff;
+    --radius: 4px; --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--body); min-height: 100vh; }
+  .topbar { background: var(--dark); border-bottom: 2px solid var(--gold); padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: baseline; gap: 10px; }
+  .topbar-logo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--gold); letter-spacing: 1px; text-decoration: none; }
+  .topbar-info { text-align: right; }
+  .topbar-title { display: none; }
+  .topbar-sub { font-size: 11px; color: #94a3b8; }
+  .topbar-date { font-size: 12px; color: #94a3b8; }
+  .hero { background: var(--dark); padding: 40px 40px 36px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; right: -60px; top: -60px; width: 300px; height: 300px; border-radius: 50%; border: 40px solid rgba(179,163,105,0.08); }
+  .hero::after { content: ''; position: absolute; right: 60px; top: 20px; width: 180px; height: 180px; border-radius: 50%; border: 24px solid rgba(179,163,105,0.05); }
+  .hero-inner { max-width: 760px; position: relative; z-index: 1; }
+  .hero-eyebrow { font-size: 10px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--gold); }
+  .hero-title { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--white); line-height: 1.15; margin-bottom: 12px; }
+  .hero-title span { color: var(--gold); }
+  .hero-desc { font-size: 13px; color: #94a3b8; line-height: 1.7; max-width: 560px; }
+  .form-wrapper { max-width: 820px; margin: 0 auto; padding: 32px 20px 60px; }
+  .card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+  .section-header { background: var(--navy); padding: 12px 22px; display: flex; align-items: center; gap: 10px; border-left: 4px solid var(--gold); }
+  .section-header h2 { font-size: 10px; font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing: 2px; }
+  .section-body { padding: 22px 22px 18px; }
+  .grid { display: grid; gap: 16px 18px; }
+  .grid > * { min-width: 0; }
+  .g-2 { grid-template-columns: 1fr 1fr; }
+  .g-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .g-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .g-addr { grid-template-columns: 2fr 1fr; }
+  .g-cep  { grid-template-columns: 1fr 2fr 0.5fr; }
+  .g-tel  { grid-template-columns: 1fr 1.5fr 1.5fr; }
+  .g-rep  { grid-template-columns: 2fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .field input[type="text"], .field input[type="email"], .field input[type="tel"], .field input[type="date"], .field select, .field textarea {
+    border: none; border-bottom: 1.5px solid var(--line); border-radius: 0; padding: 7px 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--body); background: transparent; outline: none; transition: border-color 0.2s; width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--gold); }
+  .field input::placeholder, .field textarea::placeholder { color: #cbd5e1; font-size: 12px; }
+  .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B3A369' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; padding-right: 20px; }
+  .check-group { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 8px 0; }
+  .check-group-label { font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  .check-opt { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 13px; color: var(--body); user-select: none; }
+  .check-opt input[type="checkbox"], .check-opt input[type="radio"] { appearance: none; width: 16px; height: 16px; border: 1.5px solid var(--navy); border-radius: 3px; background: var(--white); cursor: pointer; transition: all 0.15s; flex-shrink: 0; position: relative; }
+  .check-opt input[type="radio"] { border-radius: 50%; }
+  .check-opt input[type="checkbox"]:checked, .check-opt input[type="radio"]:checked { background: var(--navy); border-color: var(--navy); }
+  .check-opt input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg); }
+  .check-opt input[type="radio"]:checked::after { content: ''; position: absolute; left: 3px; top: 3px; width: 6px; height: 6px; background: white; border-radius: 50%; }
+  .fat-options { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .fat-opt { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1.5px solid var(--line); border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--body); transition: all 0.18s; user-select: none; }
+  .fat-opt:hover { border-color: var(--gold-light); background: var(--gold-pale); }
+  .fat-opt input[type="radio"] { appearance: none; width: 14px; height: 14px; border: 1.5px solid var(--navy); border-radius: 50%; background: white; cursor: pointer; flex-shrink: 0; position: relative; }
+  .fat-opt input[type="radio"]:checked { background: var(--navy); border-color: var(--navy); }
+  .fat-opt input[type="radio"]:checked::after { content:''; position:absolute; left:3px; top:3px; width:6px; height:6px; background:white; border-radius:50%; }
+  .fat-opt:has(input:checked) { border-color: var(--navy); background: #e8f4fa; }
+  .divider { height: 1px; background: var(--line); margin: 14px 0; }
+  .yn-rows { display: flex; flex-direction: column; }
+  .yn-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; gap: 16px; }
+  .yn-row:last-child { border-bottom: none; }
+  .yn-q { font-size: 13px; color: var(--body); }
+  .yn-opts { display: flex; gap: 16px; flex-shrink: 0; }
+  .doc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .doc-col h3 { font-size: 10px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid var(--gold); }
+  .doc-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--body); }
+  .decl-box { background: var(--gold-pale); border-left: 3px solid var(--gold); padding: 14px 16px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 12px; color: var(--muted); line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+  .sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 20px; }
+  .sig-line { border-bottom: 1.5px solid #334155; margin-bottom: 6px; min-height: 36px; }
+  .sig-desc { font-size: 9px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .submit-area { background: var(--dark); padding: 28px 22px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 3px solid var(--gold); }
+  .submit-note { font-size: 11px; color: #64748b; line-height: 1.6; max-width: 400px; }
+  .btn-submit { background: var(--gold); color: var(--dark); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 14px 32px; border: none; border-radius: 4px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; gap: 10px; }
+  .btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+  .btn-spinner { width: 16px; height: 16px; border: 2px solid rgba(13,27,42,0.3); border-top-color: var(--dark); border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+  .btn-submit.loading .btn-spinner { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .site-footer { background: var(--dark); border-top: 1px solid rgba(179,163,105,0.2); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .site-footer .logo { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gold); }
+  .site-footer .addr { font-size: 11px; color: #64748b; line-height: 1.6; text-align: right; }
+  .req { color: var(--gold); margin-left: 2px; }
+  /* ── TABLET (481px – 768px) ── */
+  @media (max-width: 768px) {
+    .topbar { padding: 10px 18px; }
+    .topbar-logo { font-size: 18px; }
+    .topbar-sub { font-size: 10px; }
+    .topbar-date { font-size: 11px; }
+    .form-wrapper { padding: 20px 14px 40px; }
+    .section-body { padding: 18px 16px 14px; }
+    .g-3, .g-4, .g-cep, .g-tel, .g-rep { grid-template-columns: 1fr 1fr; }
+    .g-addr { grid-template-columns: 1fr; }
+    .doc-cols { grid-template-columns: 1fr; }
+    .sig-row { grid-template-columns: 1fr; gap: 20px; }
+    .submit-area { flex-direction: column; align-items: stretch; }
+    .fat-options { flex-wrap: wrap; }
+    .site-footer { flex-direction: column; gap: 10px; }
+    .site-footer .addr { text-align: left; }
+    #propostaSection { padding: 16px 14px 0; }
+    .proposta-badge-row { flex-wrap: wrap; }
+    .proposta-badge-item { min-width: 140px; border-right: none; border-bottom: 1px solid var(--line); }
+    .proposta-badge-item:last-child { border-bottom: none; }
+    .tbl-prop { font-size: 11.5px; }
+    .tbl-prop thead th, .tbl-prop tbody td { padding: 8px 8px; }
+    .tbl-prop thead th:nth-child(2), .tbl-prop tbody td:nth-child(2) { display: none; }
+    .aceite-box { padding: 16px; }
+    .alert-warn { padding: 14px 14px; gap: 10px; }
+    .yn-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  }
+
+  /* ── MOBILE (até 480px) ── */
+  @media (max-width: 480px) {
+    .topbar { padding: 9px 14px; }
+    .topbar-logo { font-size: 17px; }
+    .topbar-sub { display: none; }
+    .topbar-date { font-size: 11px; }
+    .form-wrapper { padding: 14px 10px 40px; }
+    .section-body { padding: 14px 12px 12px; }
+    .section-header { padding: 10px 14px; }
+    .g-2, .g-3, .g-4, .g-addr, .g-cep, .g-tel, .g-rep { grid-template-columns: 1fr; }
+    .doc-cols { grid-template-columns: 1fr; }
+    .sig-row { grid-template-columns: 1fr; gap: 20px; }
+    .submit-area { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; }
+    .btn-submit { width: 100%; justify-content: center; font-size: 12px; padding: 13px 16px; }
+    .fat-options { flex-direction: column; }
+    .fat-opt { width: 100%; }
+    .site-footer { flex-direction: column; gap: 10px; padding: 16px 14px; }
+    .site-footer .addr { text-align: left; }
+    #propostaSection { padding: 12px 10px 0; }
+    .proposta-card-header { padding: 14px 14px; }
+    .proposta-card-header h2 { font-size: 15px; }
+    .proposta-card-body { padding: 16px 14px; }
+    .proposta-badge-row { flex-direction: column; border-radius: 6px; }
+    .proposta-badge-item { border-right: none; border-bottom: 1px solid var(--line); padding: 10px 12px; }
+    .proposta-badge-item:last-child { border-bottom: none; }
+    .tbl-prop { font-size: 11px; }
+    .tbl-prop thead th, .tbl-prop tbody td { padding: 7px 6px; }
+    .tbl-prop thead th:nth-child(2), .tbl-prop tbody td:nth-child(2) { display: none; }
+    .p-section h3 { font-size: 9px; }
+    .p-section p, .p-section ul li { font-size: 12.5px; }
+    .alert-warn { flex-direction: column; gap: 8px; padding: 14px 12px; }
+    .alert-icon { font-size: 22px; }
+    .alert-warn h3 { font-size: 13px; }
+    .alert-warn p { font-size: 12px; }
+    .aceite-box { padding: 14px 12px; }
+    .aceite-label { font-size: 12px; }
+    .btn-continuar { font-size: 13px; padding: 13px; }
+    .yn-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .check-group { gap: 8px 14px; }
+    .decl-box { font-size: 11.5px; }
+    .submit-note { font-size: 10.5px; }
+  }
+
+  /* ─── PROPOSTA COMERCIAL ─── */
+  #propostaSection { max-width: 820px; margin: 0 auto; padding: 24px 20px 0; }
+
+  .alert-warn {
+    background: #FEF3C7; border: 1.5px solid #F59E0B; border-radius: 8px;
+    padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start; margin-bottom: 24px;
+  }
+  .alert-icon { font-size: 26px; flex-shrink: 0; line-height: 1; }
+  .alert-warn h3 { color: #92400E; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .alert-warn p { color: #92400E; font-size: 13px; line-height: 1.65; }
+
+  .proposta-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 24px; }
+  .proposta-card-header { background: var(--dark); padding: 16px 22px; display: flex; align-items: center; gap: 10px; border-left: 4px solid var(--gold); }
+  .proposta-card-header h2 { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gold); font-weight: 400; }
+  .proposta-card-header .sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .proposta-card-body { padding: 24px 22px; }
+
+  .proposta-badge-row {
+    display: flex; gap: 0; border: 1px solid var(--line); border-radius: 6px;
+    overflow: hidden; margin-bottom: 28px; font-size: 12px;
+  }
+  .proposta-badge-item { flex: 1; padding: 10px 14px; border-right: 1px solid var(--line); }
+  .proposta-badge-item:last-child { border-right: none; }
+  .proposta-badge-item .plbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 3px; }
+  .proposta-badge-item .pval { font-size: 13px; font-weight: 600; color: var(--dark); }
+
+  .p-section { margin-bottom: 22px; }
+  .p-section h3 {
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--navy); padding-bottom: 7px; border-bottom: 2px solid var(--gold);
+    margin-bottom: 12px;
+  }
+  .p-section p { font-size: 13px; line-height: 1.75; color: #374151; }
+  .p-section ul { list-style: none; padding: 0; }
+  .p-section ul li {
+    padding: 7px 0 7px 18px; position: relative;
+    font-size: 13px; color: #374151; line-height: 1.65;
+    border-bottom: 1px solid #f8f7f4;
+  }
+  .p-section ul li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); }
+  .p-section strong { color: var(--dark); }
+  .p-section em { color: var(--muted); font-size: 12px; }
+
+  .tbl-prop { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12.5px; }
+  .tbl-prop thead tr { background: var(--dark); }
+  .tbl-prop thead th { color: var(--gold); padding: 10px 12px; text-align: left; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+  .tbl-prop tbody tr:nth-child(even) { background: #f8f7f4; }
+  .tbl-prop tbody tr:hover { background: #f0f4f8; }
+  .tbl-prop tbody td { padding: 10px 12px; border-bottom: 1px solid var(--line); color: #374151; }
+  .tbl-prop tbody td:last-child { font-weight: 700; color: var(--dark); }
+  .tbl-note { font-size: 11px; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+  /* aceite */
+  .aceite-box {
+    background: #f8f7f4; border: 2px solid var(--line);
+    border-radius: 8px; padding: 20px 22px; margin-top: 28px;
+    transition: border-color .25s, background .25s;
+  }
+  .aceite-box.checked { border-color: #16A34A; background: #F0FDF4; }
+  .aceite-check-row { display: flex; align-items: flex-start; gap: 14px; cursor: pointer; }
+  .aceite-check-row input[type=checkbox] {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;
+    accent-color: #16A34A; cursor: pointer;
+  }
+  .aceite-label { font-size: 13px; line-height: 1.75; color: #374151; user-select: none; }
+  .aceite-label strong { color: var(--dark); }
+  .aceite-ts {
+    display: none; align-items: center; gap: 8px;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid #BBF7D0;
+    font-size: 12px; color: #16A34A; font-weight: 600;
+  }
+  .aceite-box.checked .aceite-ts { display: flex; }
+  .btn-continuar {
+    display: none; width: 100%; margin-top: 16px;
+    padding: 14px; background: var(--dark); color: var(--gold);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+    border: none; border-radius: 4px; cursor: pointer; letter-spacing: 0.05em;
+    text-transform: uppercase; transition: background .2s;
+  }
+  .btn-continuar:hover { background: var(--navy); }
+  .aceite-box.checked .btn-continuar { display: block; }
+
+  /* form oculto até aceite */
+  #formWrapper { display: none; }
+  #formWrapper.visible { display: block; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="topbar-logo" href="#">Monetz</a>
+    <span class="topbar-sub" id="topbarSub">Securitizadora · Crédito Estratégico</span>
+  </div>
+  <div class="topbar-date" id="topbarDate"></div>
+</header>
+
+
+
+<!-- ══ PROPOSTA COMERCIAL ══ -->
+<div id="propostaSection">
+
+  <!-- ALERTA -->
+  <div class="alert-warn">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <h3>Atenção: Transações Diárias nas Maquininhas são Obrigatórias</h3>
+      <p>Para que seja possível realizar a <strong>análise de Agenda Futura</strong> da sua loja, é imprescindível que o estabelecimento esteja realizando vendas diárias nos terminais de cartão (maquininhas). Sem movimento ativo nas credenciadoras, <strong>não é possível visualizar nem constituir a agenda de recebíveis</strong>, inviabilizando a análise e liberação do crédito.</p>
+    </div>
+  </div>
+
+  <!-- CARD PROPOSTA -->
+  <div class="proposta-card">
+    <div class="proposta-card-header">
+      <div>
+        <h2>Proposta Comercial — Monetz</h2>
+        <div class="sub">Soluções de Crédito Estratégico com Recebíveis Futuros</div>
+      </div>
+    </div>
+    <div class="proposta-card-body">
+
+      <div class="proposta-badge-row">
+        <div class="proposta-badge-item">
+          <div class="plbl">Data de Abertura</div>
+          <div class="pval" id="dataAberturaDisplay">—</div>
+        </div>
+        <div class="proposta-badge-item">
+          <div class="plbl">Validade</div>
+          <div class="pval">48 horas</div>
+        </div>
+        <div class="proposta-badge-item">
+          <div class="plbl">Documento</div>
+          <div class="pval">Proposta Comercial</div>
+        </div>
+      </div>
+
+      <div class="p-section">
+        <h3>1. Sumário Executivo</h3>
+        <p>Esta proposta apresenta uma solução financeira estruturada pela <strong>Monetz</strong>, empresa integrante do ecossistema <strong>Grupo Check</strong>, focada na otimização do fluxo de caixa para lojistas e empreendedores. Através da modalidade de crédito com garantia em recebíveis, oferecemos agilidade na liberação de recursos e uma mecânica de liquidação que respeita a saúde financeira do negócio, utilizando a previsibilidade de vendas como o principal motor de crescimento.</p>
+      </div>
+
+      <div class="p-section">
+        <h3>2. O Ecossistema Monetz &amp; Grupo Check</h3>
+        <p>A <strong>Monetz</strong> opera sob a robustez tecnológica e operacional do <strong>Grupo Check</strong>, unindo inteligência de dados e infraestrutura de pagamentos. Nossa atuação é pautada pela transparência e pela integração direta com as principais registradoras do mercado (<strong>Nuclea, TAG, CERC e B3</strong>), garantindo segurança jurídica e eficiência na gestão de ativos financeiros.</p>
+      </div>
+
+      <div class="p-section">
+        <h3>3. Desafio e Oportunidade</h3>
+        <p>O acesso ao crédito tradicional muitas vezes impõe barreiras burocráticas e garantias reais que limitam a expansão de empresas com alto potencial de vendas. A oportunidade reside no <strong>Crédito sobre Recebíveis Futuros</strong>, que resolve este gargalo ao permitir que o lojista antecipe recursos baseados na sua performance comercial futura, sem comprometer o patrimônio físico da empresa.</p>
+      </div>
+
+      <div class="p-section">
+        <h3>4. Solução: Crédito Estratégico</h3>
+        <p>Diferente da antecipação convencional, onde se antecipa o que já foi vendido, esta modalidade permite o acesso a recursos baseados na previsibilidade de vendas. A mecânica baseia-se na <strong>cessão fiduciária de recebíveis</strong> de arranjos de pagamento (cartões de crédito e débito), onde a liquidação ocorre de forma automática e diluída.</p>
+      </div>
+
+      <div class="p-section">
+        <h3>4.1. Diferenciais Operacionais</h3>
+        <ul>
+          <li><strong>Liquidez Imediata:</strong> Desembolso em conta em até <strong>48 horas</strong> após a formalização.</li>
+          <li><strong>Pagamento Inteligente:</strong> Retenção diária automática, acompanhando o volume de vendas do cliente.</li>
+          <li><strong>Sem Boletos:</strong> A liquidação ocorre diretamente na agenda de recebíveis, eliminando o risco de esquecimento ou inadimplência por falha operacional.</li>
+        </ul>
+      </div>
+
+      <div class="p-section">
+        <h3>5. Condições Comerciais</h3>
+        <table class="tbl-prop">
+          <thead>
+            <tr>
+              <th>Componente da Operação</th>
+              <th>Detalhamento</th>
+              <th>Valor Estimado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Valor Bruto do Crédito</td><td>Montante total da operação estruturada</td><td>R$ 20.000,00</td></tr>
+            <tr><td>Valor Líquido Disponibilizado</td><td>Recurso creditado em conta para o cliente</td><td>R$ 19.200,00</td></tr>
+            <tr><td>Parcela de Liquidação Diária</td><td>Retenção automática na agenda de cartões</td><td>R$ 198,00</td></tr>
+            <tr><td>Prazo Estimado</td><td>Período de amortização da operação</td><td>126 dias úteis</td></tr>
+            <tr><td>Total a Liquidar</td><td>Valor total ao final do período</td><td>R$ 24.948,00</td></tr>
+          </tbody>
+        </table>
+        <p class="tbl-note">*Os valores acima são exemplificativos e podem sofrer variações conforme os feriados regionais, estaduais e federais do domicílio do estabelecimento.</p>
+      </div>
+
+      <div class="p-section">
+        <h3>6. Termos e Autorizações</h3>
+        <p style="margin-bottom:10px">Para a viabilização da análise e formalização da proposta, o proponente autoriza expressamente:</p>
+        <ul>
+          <li><strong>Consulta ao SCR:</strong> A consulta às informações consolidadas no <strong>Sistema de Informações de Créditos (SCR)</strong>, gerido pelo <strong>Banco Central do Brasil</strong>.</li>
+          <li><strong>Visualização de Agenda:</strong> A visualização e monitoramento da agenda de recebíveis junto às registradoras (<strong>NUCLEA, TAG, CERC, B3</strong>) para fins de cálculo de limite e garantia.</li>
+          <li><strong>Opt-In de Domicílio:</strong> A alteração do domicílio bancário ou a trava de recebíveis conforme as regras estabelecidas na <em>Resolução CMN nº 4.734/2019</em> e <em>Circular BCB nº 3.952/2019</em>.</li>
+        </ul>
+      </div>
+
+      <div class="p-section">
+        <h3>7. Cronograma de Implementação</h3>
+        <ul>
+          <li><strong>Análise de Perfil:</strong> Avaliação do histórico de vendas e domicílio bancário.</li>
+          <li><strong>Avaliação da Documentação:</strong> Verificação da documentação e formulários preenchidos.</li>
+          <li><strong>Formalização:</strong> Assinatura digital do contrato e autorização.</li>
+          <li><strong>Liberação:</strong> Crédito do valor líquido na conta cadastrada.</li>
+        </ul>
+      </div>
+
+      <div class="p-section">
+        <h3>8. Próximos Passos</h3>
+        <ul>
+          <li><strong>Aceite Formal:</strong> Confirmação desta proposta comercial (abaixo).</li>
+          <li>Cópia do Contrato Social e últimas alterações.</li>
+          <li>Cópia do CPF e RG (ou CNH) de todos os sócios.</li>
+          <li>Comprovante de residência atualizado dos sócios.</li>
+          <li>Declaração de faturamento assinada pelo contador — últimos 6 meses.</li>
+        </ul>
+      </div>
+
+      <!-- ACEITE -->
+      <div class="aceite-box" id="aceiteBox">
+        <label class="aceite-check-row" for="aceiteCheck">
+          <input type="checkbox" id="aceiteCheck" onchange="onAceiteChange(this)">
+          <span class="aceite-label">
+            Li e concordo integralmente com os termos desta <strong>Proposta Comercial Monetz</strong>, incluindo as autorizações de consulta ao SCR, visualização de agenda de recebíveis e opt-in de domicílio bancário, conforme descrito acima. Declaro que as informações que serão fornecidas são verdadeiras e assumo responsabilidade civil e legal pelas declarações prestadas.
+          </span>
+        </label>
+        <div class="aceite-ts" id="aceiteTs">
+          ✅ Aceite registrado em: <strong id="aceiteTimestamp">—</strong>
+        </div>
+        <button type="button" class="btn-continuar" onclick="mostrarFormulario()">
+          Preencher Ficha Cadastral →
+        </button>
+      </div>
+
+    </div><!-- /proposta-card-body -->
+  </div><!-- /proposta-card -->
+</div><!-- /propostaSection -->
+
+<!-- ══ FORMULÁRIO (oculto até aceite) ══ -->
+<div id="formWrapper">
+<main class="form-wrapper">
+<form id="fichaForm" novalidate>
+
+  <!-- ESTABELECIMENTO -->
+  <div class="card">
+    <div class="section-header"><h2>Dados do Estabelecimento Comercial</h2></div>
+    <div class="section-body">
+      <div class="grid g-2" style="margin-bottom:16px">
+        <div class="field"><label>Razão Social <span class="req">*</span></label><input type="text" name="razao_social" required></div>
+        <div class="field"><label>Nome Fantasia</label><input type="text" name="nome_fantasia"></div>
+      </div>
+      <div class="grid g-3" style="margin-bottom:16px">
+        <div class="field"><label>CNPJ / CPF <span class="req">*</span></label><input type="text" name="cnpj" required></div>
+        <div class="field"><label>Inscrição Estadual</label><input type="text" name="insc_estadual"></div>
+        <div class="field"><label>Data de Abertura</label><input type="date" name="data_abertura"></div>
+      </div>
+      <div class="grid g-addr" style="margin-bottom:16px">
+        <div class="field"><label>Endereço <span class="req">*</span></label><input type="text" name="endereco" required></div>
+        <div class="field"><label>Complemento</label><input type="text" name="complemento"></div>
+      </div>
+      <div class="grid g-cep" style="margin-bottom:16px">
+        <div class="field"><label>CEP <span class="req">*</span></label><input type="text" name="cep" required></div>
+        <div class="field"><label>Cidade <span class="req">*</span></label><input type="text" name="cidade" required></div>
+        <div class="field"><label>UF <span class="req">*</span></label>
+          <select name="uf" required><option value="">—</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option selected>SP</option><option>SE</option><option>TO</option></select>
+        </div>
+      </div>
+      <div class="grid g-tel">
+        <div class="field"><label>Telefone Comercial <span class="req">*</span></label><input type="tel" name="telefone" required></div>
+        <div class="field"><label>E-mail para Contato <span class="req">*</span></label><input type="email" name="email" required></div>
+        <div class="field"><label>Site / Redes Sociais</label><input type="text" name="site"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPRESENTANTE LEGAL -->
+  <div class="card">
+    <div class="section-header"><h2>Dados do Representante Legal</h2></div>
+    <div class="section-body">
+      <div class="grid g-rep" style="margin-bottom:16px">
+        <div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" name="rep_nome" required></div>
+        <div class="field"><label>CPF <span class="req">*</span></label><input type="text" name="rep_cpf" required></div>
+        <div class="field"><label>RG</label><input type="text" name="rep_rg"></div>
+      </div>
+      <div class="grid g-3" style="margin-bottom:16px">
+        <div class="field"><label>Data de Nascimento</label><input type="date" name="rep_nascimento"></div>
+        <div class="field"><label>Cargo / Função na Empresa</label><input type="text" name="rep_cargo"></div>
+        <div class="field"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="rep_tel" required></div>
+      </div>
+      <div class="grid g-addr" style="margin-bottom:16px">
+        <div class="field"><label>Endereço Residencial</label><input type="text" name="rep_endereco"></div>
+        <div class="field"><label>Complemento</label><input type="text" name="rep_complemento"></div>
+      </div>
+      <div class="grid g-cep" style="margin-bottom:16px">
+        <div class="field"><label>CEP</label><input type="text" name="rep_cep"></div>
+        <div class="field"><label>Cidade</label><input type="text" name="rep_cidade"></div>
+        <div class="field"><label>UF</label>
+          <select name="rep_uf"><option value="">—</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option selected>SP</option><option>SE</option><option>TO</option></select>
+        </div>
+      </div>
+      <div class="field"><label>E-mail <span class="req">*</span></label><input type="email" name="rep_email" required></div>
+    </div>
+  </div>
+
+  <!-- ESTRUTURA COMERCIAL -->
+  <div class="card">
+    <div class="section-header"><h2>Estrutura Comercial e Operacional</h2></div>
+    <div class="section-body">
+      <div class="grid g-3" style="margin-bottom:16px">
+        <div class="field"><label>Qtde. de Funcionários</label><input type="text" name="funcionarios"></div>
+        <div class="field"><label>Horário de Funcionamento</label><input type="text" name="horario"></div>
+        <div class="field"><label>Tempo de Operação no Endereço Atual</label><input type="text" name="tempo_operacao"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+        <span style="font-size:13px; color:var(--body)">Possui outras unidades?</span>
+        <div class="check-group">
+          <label class="check-opt"><input type="radio" name="outras_unidades" value="Sim"> Sim</label>
+          <label class="check-opt"><input type="radio" name="outras_unidades" value="Não"> Não</label>
+        </div>
+        <div class="field" style="flex:1; min-width:160px;">
+          <label>Se sim, quantas:</label>
+          <input type="text" name="qtd_unidades">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCEIRAS -->
+  <div class="card">
+    <div class="section-header"><h2>Informações Financeiras e de Faturamento Mensal</h2></div>
+    <div class="section-body">
+      <div class="check-group-label">Faturamento mensal aproximado:</div>
+      <div class="fat-options" style="margin-bottom:20px">
+        <label class="fat-opt"><input type="radio" name="faturamento" value="Até R$ 20 mil"> Até R$ 20 mil</label>
+        <label class="fat-opt"><input type="radio" name="faturamento" value="R$ 20 mil a R$ 50 mil"> R$ 20 mil a R$ 50 mil</label>
+        <label class="fat-opt"><input type="radio" name="faturamento" value="R$ 50 mil a R$ 100 mil"> R$ 50 mil a R$ 100 mil</label>
+        <label class="fat-opt"><input type="radio" name="faturamento" value="Acima de R$ 100 mil"> Acima de R$ 100 mil</label>
+      </div>
+      <div class="field" style="margin-bottom:16px">
+        <label>Tipo de produto utilizado</label>
+        <input type="text" name="tipo_produto">
+      </div>
+      <div class="check-group-label">Ticket Médio (R$)</div>
+      <div class="grid g-4" style="margin-bottom:16px">
+        <div class="field"><label>Débito</label><input type="text" name="ticket_debito"></div>
+        <div class="field"><label>Crédito</label><input type="text" name="ticket_credito"></div>
+        <div class="field"><label>PIX</label><input type="text" name="ticket_pix"></div>
+        <div class="field"><label>Boleto</label><input type="text" name="ticket_boleto"></div>
+      </div>
+      <div class="check-group-label">Vendas Diárias (R$)</div>
+      <div class="grid g-4" style="margin-bottom:20px">
+        <div class="field"><label>Débito</label><input type="text" name="vendas_debito"></div>
+        <div class="field"><label>Crédito</label><input type="text" name="vendas_credito"></div>
+        <div class="field"><label>PIX</label><input type="text" name="vendas_pix"></div>
+        <div class="field"><label>Boleto</label><input type="text" name="vendas_boleto"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="yn-rows">
+        <div class="yn-row">
+          <span class="yn-q">Faz antecipação?</span>
+          <div class="yn-opts">
+            <label class="check-opt"><input type="radio" name="antecipacao" value="Sim"> Sim</label>
+            <label class="check-opt"><input type="radio" name="antecipacao" value="Não"> Não</label>
+          </div>
+        </div>
+        <div class="yn-row">
+          <span class="yn-q">Possui crédito fumaça, empréstimos, financiamentos e/ou similar?</span>
+          <div class="yn-opts">
+            <label class="check-opt"><input type="radio" name="credito_ativo" value="Sim"> Sim</label>
+            <label class="check-opt"><input type="radio" name="credito_ativo" value="Não"> Não</label>
+          </div>
+        </div>
+      </div>
+      <div class="grid g-3" style="margin-top:16px">
+        <div class="field"><label>Empréstimo Bancário R$</label><input type="text" name="emprestimo"></div>
+        <div class="field"><label>Crédito Fumaça R$</label><input type="text" name="credito_fumaca"></div>
+        <div class="field"><label>Financiamento R$</label><input type="text" name="financiamento"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EQUIPAMENTOS -->
+  <div class="card">
+    <div class="section-header"><h2>Equipamentos e Meios de Pagamento</h2></div>
+    <div class="section-body">
+      <div class="grid g-2" style="margin-bottom:16px">
+        <div class="field"><label>Adquirente(s) utilizada(s)</label><input type="text" name="adquirente"></div>
+        <div class="field"><label>Quantidade de POS em operação</label><input type="text" name="qtd_pos"></div>
+      </div>
+      <div class="grid g-3">
+        <div class="field"><label>Modelo / Marca da(s) maquininha(s)</label><input type="text" name="modelo_pos"></div>
+        <div class="field"><label>Prazo atual de recebimento</label><input type="text" name="prazo_recebimento"></div>
+        <div class="field"><label>% Cancelamentos / Chargebacks</label><input type="text" name="chargeback"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFORMAÇÕES EMPRESA -->
+  <div class="card">
+    <div class="section-header"><h2>Informações sobre a Empresa</h2></div>
+    <div class="section-body">
+      <div class="yn-rows">
+        <div class="yn-row"><span class="yn-q">Possui restrições no CNPJ?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="restricao_cnpj" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="restricao_cnpj" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Possui restrições no CPF do sócio?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="restricao_cpf" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="restricao_cpf" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Existe parcelamento ativo de tributos?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="parcelamento_tributos" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="parcelamento_tributos" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Há processos judiciais relevantes?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="processos_judiciais" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="processos_judiciais" value="Não"> Não</label></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANCÁRIAS -->
+  <div class="card">
+    <div class="section-header"><h2>Informações Bancárias</h2></div>
+    <div class="section-body">
+      <div class="grid g-3" style="margin-bottom:16px">
+        <div class="field"><label>Banco <span class="req">*</span></label><input type="text" name="banco" required></div>
+        <div class="field"><label>Agência</label><input type="text" name="agencia"></div>
+        <div class="field"><label>Conta Corrente</label><input type="text" name="conta"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; margin-bottom:16px">
+        <span style="font-size:10px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px">Tipo de Conta:</span>
+        <div class="check-group">
+          <label class="check-opt"><input type="radio" name="tipo_conta" value="Conta Corrente"> Conta Corrente</label>
+          <label class="check-opt"><input type="radio" name="tipo_conta" value="Conta Poupança"> Conta Poupança</label>
+        </div>
+      </div>
+      <div class="field"><label>Chave PIX</label><input type="text" name="chave_pix"></div>
+    </div>
+  </div>
+
+  <!-- DOCUMENTAÇÃO -->
+  <div class="card">
+    <div class="section-header"><h2>Documentação Necessária</h2></div>
+    <div class="section-body">
+      <div class="doc-cols">
+        <div class="doc-col">
+          <h3>Representante Legal</h3>
+          <label class="doc-item"><input type="checkbox" name="doc_cpf" value="CPF"> CPF</label>
+          <label class="doc-item"><input type="checkbox" name="doc_rg" value="RG"> RG</label>
+          <label class="doc-item"><input type="checkbox" name="doc_end_rep" value="Comprovante de Endereço"> Comprovante de Endereço</label>
+        </div>
+        <div class="doc-col">
+          <h3>Empresa</h3>
+          <label class="doc-item"><input type="checkbox" name="doc_contrato" value="Contrato Social / Última Alteração"> Contrato Social / Última Alteração</label>
+          <label class="doc-item"><input type="checkbox" name="doc_rep_legal" value="Documento do Representante Legal"> Documento do Representante Legal</label>
+          <label class="doc-item"><input type="checkbox" name="doc_mei" value="Certificado MEI"> Certificado MEI (se aplicável)</label>
+          <label class="doc-item"><input type="checkbox" name="doc_end_emp" value="Comprovante de Endereço (Empresa)"> Comprovante de Endereço</label>
+          <label class="doc-item"><input type="checkbox" name="doc_fat" value="Comprovante de Faturamento"> Comprovante de Faturamento</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECLARAÇÃO -->
+  <div class="card">
+    <div class="section-header"><h2>Declaração</h2></div>
+    <div class="section-body">
+      <div class="decl-box">Confirmo que as informações prestadas são verdadeiras e autorizo a consulta aos bureaus de crédito para fins de pré-análise.</div>
+      <div class="sig-row">
+        <div class="sig-block"><div class="sig-line"></div><div class="sig-desc">Data e Nome Completo — Representante Legal</div></div>
+        <div class="sig-block"><div class="sig-line"></div><div class="sig-desc">Assinatura</div></div>
+      </div>
+      <div style="font-size:11px; font-weight:600; color:var(--navy); text-transform:uppercase; letter-spacing:1px; margin:16px 0 10px;">Dados do Agente de Venda</div>
+      <div class="sig-row">
+        <div class="sig-block"><div class="sig-line"></div><div class="sig-desc">Data e Nome do Agente de Venda</div></div>
+        <div class="sig-block"><div class="sig-line"></div><div class="sig-desc">Assinatura</div></div>
+      </div>
+    </div>
+    <div class="submit-area">
+      <p class="submit-note">Ao gerar o PDF, confirme que todas as informações são verdadeiras e autorize a consulta aos bureaus de crédito.</p>
+            <button type="submit" class="btn-submit" id="btnSubmit">
+        <span class="btn-spinner"></span>
+        <span class="btn-text">🖨 Gerar PDF para Impressão</span>
+      </button>
+    </div>
+  </div>
+
+</form>
+</main>
+</div><!-- /formWrapper -->
+
+<footer class="site-footer">
+  <div class="logo">Monetz</div>
+  <div class="addr">Rua Iguatemi, 192 · Sala 63 – 6º andar<br>Itaim Bibi, São Paulo - SP, 01451-010<br>Tel. +55 (11) 2131-5060</div>
+</footer>
+
+<script>
+// ─── DATA DE ABERTURA ───────────────────────────────────────────────────────
+const _dataAbertura = new Date();
+const _dataShort = _dataAbertura.toLocaleDateString('pt-BR');
+const _horaFmt   = _dataAbertura.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+const _dataLong  = _dataAbertura.toLocaleDateString('pt-BR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+document.getElementById('dataAberturaDisplay').textContent =
+  _dataLong.charAt(0).toUpperCase() + _dataLong.slice(1);
+
+document.getElementById('topbarDate').textContent = _dataShort + ' · ' + _horaFmt;
+
+// atualiza topbar sub - mantém texto padrão
+const subEl = document.getElementById('topbarSub');
+if (subEl) subEl.textContent = 'Proposta Comercial · ' + _dataShort + ' · ' + _horaFmt;
+
+// ─── ACEITE ─────────────────────────────────────────────────────────────────
+let _aceiteTimestamp = '';
+
+function onAceiteChange(cb) {
+  const box = document.getElementById('aceiteBox');
+  if (cb.checked) {
+    box.classList.add('checked');
+    _aceiteTimestamp = new Date().toLocaleString('pt-BR', {
+      day:'2-digit', month:'2-digit', year:'numeric',
+      hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+    document.getElementById('aceiteTimestamp').textContent = _aceiteTimestamp;
+  } else {
+    box.classList.remove('checked');
+    _aceiteTimestamp = '';
+  }
+}
+
+function mostrarFormulario() {
+  const fw = document.getElementById('formWrapper');
+  fw.classList.add('visible');
+  setTimeout(() => fw.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+}
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+const f = name => {
+  const el = document.querySelector(`[name="${name}"]`);
+  if (!el) return '';
+  if (el.type === 'radio') {
+    const c = document.querySelector(`[name="${name}"]:checked`);
+    return c ? c.value : '';
+  }
+  return el.value || '';
+};
+
+// ─── PDF GENERATOR ─────────────────────────────────────────────────────────
+function gerarPDF(printMode=false) {
+  const { jsPDF } = window.jspdf;
+  // jsPDF: Y=0 is TOP of page, increases downward.
+  const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+
+  const W=210, ML=15, MR=195, PW=180, G=3;
+  // Colors: full palette for screen, grayscale for print
+  const NAVY  = printMode ? [60,60,60]       : [0,79,113];
+  const GOLD  = printMode ? [130,130,130]    : [179,163,105];
+  const DARK  = printMode ? [30,30,30]       : [13,27,42];
+  const WHITE = [255,255,255];
+  const MUTED = printMode ? [80,80,80]       : [100,116,139];
+  const BODY  = [26,26,26];
+  const FBKG  = printMode ? [255,255,255]    : [240,244,248];
+  const LINE  = printMode ? [160,160,160]    : [209,213,219];
+  const BAR_H = 7.5;
+
+  // ── Section bar: pageY = top of bar ──
+  function secBar(title, pageY) {
+    if (printMode) {
+      doc.setFillColor(232,232,232); doc.rect(ML, pageY, PW, BAR_H, 'F');
+      doc.setFillColor(170,170,170); doc.rect(ML, pageY, 3, BAR_H, 'F');
+      doc.setTextColor(30,30,30);
+    } else {
+      doc.setFillColor(...NAVY); doc.rect(ML, pageY, PW, BAR_H, 'F');
+      doc.setFillColor(...GOLD); doc.rect(ML, pageY, 3, BAR_H, 'F');
+      doc.setTextColor(...WHITE);
+    }
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.8);
+    doc.text(title.toUpperCase(), ML+5, pageY+5.2);
+  }
+
+  // ── Field: fy = TOP of field box; label draws ABOVE box ──
+  function field(x, fy, w, fh, label, value) {
+    doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
+    if (printMode) {
+      // Print mode: valor acima da linha, label abaixo da linha
+      doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
+      doc.line(x, fy + fh, x + w, fy + fh);
+      if (value) {
+        let v = String(value);
+        doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(20,20,20);
+        while (doc.getTextWidth(v) > w - 2 && v.length > 2) v = v.slice(0, -1);
+        doc.text(v, x, fy + fh - 2);
+      }
+      doc.setFont('helvetica','normal'); doc.setFontSize(5.5); doc.setTextColor(130,130,130);
+      doc.text(label.toUpperCase(), x, fy + fh + 3.5);
+    } else {
+      // Colorido: label 3mm above the box top
+      doc.text(label.toUpperCase(), x, fy - 3);
+      doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
+      doc.rect(x, fy, w, fh, 'FD');
+      if (value) {
+        let v = String(value);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...BODY);
+        while (doc.getTextWidth(v) > w - 3 && v.length > 2) v = v.slice(0, -1);
+        doc.text(v, x + 2, fy + fh/2 + 2.5);
+      }
+    }
+  }
+
+  // ── Row of fields ──
+  function row(fy, fh, specs) {
+    specs.forEach(([x,w,name,lbl]) => field(x, fy, w, fh, lbl, f(name)));
+  }
+
+  // ── Radio pair: ry = top of squares ──
+  function radio(x, ry, group) {
+    const val = f(group);
+    const borderCol = printMode ? [100,100,100] : NAVY;
+    for (const v of ['Sim','Não']) {
+      const sel = val===v;
+      doc.setFillColor(...(sel ? (printMode?[80,80,80]:NAVY) : WHITE));
+      doc.setDrawColor(...borderCol);
+      doc.rect(x, ry, 3.5, 3.5, sel?'F':'S');
+      if(sel){doc.setTextColor(...WHITE);doc.setFontSize(5);doc.text('✓',x+0.7,ry+2.8);}
+      doc.setTextColor(...BODY); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      doc.text(v, x+4.5, ry+3);
+      x += 4.5+doc.getTextWidth(v)+5;
+    }
+    return x;
+  }
+
+  function footer(pg, total=3) {
+    const lbl = `0${pg} / 0${total}`;
+    if (printMode) {
+      doc.setFillColor(255,255,255); doc.rect(0,287,W,10,'F');
+      doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,287,W,287);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
+      doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 292);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
+      doc.text(lbl, MR, 292, {align:'right'});
+    } else {
+      doc.setFillColor(...DARK); doc.rect(0,286,W,11,'F');
+      doc.setFillColor(...GOLD); doc.rect(0,286,W,0.8,'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...MUTED);
+      doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 291);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
+      doc.text(lbl, MR, 291, {align:'right'});
+    }
+  }
+
+  // ══════════════════════════════════════
+  //  PÁGINA 1 — PROPOSTA COMERCIAL
+  // ══════════════════════════════════════
+  // Header da proposta
+  if (printMode) {
+    doc.setFillColor(255,255,255); doc.rect(0,0,W,22,'F');
+    doc.setDrawColor(60,60,60); doc.setLineWidth(0.5); doc.line(0,22,W,22);
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(30,30,30);
+    doc.text('Monetz', ML, 14);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(80,80,80);
+    doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 20);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(30,30,30);
+    doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(80,80,80);
+    doc.text('Pág. 1 de 3', MR, 20, {align:'right'});
+  } else {
+    doc.setFillColor(...DARK); doc.rect(0,0,W,22,'F');
+    doc.setFillColor(...GOLD); doc.rect(0,22,W,1.2,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(...GOLD);
+    doc.text('Monetz', ML, 14);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
+    doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 20);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...WHITE);
+    doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
+    doc.text('Pág. 1 de 3', MR, 20, {align:'right'});
+  }
+
+  // Badge linha (data abertura / validade / documento)
+  const bY=25, bH=10;
+  const bW3=PW/3;
+  const badges=[['Data de Abertura', _dataShort+' · '+_horaFmt],['Validade','48 horas'],['Documento','Proposta Comercial']];
+  badges.forEach((b,i)=>{
+    const bx=ML+i*bW3;
+    if(!printMode){doc.setFillColor(...FBKG);doc.setDrawColor(...LINE);doc.setLineWidth(0.3);doc.rect(bx,bY,bW3,bH,'FD');}
+    else{doc.setDrawColor(...LINE);doc.setLineWidth(0.3);doc.rect(bx,bY,bW3,bH,'S');}
+    doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.setTextColor(...MUTED);
+    doc.text(b[0].toUpperCase(),bx+2,bY+3.5);
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(...BODY);
+    doc.text(b[1],bx+2,bY+8.5);
+  });
+
+  // Helper para seções da proposta
+  let py = bY+bH+4;
+  const PLS = 4.5; // line spacing for proposta text
+
+  function pSecBar(title) {
+    if(!printMode){doc.setFillColor(...NAVY);}else{doc.setFillColor(220,220,220);}
+    doc.rect(ML,py,PW,6,'F');
+    if(!printMode){doc.setFillColor(...GOLD);}else{doc.setFillColor(100,100,100);}
+    doc.rect(ML,py,2,6,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(7);
+    doc.setTextColor(...(printMode?[30,30,30]:WHITE));
+    doc.text(title.toUpperCase(),ML+5,py+4.2);
+    py+=8;
+  }
+
+  function pText(txt) {
+    const lines=doc.splitTextToSize(txt,PW-4);
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(...BODY);
+    doc.text(lines,ML+2,py);
+    py+=lines.length*PLS+2;
+  }
+
+  function pBullets(items) {
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(...BODY);
+    items.forEach(item=>{
+      const lines=doc.splitTextToSize('• '+item,PW-8);
+      doc.text(lines,ML+4,py);
+      py+=lines.length*PLS+1;
+    });
+    py+=1;
+  }
+
+  // ── Sumário Executivo ──
+  pSecBar('1. Sumário Executivo');
+  pText('Esta proposta apresenta uma solução financeira estruturada pela Monetz, empresa integrante do ecossistema Grupo Check, focada na otimização do fluxo de caixa para lojistas e empreendedores. Através da modalidade de crédito com garantia em recebíveis, oferecemos agilidade na liberação de recursos e uma mecânica de liquidação que respeita a saúde financeira do negócio, utilizando a previsibilidade de vendas como o principal motor de crescimento.');
+
+  // ── Ecossistema ──
+  pSecBar('2. O Ecossistema Monetz & Grupo Check');
+  pText('A Monetz opera sob a robustez tecnológica e operacional do Grupo Check, unindo inteligência de dados e infraestrutura de pagamentos. Nossa atuação é pautada pela transparência e pela integração direta com as principais registradoras do mercado (Nuclea, TAG, CERC e B3), garantindo segurança jurídica e eficiência na gestão de ativos financeiros.');
+
+  // ── Desafio ──
+  pSecBar('3. Desafio e Oportunidade');
+  pText('O acesso ao crédito tradicional muitas vezes impõe barreiras burocráticas e garantias reais que limitam a expansão de empresas com alto potencial de vendas. A oportunidade reside no Crédito sobre Recebíveis Futuros, que resolve este gargalo ao permitir que o lojista antecipe recursos baseados na sua performance comercial futura, sem comprometer o patrimônio físico da empresa.');
+
+  // ── Solução ──
+  pSecBar('4. Solução: Crédito Estratégico');
+  pText('Diferente da antecipação convencional, esta modalidade permite o acesso a recursos baseados na previsibilidade de vendas. A mecânica baseia-se na cessão fiduciária de recebíveis de arranjos de pagamento (cartões de crédito e débito), onde a liquidação ocorre de forma automática e diluída.');
+  pBullets([
+    'Liquidez Imediata: Desembolso em conta em até 48 horas após a formalização.',
+    'Pagamento Inteligente: Retenção diária automática, acompanhando o volume de vendas.',
+    'Sem Boletos: A liquidação ocorre diretamente na agenda de recebíveis, eliminando o risco de inadimplência por falha operacional.'
+  ]);
+
+  // ── Condições Comerciais ──
+  pSecBar('5. Condições Comerciais');
+  const tblY=py, tblCols=[['Componente',60],['Detalhamento',75],['Valor',PW-60-75-4]];
+  const tblRows=[
+    ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 20.000,00'],
+    ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 19.200,00'],
+    ['Parcela Diária','Retenção automática na agenda de cartões','R$ 198,00'],
+    ['Prazo Estimado','Período de amortização da operação','126 dias úteis'],
+    ['Total a Liquidar','Valor total ao final do período','R$ 24.948,00'],
+  ];
+  // header
+  if(!printMode){doc.setFillColor(...NAVY);}else{doc.setFillColor(200,200,200);}
+  doc.rect(ML,tblY,PW,5.5,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(...(printMode?[30,30,30]:WHITE));
+  let cx=ML+2; tblCols.forEach(([lbl,w])=>{doc.text(lbl.toUpperCase(),cx,tblY+3.8);cx+=w;});
+  py=tblY+5.5;
+  tblRows.forEach((r,i)=>{
+    if(!printMode && i%2===0){doc.setFillColor(...FBKG);doc.rect(ML,py,PW,5.5,'F');}
+    if(printMode && i%2===0){doc.setFillColor(245,245,245);doc.rect(ML,py,PW,5.5,'F');}
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(...BODY);
+    let tx=ML+2; tblCols.forEach(([,w],j)=>{
+      const txt=j===2?r[j]:'';
+      if(j<2){doc.text(r[j],tx,py+3.8);}
+      else{doc.setFont('helvetica','bold');doc.text(r[j],tx,py+3.8);doc.setFont('helvetica','normal');}
+      tx+=w;
+    });
+    doc.setDrawColor(...LINE);doc.rect(ML,py,PW,5.5,'S');
+    py+=5.5;
+  });
+  py+=2;
+  doc.setFont('helvetica','italic');doc.setFontSize(6.5);doc.setTextColor(...MUTED);
+  doc.text('*Valores exemplificativos — podem variar conforme feriados regionais do domicílio do estabelecimento.',ML+2,py);
+  py+=5;
+
+  // ── Termos e Autorizações ──
+  pSecBar('6. Termos e Autorizações');
+  pBullets([
+    'Consulta ao SCR: A consulta às informações consolidadas no Sistema de Informações de Créditos (SCR), gerido pelo Banco Central do Brasil.',
+    'Visualização de Agenda: Visualização e monitoramento da agenda de recebíveis nas registradoras (NUCLEA, TAG, CERC, B3) para fins de cálculo de limite e garantia.',
+    'Opt-In de Domicílio: Alteração do domicílio bancário ou trava de recebíveis conforme Resolução CMN nº 4.734/2019 e Circular BCB nº 3.952/2019.'
+  ]);
+
+  // ── Próximos Passos ──
+  pSecBar('7. Próximos Passos');
+  pBullets([
+    'Aceite Formal: Confirmação desta proposta comercial.',
+    'Cópia do Contrato Social e últimas alterações.',
+    'Cópia do CPF e RG (ou CNH) de todos os sócios.',
+    'Comprovante de residência atualizado dos sócios.',
+    'Declaração de faturamento assinada pelo contador — últimos 6 meses.'
+  ]);
+
+  // ── Banner aceite no rodapé da proposta ──
+  const aceiteTs = _aceiteTimestamp || '—';
+  const ayy = Math.max(py+4, 268);
+  doc.setFillColor(printMode?235:215, printMode?235:248, printMode?235:215);
+  doc.rect(ML,ayy,PW,9,'F');
+  doc.setDrawColor(printMode?140:80,printMode?140:190,printMode?140:80);doc.setLineWidth(0.4);
+  doc.rect(ML,ayy,PW,9,'S');
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);
+  doc.setTextColor(printMode?30:18,printMode?30:100,printMode?30:30);
+  doc.text('✓  Proposta Preenchida em: '+aceiteTs+'   ·   Gerado em: '+_dataShort+' às '+_horaFmt, ML+3, ayy+5.8);
+
+  // footer proposta
+  if (printMode) {
+    doc.setFillColor(255,255,255); doc.rect(0,287,W,10,'F');
+    doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,287,W,287);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
+    doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 292);
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
+    doc.text('01 / 03', MR, 292, {align:'right'});
+  } else {
+    doc.setFillColor(...DARK); doc.rect(0,286,W,11,'F');
+    doc.setFillColor(...GOLD); doc.rect(0,286,W,0.8,'F');
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...MUTED);
+    doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 291);
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
+    doc.text('01 / 03', MR, 291, {align:'right'});
+  }
+
+  doc.addPage();
+
+  // ══════════════════════════════════════
+  //  PÁGINA 2 — FICHA CADASTRAL (antiga pág 1)
+  // ══════════════════════════════════════
+  if (printMode) {
+    doc.setFillColor(255,255,255); doc.rect(0,0,W,28,'F');
+    doc.setDrawColor(60,60,60); doc.setLineWidth(0.5); doc.line(0,28,W,28);
+    doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(30,30,30);
+    doc.text('Monetz', ML, 18);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
+    doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 24);
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,30,30);
+    doc.text('FICHA CADASTRAL — CLIENTES', MR, 18, {align:'right'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
+    doc.text('Proposta Comercial  ·  Pág. 2 de 3', MR, 24, {align:'right'});
+  } else {
+    doc.setFillColor(...DARK); doc.rect(0,0,W,28,'F');
+    doc.setFillColor(...GOLD); doc.rect(0,28,W,1.5,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...GOLD);
+    doc.text('Monetz', ML, 18);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
+    doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 24);
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...WHITE);
+    doc.text('FICHA CADASTRAL — CLIENTES', MR, 18, {align:'right'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
+    doc.text('Proposta Comercial  ·  Pág. 2 de 3', MR, 24, {align:'right'});
+  }
+
+  // Page 1 layout — all sections anchored from top
+  // Available: 297 - 30 (header) - 11 (footer) = 256mm
+  // 3 sections, each: BAR_H(7.5) + BG(6) + 5*RS + gap(3) between sections
+  // SEC_H = 13.5 + 5*RS; 3*SEC_H + 2*3 = 256 → 15*RS = 216.5 → RS=14.4
+  const FH1=9, RS1=printMode?16.5:14.4, BG1=6, SEC_H1=BAR_H+BG1+5*RS1;
+  const aw=PW*0.63, cw=PW-aw-G;
+  const cepw=PW*0.17, citw=PW*0.52, ufw=PW-cepw-citw-2*G;
+  const tw=PW*0.26, ew=PW*0.37, sw=PW-tw-ew-2*G;
+  const h2=(PW-G)/2, t3=(PW-2*G)/3;
+  const nw=PW*0.44, cpfw=PW*0.27, rgw=PW-nw-cpfw-2*G;
+  const nascw=PW*0.2, cargw=PW*0.42, telw=PW-nascw-cargw-2*G;
+  const qw=PW*0.16, horw=PW*0.37, topw=PW-qw-horw-2*G;
+
+  // ── Banner aceite digital ──
+  const aceiteTs2 = _aceiteTimestamp || '—';
+  doc.setFillColor(printMode?240:220, printMode?240:255, printMode?240:220);
+  doc.rect(ML, 30, PW, 8, 'F');
+  doc.setDrawColor(printMode?150:90, printMode?150:200, printMode?150:90);
+  doc.rect(ML, 30, PW, 8, 'S');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+  doc.setTextColor(printMode?40:22, printMode?40:120, printMode?40:40);
+  doc.text('✓  Proposta Preenchida em: ' + aceiteTs2 + '   ·   Gerado em: ' + _dataShort + ' às ' + _horaFmt, ML+3, 30+5.2);
+
+  // ── Sec 1: Estabelecimento ──
+  let sy1=41; secBar('Dados do Estabelecimento Comercial', sy1);
+  let y=sy1+BAR_H+BG1;
+  row(y,FH1,[[ML,h2,'razao_social','Razão Social *'],[ML+h2+G,h2,'nome_fantasia','Nome Fantasia']]); y+=RS1;
+  row(y,FH1,[[ML,t3,'cnpj','CNPJ / CPF *'],[ML+t3+G,t3,'insc_estadual','Inscrição Estadual'],[ML+2*(t3+G),t3,'data_abertura','Data de Abertura']]); y+=RS1;
+  row(y,FH1,[[ML,aw,'endereco','Endereço (Rua, Nº) *'],[ML+aw+G,cw,'complemento','Complemento']]); y+=RS1;
+  row(y,FH1,[[ML,cepw,'cep','CEP *'],[ML+cepw+G,citw,'cidade','Cidade *'],[ML+cepw+citw+2*G,ufw,'uf','UF *']]); y+=RS1;
+  row(y,FH1,[[ML,tw,'telefone','Telefone Comercial *'],[ML+tw+G,ew,'email','E-mail *'],[ML+tw+ew+2*G,sw,'site','Site / Redes Sociais']]);
+
+  // ── Sec 2: Representante ──
+  let sy2=sy1+SEC_H1+3; secBar('Dados do Representante Legal', sy2);
+  y=sy2+BAR_H+BG1;
+  row(y,FH1,[[ML,nw,'rep_nome','Nome Completo *'],[ML+nw+G,cpfw,'rep_cpf','CPF *'],[ML+nw+cpfw+2*G,rgw,'rep_rg','RG']]); y+=RS1;
+  row(y,FH1,[[ML,nascw,'rep_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'rep_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'rep_tel','Telefone / WhatsApp *']]); y+=RS1;
+  row(y,FH1,[[ML,aw,'rep_endereco','Endereço Residencial'],[ML+aw+G,cw,'rep_complemento','Complemento']]); y+=RS1;
+  row(y,FH1,[[ML,cepw,'rep_cep','CEP'],[ML+cepw+G,citw,'rep_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'rep_uf','UF']]); y+=RS1;
+  row(y,FH1,[[ML,PW,'rep_email','E-mail *']]);
+
+  // ── Sec 3: Estrutura ──
+  let sy3=sy2+SEC_H1+3; secBar('Estrutura Comercial e Operacional', sy3);
+  y=sy3+BAR_H+BG1;
+  row(y,FH1,[[ML,qw,'funcionarios','Qtde. de Funcionários'],[ML+qw+G,horw,'horario','Horário de Funcionamento'],[ML+qw+horw+2*G,topw,'tempo_operacao','Tempo de Operação no Endereço Atual']]); y+=RS1;
+  const ry1=y+FH1/2-1.75;
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  doc.text('Possui outras unidades?', ML, ry1+3);
+  let cx1=radio(ML+44, ry1, 'outras_unidades');
+  cx1+=4; field(cx1+18, y, 30, FH1, 'Se sim, quantas:', f('qtd_unidades'));
+
+  footer(2);
+
+  // ══════════════════════════════════════
+  //  PAGE 2
+  // ══════════════════════════════════════
+  doc.addPage();
+
+  // Page 2 layout: FH2=field height, RS2=row step
+  // Available: 297-15(header)-11(footer) = 271mm
+  // 6 bars: 6*(7.5+5)=75mm  fixed rows: fat(7)+ant(7)+cred(7)+emp_rows(4*7=28)+doc(7+5*5=32)+decl(12)+sigs(22)=115mm
+  // Fixed total = 75+115 = 190mm  →  RS rows(8): (271-190)/8 = 10.1 → RS2=10
+  const FH2=5, RS2=printMode?12:9, BG2=5, G2=3;
+  const seg=(PW-24)/4;
+
+  function sec2(title, pageY) {
+    secBar(title, pageY);
+    return pageY+BAR_H+BG2;
+  }
+  // fieldBox: draw box+value only (no label — label drawn separately above)
+  function fieldBox(x, fy, w, fh, value) {
+    if (printMode) {
+      doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
+      doc.line(x, fy+fh, x+w, fy+fh);
+    } else {
+      doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
+      doc.rect(x, fy, w, fh, 'FD');
+      if (value) {
+        let v=String(value);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...BODY);
+        while(doc.getTextWidth(v)>w-3&&v.length>2) v=v.slice(0,-1);
+        doc.text(v, x+2, fy+fh/2+2.5);
+      }
+    }
+  }
+
+  function row2(fy, specs) {
+    specs.forEach(([x,w,nm,lbl]) => field(x, fy, w, FH2, lbl, f(nm)));
+  }
+
+  // Mini header
+  if (printMode) {
+    doc.setFillColor(255,255,255); doc.rect(0,0,W,14,'F');
+    doc.setDrawColor(60,60,60); doc.setLineWidth(0.5); doc.line(0,14,W,14);
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
+    doc.text('Monetz', ML, 10);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
+    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 3', MR, 10, {align:'right'});
+  } else {
+    doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
+    doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
+    doc.text('Monetz', ML, 10);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
+    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 3', MR, 10, {align:'right'});
+  }
+
+  // ── Financeiras ──
+  y = sec2('Informações Financeiras e de Faturamento Mensal', 16);
+
+  // Row 1: Faturamento label + radios
+  doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(...MUTED);
+  doc.text('Faturamento mensal aproximado:', ML, y+3);
+  const fatVal=f('faturamento'); let fx=ML+54;
+  for (const opt of ['Até R$ 20 mil','R$ 20 mil a R$ 50 mil','R$ 50 mil a R$ 100 mil','Acima de R$ 100 mil']) {
+    const sel=fatVal===opt;
+    doc.setFillColor(...(sel?(printMode?[80,80,80]:NAVY):WHITE));
+    doc.setDrawColor(...(printMode?[100,100,100]:NAVY));
+    doc.rect(fx,y,3.5,3.5,sel?'F':'S');
+    if(sel){doc.setTextColor(...WHITE);doc.setFontSize(5);doc.text('✓',fx+0.7,y+2.8);}
+    doc.setTextColor(...BODY); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    doc.text(opt, fx+4.5, y+3);
+    fx+=4.5+doc.getTextWidth(opt)+4;
+  }
+  y += 10; // past radios (radios end at y+3.5, need label below)
+
+  // Row 2: Tipo de produto — explicit label line, then box
+  doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
+  doc.text('TIPO DE PRODUTO (CRÉDITO, DÉBITO, PARCELADO, BOLETO E PIX)', ML, y);
+  y += 4; // label→box gap
+  if (printMode) {
+    doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
+    doc.line(ML, y+FH2, ML+PW, y+FH2);
+  } else {
+    doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
+    doc.rect(ML, y, PW, FH2, 'FD');
+    const vtp=f('tipo_produto');
+    if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...BODY);
+      while(doc.getTextWidth(v)>PW-3&&v.length>2)v=v.slice(0,-1);doc.text(v,ML+2,y+FH2/2+2.5);}
+  }
+  y += FH2 + 10; // box + generous gap before ticket
+
+  // Row 3: Ticket médio — label line then boxes
+  doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
+  doc.text('TICKET MÉDIO  R$', ML, y);
+  let ox=ML+24;
+  for (const lb of ['DÉBITO','CRÉDITO','PIX','BOLETO']) { doc.text(lb,ox,y); ox+=seg; }
+  y += 4;
+  ox=ML+24;
+  for (const nm of ['ticket_debito','ticket_credito','ticket_pix','ticket_boleto']) {
+    fieldBox(ox,y,seg-G2,FH2,f(nm)); ox+=seg;
+  }
+  y += FH2 + 10;
+
+  // Row 4: Vendas diárias
+  doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
+  doc.text('VENDAS DIÁRIAS  R$', ML, y);
+  ox=ML+24;
+  for (const lb of ['DÉBITO','CRÉDITO','PIX','BOLETO']) { doc.text(lb,ox,y); ox+=seg; }
+  y += 4;
+  ox=ML+24;
+  for (const nm of ['vendas_debito','vendas_credito','vendas_pix','vendas_boleto']) {
+    fieldBox(ox,y,seg-G2,FH2,f(nm)); ox+=seg;
+  }
+  y += FH2 + 10;
+
+  // Row 5: Antecipação
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  doc.text('Faz antecipação?', ML, y+3);
+  radio(ML+30,y,'antecipacao'); y+=10;
+
+  // Row 6: Crédito fumaça
+  doc.text('Possui crédito fumaça, empréstimos, financiamentos e/ou similar?', ML, y+3);
+  radio(ML+107,y,'credito_ativo'); y+=12;
+
+  // Row 7: Valores
+  const t3b=(PW-2*G2)/3;
+  row2(y,[[ML,t3b,'emprestimo','Empréstimo Bancário  R$'],[ML+t3b+G2,t3b,'credito_fumaca','Crédito Fumaça  R$'],[ML+2*(t3b+G2),t3b,'financiamento','Financiamento  R$']]); y+=RS2+2;
+
+
+  // ── Equipamentos ──
+  y=sec2('Equipamentos e Meios de Pagamento', y);
+  const h2b=(PW-G2)/2;
+  row2(y,[[ML,h2b,'adquirente','Adquirente(s) utilizada(s)'],[ML+h2b+G2,h2b,'qtd_pos','Quantidade de POS em operação']]); y+=RS2;
+  const mw=PW*0.37, pw2=PW*0.34, chbw=PW-mw-pw2-2*G2;
+  row2(y,[[ML,mw,'modelo_pos','Modelo / Marca da(s) maquininha(s)'],[ML+mw+G2,pw2,'prazo_recebimento','Prazo atual de recebimento'],[ML+mw+pw2+2*G2,chbw,'chargeback','% Cancelamentos / Chargebacks']]); y+=RS2+2;
+
+  // ── Info Empresa ──
+  y=sec2('Informações sobre a Empresa', y);
+  for (const [grp,q] of [['restricao_cnpj','Possui restrições no CNPJ?'],['restricao_cpf','Possui restrições no CPF do sócio?'],
+    ['parcelamento_tributos','Existe parcelamento ativo de tributos?'],['processos_judiciais','Há processos judiciais relevantes?']]) {
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...BODY);
+    doc.text(q, ML, y+3);
+    radio(ML+94,y,grp);
+    doc.setDrawColor(235,235,235); doc.setLineWidth(0.3); doc.line(ML,y+FH2+1,MR,y+FH2+1);
+    y+=5;
+  }
+  y+=1;
+
+  // ── Bancárias ──
+  y=sec2('Informações Bancárias', y);
+  const bw=PW*0.36, agw=PW*0.2, ccw=PW-bw-agw-2*G2;
+  row2(y,[[ML,bw,'banco','Banco *'],[ML+bw+G2,agw,'agencia','Agência'],[ML+bw+agw+2*G2,ccw,'conta','Conta Corrente']]); y+=RS2;
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  doc.text('Tipo de Conta:', ML, y+3);
+  let cxb=ML+23; const tcVal=f('tipo_conta');
+  for (const opt of ['Conta Corrente','Conta Poupança']) {
+    const sel=tcVal===opt;
+    doc.setFillColor(...(sel?(printMode?[80,80,80]:NAVY):WHITE));
+    doc.setDrawColor(...(printMode?[100,100,100]:NAVY));
+    doc.rect(cxb,y,3.5,3.5,sel?'F':'S');
+    if(sel){doc.setTextColor(...WHITE);doc.setFontSize(5);doc.text('✓',cxb+0.7,y+2.8);}
+    doc.setTextColor(...BODY); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    doc.text(opt, cxb+4.5, y+3);
+    cxb+=4.5+doc.getTextWidth(opt)+6;
+  }
+  cxb+=4; field(cxb+12,y,MR-cxb-12,FH2,'Chave PIX',f('chave_pix')); y+=RS2;
+
+  // ── Documentação ──
+  y=sec2('Documentação Necessária', y);
+  const col=PW/2-4;
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...NAVY);
+  doc.text('Representante Legal', ML, y+5); doc.text('Empresa', ML+col+8, y+5); y+=8;
+  const docsR=[['doc_cpf','CPF'],['doc_rg','RG'],['doc_end_rep','Comprovante de Endereço']];
+  const docsE=[['doc_contrato','Contrato Social / Última Alteração'],['doc_rep_legal','Documento do Representante Legal'],
+               ['doc_mei','Certificado MEI (se aplicável)'],['doc_end_emp','Comprovante de Endereço'],['doc_fat','Comprovante de Faturamento']];
+  for (let i=0;i<Math.max(docsR.length,docsE.length);i++) {
+    if(i<docsR.length) {
+      const [nm,lbl]=docsR[i]; const chk=!!document.querySelector(`[name="${nm}"]`)?.checked;
+      doc.setFillColor(...(chk?(printMode?[80,80,80]:NAVY):WHITE));
+      doc.setDrawColor(...(printMode?[100,100,100]:NAVY));
+      doc.rect(ML,y,3.5,3.5,chk?'F':'S');
+      if(chk){doc.setTextColor(...WHITE);doc.setFontSize(5);doc.text('✓',ML+0.7,y+2.8);}
+      doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(...BODY);doc.text(lbl,ML+5.5,y+3);
+    }
+    if(i<docsE.length) {
+      const [nm,lbl]=docsE[i]; const chk=!!document.querySelector(`[name="${nm}"]`)?.checked;
+      doc.setFillColor(...(chk?(printMode?[80,80,80]:NAVY):WHITE));
+      doc.setDrawColor(...(printMode?[100,100,100]:NAVY));
+      doc.rect(ML+col+8,y,3.5,3.5,chk?'F':'S');
+      if(chk){doc.setTextColor(...WHITE);doc.setFontSize(5);doc.text('✓',ML+col+8.7,y+2.8);}
+      doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(...BODY);doc.text(lbl,ML+col+14,y+3);
+    }
+    y+=4;
+  }
+  y+=2;
+
+  // ── Declaração ──
+  // Print mode: start new page for signatures to guarantee they always fit
+  if (printMode) {
+    footer(3);
+    doc.addPage();
+    y = 20;
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.8); doc.setTextColor(30,30,30);
+    doc.text('MONETZ — FICHA CADASTRAL  ·  DECLARAÇÃO E ASSINATURAS', ML, 12);
+    doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(ML, 14, MR, 14);
+  }
+  y=sec2('Declaração', y);
+  doc.setFillColor(printMode?249:245, printMode?249:240, printMode?249:224);
+  doc.rect(ML,y,PW,10,'F');
+  doc.setFillColor(printMode?170:179, printMode?170:163, printMode?170:105);
+  doc.rect(ML,y,2.5,10,'F');
+  doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  doc.text('Confirmo que as informações prestadas são verdadeiras e autorizo a consulta', ML+4, y+4.5);
+  doc.text('aos bureaus de crédito para fins de pré-análise.', ML+4, y+8.5);
+  y+=11;
+  y+=4; // gap between declaration and signatures
+
+  // ── Assinaturas ──
+  const sigw=PW*0.46, sigg=PW-2*sigw;
+  doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
+  doc.text('DATA E NOME COMPLETO — REPRESENTANTE LEGAL', ML, y);
+  doc.text('ASSINATURA — REPRESENTANTE LEGAL', ML+sigw+sigg, y);
+  y+=7; doc.setDrawColor(printMode?80:51, printMode?80:65, printMode?80:85); doc.setLineWidth(0.8);
+  doc.line(ML,y,ML+sigw,y); doc.line(ML+sigw+sigg,y,MR,y);
+  y+=5;
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...NAVY);
+  doc.text('DADOS DO AGENTE DE VENDA', ML, y);
+  y+=4; doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
+  doc.text('DATA E NOME DO AGENTE DE VENDA', ML, y);
+  doc.text('ASSINATURA — AGENTE DE VENDA', ML+sigw+sigg, y);
+  y+=7; doc.setDrawColor(printMode?80:51, printMode?80:65, printMode?80:85); doc.setLineWidth(0.8);
+  doc.line(ML,y,ML+sigw,y); doc.line(ML+sigw+sigg,y,MR,y);
+
+  // ── Aceite Digital ──
+  y+=10;
+  const aceiteTs3 = _aceiteTimestamp || '—';
+  const aceiteText = 'Li e concordo integralmente com os termos desta Proposta Comercial Monetz, incluindo as autorizações de consulta ao SCR, visualização de agenda de recebíveis e opt-in de domicílio bancário, conforme descrito acima. Declaro que as informações que serão fornecidas são verdadeiras e assumo responsabilidade civil e legal pelas declarações prestadas.';
+  const aceiteTxtW = PW - 22;
+  const aceiteLines = doc.splitTextToSize(aceiteText, aceiteTxtW);
+  const aceiteH = aceiteLines.length * 4.5 + 18;
+  doc.setFillColor(printMode?242:220, printMode?248:248, printMode?242:220);
+  doc.rect(ML, y, PW, aceiteH, 'F');
+  doc.setDrawColor(printMode?140:80, printMode?140:190, printMode?140:80);
+  doc.setLineWidth(0.5);
+  doc.rect(ML, y, PW, aceiteH, 'S');
+  doc.setFillColor(printMode?140:80, printMode?140:190, printMode?140:80);
+  doc.rect(ML, y, 2.5, aceiteH, 'F');
+  // checkbox
+  doc.setFillColor(printMode?80:22, printMode?80:163, printMode?80:74);
+  doc.rect(ML+5, y+3.5, 4, 4, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,255,255);
+  doc.text('✓', ML+5.8, y+6.8);
+  // texto — começa após checkbox, limitado à largura calculada
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...BODY);
+  doc.text(aceiteLines, ML+12, y+6, { maxWidth: aceiteTxtW });
+  // timestamp
+  y += aceiteLines.length * 4.5 + 10;
+  doc.setFont('helvetica','bold'); doc.setFontSize(7);
+  doc.setTextColor(printMode?60:22, printMode?60:120, printMode?60:50);
+  doc.text('✅  Aceite registrado em:  ' + aceiteTs3, ML+5, y);
+
+  if (printMode) {
+    // 3rd page footer for print mode
+    doc.setFillColor(255,255,255); doc.rect(0,286,210,11,'F');
+    doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,286,210,286);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
+    doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', 15, 291);
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
+    doc.text('03 / 03', 195, 291, {align:'right'});
+  } else {
+    footer(3);
+  }
+
+  // ── Salvar ──
+  const razao = f('razao_social') || 'cliente';
+  const suffix = '_impressao';
+  doc.save(`MONETZ_Ficha_${razao.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30)}${suffix}.pdf`);
+}
+
+// ─── SUBMIT ─────────────────────────────────────────────────────────────────
+document.getElementById('fichaForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.querySelector('span:last-child').textContent = 'Gerando PDF...';
+  setTimeout(() => {
+    try {
+      gerarPDF(true);
+      btn.querySelector('span:last-child').textContent = 'PDF Gerado ✓';
+      btn.style.background = '#004F71'; btn.style.color = 'white';
+    } catch(err) {
+      btn.querySelector('span:last-child').textContent = 'Erro — tente novamente';
+      btn.style.background = '#dc2626'; btn.style.color = 'white';
+      console.error(err);
+    }
+    btn.disabled = false;
+  }, 300);
+});
+
+// ─── MÁSCARAS ────────────────────────────────────────────────────────────────
+document.querySelectorAll('input[name="cep"],input[name="rep_cep"]').forEach(el => {
+  el.addEventListener('input', function() {
+    let v=this.value.replace(/\D/g,'').slice(0,8);
+    if(v.length>5) v=v.slice(0,5)+'-'+v.slice(5);
+    this.value=v;
+  });
+});
+document.querySelectorAll('input[name="cnpj"]').forEach(el => {
+  el.addEventListener('input', function() {
+    let v=this.value.replace(/\D/g,'');
+    if(v.length<=11) v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+    else v=v.slice(0,14).replace(/(\d{2})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1/$2').replace(/(\d{4})(\d{1,2})$/,'$1-$2');
+    this.value=v;
+  });
+});
+</script>
+</body>
+</html>
