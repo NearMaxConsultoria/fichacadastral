@@ -256,6 +256,58 @@
   /* form oculto até aceite */
   #formWrapper { display: none; }
   #formWrapper.visible { display: block; }
+
+  /* ─── SELEÇÃO DE OFERTA ─── */
+  .ofertas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0 8px; }
+  @media (max-width: 600px) { .ofertas-grid { grid-template-columns: 1fr; } }
+  .oferta-card {
+    border: 2px solid var(--line); border-radius: 8px; padding: 18px 18px 14px;
+    cursor: pointer; transition: all 0.2s; background: var(--white); position: relative;
+    user-select: none;
+  }
+  .oferta-card:hover { border-color: var(--gold-light); background: var(--gold-pale); }
+  .oferta-card.selected { border-color: var(--navy); background: #e8f4fa; }
+  .oferta-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+  .oferta-card-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--line);
+  }
+  .oferta-card.selected .oferta-card-header { border-bottom-color: var(--navy); }
+  .oferta-radio-indicator {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; background: var(--white);
+  }
+  .oferta-card.selected .oferta-radio-indicator {
+    border-color: var(--navy); background: var(--navy);
+  }
+  .oferta-radio-indicator::after {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; background: white;
+    display: none;
+  }
+  .oferta-card.selected .oferta-radio-indicator::after { display: block; }
+  .oferta-titulo { font-size: 13px; font-weight: 700; color: var(--dark); }
+  .oferta-subtitulo { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .oferta-badge-escolhida {
+    display: none; position: absolute; top: -1px; right: 12px;
+    background: var(--navy); color: white; font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px;
+    border-radius: 0 0 4px 4px;
+  }
+  .oferta-card.selected .oferta-badge-escolhida { display: block; }
+  .oferta-rows { display: flex; flex-direction: column; gap: 6px; }
+  .oferta-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; }
+  .oferta-row .olbl { color: var(--muted); }
+  .oferta-row .oval { font-weight: 600; color: var(--dark); }
+  .oferta-row.destaque .oval { color: var(--navy); font-size: 15px; font-weight: 700; }
+  .oferta-aviso { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 8px; text-align: center; }
+  .oferta-selecionar-label {
+    display: block; text-align: center; margin-top: 10px; font-size: 11px;
+    font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px;
+    opacity: 0.6; transition: opacity 0.2s;
+  }
+  .oferta-card.selected .oferta-selecionar-label { opacity: 0; }
+  .oferta-nenhuma { font-size: 11px; color: #dc2626; margin-top: 4px; display: none; }
 </style>
 </head>
 <body>
@@ -338,22 +390,84 @@
 
       <div class="p-section">
         <h3>5. Condições Comerciais</h3>
-        <table class="tbl-prop">
-          <thead>
-            <tr>
-              <th>Componente da Operação</th>
-              <th>Detalhamento</th>
-              <th>Valor Estimado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Valor Bruto do Crédito</td><td>Montante total da operação estruturada</td><td>R$ 20.000,00</td></tr>
-            <tr><td>Valor Líquido Disponibilizado</td><td>Recurso creditado em conta para o cliente</td><td>R$ 19.200,00</td></tr>
-            <tr><td>Parcela de Liquidação Diária</td><td>Retenção automática na agenda de cartões</td><td>R$ 198,00</td></tr>
-            <tr><td>Prazo Estimado</td><td>Período de amortização da operação</td><td>126 dias úteis</td></tr>
-            <tr><td>Total a Liquidar</td><td>Valor total ao final do período</td><td>R$ 24.948,00</td></tr>
-          </tbody>
-        </table>
+        <p style="font-size:13px;color:#374151;margin-bottom:4px;">Selecione a oferta desejada:</p>
+
+        <div class="ofertas-grid">
+
+          <!-- OFERTA A — R$ 20.000 -->
+          <label class="oferta-card" id="cardOfertaA" onclick="selecionarOferta('A')">
+            <input type="radio" name="oferta_escolhida" value="A" id="ofertaA">
+            <div class="oferta-badge-escolhida">✓ Escolhida</div>
+            <div class="oferta-card-header">
+              <div class="oferta-radio-indicator"></div>
+              <div>
+                <div class="oferta-titulo">Oferta A — R$ 20.000</div>
+                <div class="oferta-subtitulo">Crédito maior · Liquidação em 126 dias úteis</div>
+              </div>
+            </div>
+            <div class="oferta-rows">
+              <div class="oferta-row destaque">
+                <span class="olbl">Valor Bruto do Crédito</span>
+                <span class="oval">R$ 20.000,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Valor Líquido Disponibilizado</span>
+                <span class="oval">R$ 19.200,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Parcela de Liquidação Diária</span>
+                <span class="oval">R$ 198,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Prazo Estimado</span>
+                <span class="oval">126 dias úteis</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Total a Liquidar</span>
+                <span class="oval">R$ 24.948,00</span>
+              </div>
+            </div>
+            <span class="oferta-selecionar-label">Clique para selecionar</span>
+          </label>
+
+          <!-- OFERTA B — R$ 10.000 -->
+          <label class="oferta-card" id="cardOfertaB" onclick="selecionarOferta('B')">
+            <input type="radio" name="oferta_escolhida" value="B" id="ofertaB">
+            <div class="oferta-badge-escolhida">✓ Escolhida</div>
+            <div class="oferta-card-header">
+              <div class="oferta-radio-indicator"></div>
+              <div>
+                <div class="oferta-titulo">Oferta B — R$ 10.000</div>
+                <div class="oferta-subtitulo">Crédito menor · Liquidação em 126 dias úteis</div>
+              </div>
+            </div>
+            <div class="oferta-rows">
+              <div class="oferta-row destaque">
+                <span class="olbl">Valor Bruto do Crédito</span>
+                <span class="oval">R$ 10.000,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Valor Líquido Disponibilizado</span>
+                <span class="oval">R$ 9.415,22</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Parcela de Liquidação Diária</span>
+                <span class="oval">R$ 99,15</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Prazo Estimado</span>
+                <span class="oval">126 dias úteis</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Total a Liquidar</span>
+                <span class="oval">R$ 12.492,62</span>
+              </div>
+            </div>
+            <span class="oferta-selecionar-label">Clique para selecionar</span>
+          </label>
+
+        </div>
+        <p id="ofertaAviso" class="oferta-nenhuma">⚠ Selecione uma oferta antes de continuar.</p>
         <p class="tbl-note">*Os valores acima são exemplificativos e podem sofrer variações conforme os feriados regionais, estaduais e federais do domicílio do estabelecimento.</p>
       </div>
 
@@ -691,6 +805,12 @@ function onAceiteChange(cb) {
 }
 
 function mostrarFormulario() {
+  const oferta = f('oferta_escolhida');
+  if (!oferta) {
+    document.getElementById('ofertaAviso').style.display = 'block';
+    document.getElementById('ofertaAviso').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
   const fw = document.getElementById('formWrapper');
   fw.classList.add('visible');
   setTimeout(() => fw.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
@@ -706,6 +826,15 @@ const f = name => {
   }
   return el.value || '';
 };
+
+// ─── SELEÇÃO DE OFERTA ──────────────────────────────────────────────────────
+function selecionarOferta(letra) {
+  document.getElementById('ofertaA').checked = letra === 'A';
+  document.getElementById('ofertaB').checked = letra === 'B';
+  document.getElementById('cardOfertaA').classList.toggle('selected', letra === 'A');
+  document.getElementById('cardOfertaB').classList.toggle('selected', letra === 'B');
+  document.getElementById('ofertaAviso').style.display = 'none';
+}
 
 // ─── PDF GENERATOR ─────────────────────────────────────────────────────────
 function gerarPDF(printMode=false) {
@@ -907,34 +1036,94 @@ function gerarPDF(printMode=false) {
 
   // ── Condições Comerciais ──
   pSecBar('5. Condições Comerciais');
-  const tblY=py, tblCols=[['Componente',60],['Detalhamento',75],['Valor',PW-60-75-4]];
-  const tblRows=[
-    ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 20.000,00'],
-    ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 19.200,00'],
-    ['Parcela Diária','Retenção automática na agenda de cartões','R$ 198,00'],
-    ['Prazo Estimado','Período de amortização da operação','126 dias úteis'],
-    ['Total a Liquidar','Valor total ao final do período','R$ 24.948,00'],
-  ];
-  // header
-  if(!printMode){doc.setFillColor(...NAVY);}else{doc.setFillColor(200,200,200);}
-  doc.rect(ML,tblY,PW,5.5,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(...(printMode?[30,30,30]:WHITE));
-  let cx=ML+2; tblCols.forEach(([lbl,w])=>{doc.text(lbl.toUpperCase(),cx,tblY+3.8);cx+=w;});
-  py=tblY+5.5;
-  tblRows.forEach((r,i)=>{
-    if(!printMode && i%2===0){doc.setFillColor(...FBKG);doc.rect(ML,py,PW,5.5,'F');}
-    if(printMode && i%2===0){doc.setFillColor(245,245,245);doc.rect(ML,py,PW,5.5,'F');}
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(...BODY);
-    let tx=ML+2; tblCols.forEach(([,w],j)=>{
-      const txt=j===2?r[j]:'';
-      if(j<2){doc.text(r[j],tx,py+3.8);}
-      else{doc.setFont('helvetica','bold');doc.text(r[j],tx,py+3.8);doc.setFont('helvetica','normal');}
-      tx+=w;
+
+  // Identificar oferta escolhida
+  const ofertaEscolhida = f('oferta_escolhida'); // 'A', 'B' ou ''
+
+  const ofertas = {
+    A: {
+      label: 'OFERTA A — R$ 20.000,00',
+      rows: [
+        ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 20.000,00'],
+        ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 19.200,00'],
+        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 198,00'],
+        ['Prazo Estimado','Período de amortização da operação','126 dias úteis'],
+        ['Total a Liquidar','Valor total ao final do período','R$ 24.948,00'],
+      ]
+    },
+    B: {
+      label: 'OFERTA B — R$ 10.000,00',
+      rows: [
+        ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 10.000,00'],
+        ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 9.415,22'],
+        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 99,15'],
+        ['Prazo Estimado','Período de amortização da operação','126 dias úteis'],
+        ['Total a Liquidar','Valor total ao final do período','R$ 12.492,62'],
+      ]
+    }
+  };
+
+  const tblCols = [['Componente',60],['Detalhamento',75],['Valor',PW-60-75-4]];
+
+  for (const [letra, oferta] of Object.entries(ofertas)) {
+    const isEscolhida = ofertaEscolhida === letra;
+    const isOutra = ofertaEscolhida !== '' && !isEscolhida;
+
+    // Sub-header da oferta
+    if (isEscolhida) {
+      if(!printMode){doc.setFillColor(0,79,113);}else{doc.setFillColor(60,60,60);}
+    } else if (isOutra) {
+      if(!printMode){doc.setFillColor(180,180,180);}else{doc.setFillColor(210,210,210);}
+    } else {
+      if(!printMode){doc.setFillColor(80,120,150);}else{doc.setFillColor(180,180,180);}
+    }
+    doc.rect(ML, py, PW, 5.5, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7);
+    doc.setTextColor(...(isOutra ? (printMode?[120,120,120]:[160,160,160]) : WHITE));
+    doc.text(oferta.label, ML+4, py+3.8);
+    if (isEscolhida) {
+      doc.setFillColor(...(printMode?[130,130,130]:[179,163,105]));
+      doc.rect(ML, py, 2.5, 5.5, 'F');
+      const badgeW = 38;
+      doc.setFillColor(...(printMode?[179,163,105]:[179,163,105]));
+      doc.rect(MR-badgeW, py, badgeW, 5.5, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(13,27,42);
+      doc.text('✓ OFERTA ESCOLHIDA', MR-badgeW+2, py+3.8);
+    }
+    py += 5.5;
+
+    const tblY = py;
+    // header das colunas
+    if(!printMode){doc.setFillColor(printMode?200:30,printMode?200:30,printMode?200:40);}
+    else{doc.setFillColor(isOutra?220:200,isOutra?220:200,isOutra?220:200);}
+    doc.rect(ML, tblY, PW, 5, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(...(isOutra?(printMode?[150,150,150]:[180,180,180]):(printMode?[60,60,60]:GOLD)));
+    let cx=ML+2; tblCols.forEach(([lbl,w])=>{doc.text(lbl.toUpperCase(),cx,tblY+3.2);cx+=w;});
+    py = tblY+5;
+
+    oferta.rows.forEach((r, i) => {
+      const bgAlpha = isOutra ? (i%2===0?[245,245,245]:[250,250,250]) : (i%2===0?(printMode?[245,245,245]:FBKG):[255,255,255]);
+      doc.setFillColor(...bgAlpha); doc.rect(ML, py, PW, 5.2, 'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...(isOutra?(printMode?[150,150,150]:[180,180,180]):BODY));
+      let tx=ML+2;
+      tblCols.forEach(([,w],j)=>{
+        if(j<2){doc.text(r[j],tx,py+3.4);}
+        else{doc.setFont('helvetica','bold');doc.text(r[j],tx,py+3.4);doc.setFont('helvetica','normal');}
+        tx+=w;
+      });
+      doc.setDrawColor(...LINE); doc.rect(ML,py,PW,5.2,'S');
+      py+=5.2;
     });
-    doc.setDrawColor(...LINE);doc.rect(ML,py,PW,5.5,'S');
-    py+=5.5;
-  });
-  py+=2;
+    py+=3;
+  }
+
+  // Aviso se nenhuma oferta selecionada
+  if (!ofertaEscolhida) {
+    doc.setFont('helvetica','italic'); doc.setFontSize(7); doc.setTextColor(180,0,0);
+    doc.text('* Nenhuma oferta foi selecionada pelo cliente.', ML+2, py);
+    py+=5;
+  }
+
   doc.setFont('helvetica','italic');doc.setFontSize(6.5);doc.setTextColor(...MUTED);
   doc.text('*Valores exemplificativos — podem variar conforme feriados regionais do domicílio do estabelecimento.',ML+2,py);
   py+=5;
