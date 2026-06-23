@@ -40,19 +40,26 @@
   .section-header { background: var(--navy); padding: 12px 22px; display: flex; align-items: center; gap: 10px; border-left: 4px solid var(--gold); }
   .section-header h2 { font-size: 10px; font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing: 2px; }
   .section-body { padding: 22px 22px 18px; }
-  .grid { display: grid; gap: 16px 18px; }
+  .grid { display: grid; gap: 9px 18px; }
   .grid > * { min-width: 0; }
-  .g-2 { grid-template-columns: 1fr 1fr; }
-  .g-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .g-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  .g-addr { grid-template-columns: 2fr 1fr; }
-  .g-cep  { grid-template-columns: 1fr 2fr 0.5fr; }
-  .g-tel  { grid-template-columns: 1fr 1.5fr 1.5fr; }
-  .g-rep  { grid-template-columns: 2fr 1fr 1fr; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
+  .g-2     { grid-template-columns: 1fr 1fr; }
+  .g-3     { grid-template-columns: 1fr 1fr 1fr; }
+  .g-4     { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .g-cnpj  { grid-template-columns: 195px 1fr 155px; }
+  .g-addr  { grid-template-columns: 1fr 80px 185px; }
+  .g-cep   { grid-template-columns: 103px 1fr 58px; }
+  .g-tel   { grid-template-columns: 148px 1fr 1fr; }
+  .g-rep   { grid-template-columns: 1fr 150px 115px; }
+  .g-nasc  { grid-template-columns: 150px 1fr 150px; }
+  .g-struct{ grid-template-columns: 110px 1fr 1fr; }
+  .g-bank  { grid-template-columns: 1fr 105px 148px; }
+  .g-equip1{ grid-template-columns: 1fr 148px; }
+  .g-equip2{ grid-template-columns: 1fr 1fr 105px; }
+  .field-half { max-width: calc(50% - 9px); }
+  .field { display: flex; flex-direction: column; gap: 2px; }
   .field label { font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
   .field input[type="text"], .field input[type="email"], .field input[type="tel"], .field input[type="date"], .field select, .field textarea {
-    border: none; border-bottom: 1.5px solid var(--line); border-radius: 0; padding: 7px 2px;
+    border: none; border-bottom: 1.5px solid var(--line); border-radius: 0; padding: 3px 2px;
     font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--body); background: transparent; outline: none; transition: border-color 0.2s; width: 100%;
   }
   .field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--gold); }
@@ -92,6 +99,10 @@
   .btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
   .btn-submit:active { transform: scale(0.98); }
   .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+  .btn-email { background: transparent; color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 13px 28px; border: 1.5px solid var(--gold); border-radius: 4px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; gap: 10px; }
+  .btn-email:hover { background: rgba(179,163,105,0.12); transform: translateY(-1px); }
+  .btn-email:active { transform: scale(0.98); }
+  .submit-btns { display: flex; gap: 12px; flex-wrap: wrap; }
   .btn-spinner { width: 16px; height: 16px; border: 2px solid rgba(13,27,42,0.3); border-top-color: var(--dark); border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
   .btn-submit.loading .btn-spinner { display: block; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -107,8 +118,14 @@
     .topbar-date { font-size: 11px; }
     .form-wrapper { padding: 20px 14px 40px; }
     .section-body { padding: 18px 16px 14px; }
-    .g-3, .g-4, .g-cep, .g-tel, .g-rep { grid-template-columns: 1fr 1fr; }
-    .g-addr { grid-template-columns: 1fr; }
+    .g-3, .g-4, .g-cnpj, .g-nasc, .g-struct, .g-equip2 { grid-template-columns: 1fr 1fr; }
+    .g-addr  { grid-template-columns: 1fr 80px; }
+    .g-cep   { grid-template-columns: 103px 1fr 58px; }
+    .g-tel   { grid-template-columns: 148px 1fr; }
+    .g-rep   { grid-template-columns: 1fr 150px; }
+    .g-bank  { grid-template-columns: 1fr 105px; }
+    .g-equip1{ grid-template-columns: 1fr 148px; }
+    .field-half { max-width: 100%; }
     .doc-cols { grid-template-columns: 1fr; }
     .sig-row { grid-template-columns: 1fr; gap: 20px; }
     .submit-area { flex-direction: column; align-items: stretch; }
@@ -136,7 +153,9 @@
     .form-wrapper { padding: 14px 10px 40px; }
     .section-body { padding: 14px 12px 12px; }
     .section-header { padding: 10px 14px; }
-    .g-2, .g-3, .g-4, .g-addr, .g-cep, .g-tel, .g-rep { grid-template-columns: 1fr; }
+    .g-2, .g-3, .g-4, .g-cnpj, .g-addr, .g-cep, .g-tel, .g-rep,
+    .g-nasc, .g-struct, .g-bank, .g-equip1, .g-equip2 { grid-template-columns: 1fr; }
+    .field-half { max-width: 100%; }
     .doc-cols { grid-template-columns: 1fr; }
     .sig-row { grid-template-columns: 1fr; gap: 20px; }
     .submit-area { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; }
@@ -531,20 +550,21 @@
   <div class="card">
     <div class="section-header"><h2>Dados do Estabelecimento Comercial</h2></div>
     <div class="section-body">
-      <div class="grid g-2" style="margin-bottom:16px">
+      <div class="grid g-2" style="margin-bottom:9px">
         <div class="field"><label>Razão Social <span class="req">*</span></label><input type="text" name="razao_social" required></div>
         <div class="field"><label>Nome Fantasia</label><input type="text" name="nome_fantasia"></div>
       </div>
-      <div class="grid g-3" style="margin-bottom:16px">
+      <div class="grid g-cnpj" style="margin-bottom:9px">
         <div class="field"><label>CNPJ / CPF <span class="req">*</span></label><input type="text" name="cnpj" required></div>
         <div class="field"><label>Inscrição Estadual</label><input type="text" name="insc_estadual"></div>
         <div class="field"><label>Data de Abertura</label><input type="date" name="data_abertura"></div>
       </div>
-      <div class="grid g-addr" style="margin-bottom:16px">
+      <div class="grid g-addr" style="margin-bottom:9px">
         <div class="field"><label>Endereço <span class="req">*</span></label><input type="text" name="endereco" required></div>
+        <div class="field"><label>Número</label><input type="text" name="numero"></div>
         <div class="field"><label>Complemento</label><input type="text" name="complemento"></div>
       </div>
-      <div class="grid g-cep" style="margin-bottom:16px">
+      <div class="grid g-cep" style="margin-bottom:9px">
         <div class="field"><label>CEP <span class="req">*</span></label><input type="text" name="cep" required></div>
         <div class="field"><label>Cidade <span class="req">*</span></label><input type="text" name="cidade" required></div>
         <div class="field"><label>UF <span class="req">*</span></label>
@@ -563,28 +583,81 @@
   <div class="card">
     <div class="section-header"><h2>Dados do Representante Legal</h2></div>
     <div class="section-body">
-      <div class="grid g-rep" style="margin-bottom:16px">
+      <div class="grid g-rep" style="margin-bottom:9px">
         <div class="field"><label>Nome Completo <span class="req">*</span></label><input type="text" name="rep_nome" required></div>
         <div class="field"><label>CPF <span class="req">*</span></label><input type="text" name="rep_cpf" required></div>
         <div class="field"><label>RG</label><input type="text" name="rep_rg"></div>
       </div>
-      <div class="grid g-3" style="margin-bottom:16px">
+      <div class="grid g-nasc" style="margin-bottom:9px">
         <div class="field"><label>Data de Nascimento</label><input type="date" name="rep_nascimento"></div>
         <div class="field"><label>Cargo / Função na Empresa</label><input type="text" name="rep_cargo"></div>
         <div class="field"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="rep_tel" required></div>
       </div>
-      <div class="grid g-addr" style="margin-bottom:16px">
+      <div class="grid g-addr" style="margin-bottom:9px">
         <div class="field"><label>Endereço Residencial</label><input type="text" name="rep_endereco"></div>
+        <div class="field"><label>Número</label><input type="text" name="rep_numero"></div>
         <div class="field"><label>Complemento</label><input type="text" name="rep_complemento"></div>
       </div>
-      <div class="grid g-cep" style="margin-bottom:16px">
+      <div class="grid g-cep" style="margin-bottom:9px">
         <div class="field"><label>CEP</label><input type="text" name="rep_cep"></div>
         <div class="field"><label>Cidade</label><input type="text" name="rep_cidade"></div>
         <div class="field"><label>UF</label>
           <select name="rep_uf"><option value="">—</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option selected>SP</option><option>SE</option><option>TO</option></select>
         </div>
       </div>
-      <div class="field"><label>E-mail <span class="req">*</span></label><input type="email" name="rep_email" required></div>
+      <div class="field field-half">
+        <label>E-mail <span class="req">*</span></label>
+        <input type="email" name="rep_email" required>
+      </div>
+      <div class="field" style="margin-top:9px">
+        <label>Estado Civil <span class="req">*</span></label>
+        <div class="check-group" style="display:flex; gap:18px; flex-wrap:wrap; margin-top:6px;"><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Solteiro(a)"> Solteiro(a)</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Casado(a)"> Casado(a)</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Divorciado(a)"> Divorciado(a)</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="União Estável"> União Estável</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Viúvo(a)"> Viúvo(a)</label></div>
+      </div>
+      <div class="grid g-conj" style="grid-template-columns:1.6fr 1fr; margin-top:9px">
+        <div class="field"><label>Cônjuge — Nome Completo</label><input type="text" name="rep_conjuge_nome"></div>
+        <div class="field"><label>Cônjuge — CPF</label><input type="text" name="rep_conjuge_cpf"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2º SÓCIO -->
+  <div class="card">
+    <div class="section-header"><h2>Dados do 2º Sócio (se houver)</h2></div>
+    <div class="section-body">
+      <div class="grid g-rep" style="margin-bottom:9px">
+        <div class="field"><label>Nome Completo</label><input type="text" name="soc_nome"></div>
+        <div class="field"><label>CPF</label><input type="text" name="soc_cpf"></div>
+        <div class="field"><label>RG</label><input type="text" name="soc_rg"></div>
+      </div>
+      <div class="grid g-nasc" style="margin-bottom:9px">
+        <div class="field"><label>Data de Nascimento</label><input type="date" name="soc_nascimento"></div>
+        <div class="field"><label>Cargo / Função na Empresa</label><input type="text" name="soc_cargo"></div>
+        <div class="field"><label>Telefone / WhatsApp</label><input type="tel" name="soc_tel"></div>
+      </div>
+      <div class="grid g-addr" style="margin-bottom:9px">
+        <div class="field"><label>Endereço Residencial</label><input type="text" name="soc_endereco"></div>
+        <div class="field"><label>Número</label><input type="text" name="soc_numero"></div>
+        <div class="field"><label>Complemento</label><input type="text" name="soc_complemento"></div>
+      </div>
+      <div class="grid g-cep" style="margin-bottom:9px">
+        <div class="field"><label>CEP</label><input type="text" name="soc_cep"></div>
+        <div class="field"><label>Cidade</label><input type="text" name="soc_cidade"></div>
+        <div class="field"><label>UF</label>
+          <select name="soc_uf"><option value="">—</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option selected>SP</option><option>SE</option><option>TO</option></select>
+        </div>
+      </div>
+      <div class="field field-half" style="margin-bottom:9px">
+        <label>E-mail</label>
+        <input type="email" name="soc_email">
+      </div>
+      <div class="field" style="margin-bottom:9px">
+        <label>Estado Civil</label>
+        <div class="check-group" style="display:flex; gap:18px; flex-wrap:wrap; margin-top:6px;"><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Solteiro(a)"> Solteiro(a)</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Casado(a)"> Casado(a)</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Divorciado(a)"> Divorciado(a)</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="União Estável"> União Estável</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Viúvo(a)"> Viúvo(a)</label></div>
+      </div>
+      <div class="grid g-conj" style="grid-template-columns:1.6fr 1fr">
+        <div class="field"><label>Cônjuge — Nome Completo</label><input type="text" name="soc_conjuge_nome"></div>
+        <div class="field"><label>Cônjuge — CPF</label><input type="text" name="soc_conjuge_cpf"></div>
+      </div>
     </div>
   </div>
 
@@ -592,7 +665,7 @@
   <div class="card">
     <div class="section-header"><h2>Estrutura Comercial e Operacional</h2></div>
     <div class="section-body">
-      <div class="grid g-3" style="margin-bottom:16px">
+      <div class="grid g-struct" style="margin-bottom:9px">
         <div class="field"><label>Qtde. de Funcionários</label><input type="text" name="funcionarios"></div>
         <div class="field"><label>Horário de Funcionamento</label><input type="text" name="horario"></div>
         <div class="field"><label>Tempo de Operação no Endereço Atual</label><input type="text" name="tempo_operacao"></div>
@@ -622,12 +695,23 @@
         <label class="fat-opt"><input type="radio" name="faturamento" value="R$ 50 mil a R$ 100 mil"> R$ 50 mil a R$ 100 mil</label>
         <label class="fat-opt"><input type="radio" name="faturamento" value="Acima de R$ 100 mil"> Acima de R$ 100 mil</label>
       </div>
-      <div class="field" style="margin-bottom:16px">
-        <label>Tipo de produto utilizado</label>
-        <input type="text" name="tipo_produto">
+      <div class="field" style="margin-bottom:9px">
+        <label>Qual maquininha de cartão você utiliza</label>
+        <div class="check-group" style="margin-top:6px">
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="PagBank"> PagBank</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="MercadoPago"> MercadoPago</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="Stone/TON"> Stone/TON</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="InfinitePay"> InfinitePay</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="Rede/Laranjinha"> Rede/Laranjinha</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="Cielo"> Cielo</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="SumUp"> SumUp</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="GetNet"> GetNet</label>
+          <label class="check-opt"><input type="checkbox" name="maquininha" value="Outra"> Outra</label>
+          <input type="text" name="maquininha_outra" placeholder="Especifique" style="border:none; border-bottom:1.5px solid var(--line); padding:4px 2px; font-size:13px; color:var(--body); min-width:150px; outline:none; background:transparent;">
+        </div>
       </div>
       <div class="check-group-label">Ticket Médio (R$)</div>
-      <div class="grid g-4" style="margin-bottom:16px">
+      <div class="grid g-4" style="margin-bottom:9px">
         <div class="field"><label>Débito</label><input type="text" name="ticket_debito"></div>
         <div class="field"><label>Crédito</label><input type="text" name="ticket_credito"></div>
         <div class="field"><label>PIX</label><input type="text" name="ticket_pix"></div>
@@ -657,7 +741,7 @@
           </div>
         </div>
       </div>
-      <div class="grid g-3" style="margin-top:16px">
+      <div class="grid g-3" style="margin-top:9px">
         <div class="field"><label>Empréstimo Bancário R$</label><input type="text" name="emprestimo"></div>
         <div class="field"><label>Crédito Fumaça R$</label><input type="text" name="credito_fumaca"></div>
         <div class="field"><label>Financiamento R$</label><input type="text" name="financiamento"></div>
@@ -669,11 +753,11 @@
   <div class="card">
     <div class="section-header"><h2>Equipamentos e Meios de Pagamento</h2></div>
     <div class="section-body">
-      <div class="grid g-2" style="margin-bottom:16px">
+      <div class="grid g-equip1" style="margin-bottom:9px">
         <div class="field"><label>Adquirente(s) utilizada(s)</label><input type="text" name="adquirente"></div>
         <div class="field"><label>Quantidade de POS em operação</label><input type="text" name="qtd_pos"></div>
       </div>
-      <div class="grid g-3">
+      <div class="grid g-equip2">
         <div class="field"><label>Modelo / Marca da(s) maquininha(s)</label><input type="text" name="modelo_pos"></div>
         <div class="field"><label>Prazo atual de recebimento</label><input type="text" name="prazo_recebimento"></div>
         <div class="field"><label>% Cancelamentos / Chargebacks</label><input type="text" name="chargeback"></div>
@@ -698,19 +782,22 @@
   <div class="card">
     <div class="section-header"><h2>Informações Bancárias</h2></div>
     <div class="section-body">
-      <div class="grid g-3" style="margin-bottom:16px">
+      <div class="grid g-bank" style="margin-bottom:9px">
         <div class="field"><label>Banco <span class="req">*</span></label><input type="text" name="banco" required></div>
         <div class="field"><label>Agência</label><input type="text" name="agencia"></div>
         <div class="field"><label>Conta Corrente</label><input type="text" name="conta"></div>
       </div>
-      <div style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; margin-bottom:16px">
+      <div style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; margin-bottom:9px">
         <span style="font-size:10px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px">Tipo de Conta:</span>
         <div class="check-group">
           <label class="check-opt"><input type="radio" name="tipo_conta" value="Conta Corrente"> Conta Corrente</label>
           <label class="check-opt"><input type="radio" name="tipo_conta" value="Conta Poupança"> Conta Poupança</label>
         </div>
       </div>
-      <div class="field"><label>Chave PIX</label><input type="text" name="chave_pix"></div>
+      <div class="field field-half">
+        <label>Chave PIX</label>
+        <input type="text" name="chave_pix">
+      </div>
     </div>
   </div>
 
@@ -754,10 +841,12 @@
     </div>
     <div class="submit-area">
       <p class="submit-note">Ao gerar o PDF, confirme que todas as informações são verdadeiras e autorize a consulta aos bureaus de crédito.</p>
-            <button type="submit" class="btn-submit" id="btnSubmit">
-        <span class="btn-spinner"></span>
-        <span class="btn-text">🖨 Gerar PDF para Impressão</span>
-      </button>
+      <div class="submit-btns">
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span class="btn-spinner"></span>
+          <span class="btn-text">🖨 Gerar PDF</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -767,7 +856,7 @@
 
 <footer class="site-footer">
   <div class="logo">Monetz</div>
-  <div class="addr">Rua Iguatemi, 192 · Sala 63 – 6º andar<br>Itaim Bibi, São Paulo - SP, 01451-010<br>Tel. +55 (11) 2131-5060</div>
+  <div class="addr">Rua Luís Gonçalves Júnior, 220<br>São Paulo - SP, CEP 04173-160<br>Tel. +55 (11) 2131-5060 · contato@monetz.com.br</div>
 </footer>
 
 <script>
@@ -825,6 +914,21 @@ const f = name => {
     return c ? c.value : '';
   }
   return el.value || '';
+};
+
+// Coleta valores de checkboxes marcados de um mesmo "name" e retorna lista separada por vírgula.
+// Se "Outra" estiver marcada, substitui pelo texto informado no campo complementar.
+const fCheckList = (name, outraFieldName) => {
+  const checked = Array.from(document.querySelectorAll(`input[name="${name}"]:checked`));
+  const vals = checked.map(c => {
+    if (c.value === 'Outra' && outraFieldName) {
+      const outraEl = document.querySelector(`[name="${outraFieldName}"]`);
+      const outraVal = outraEl ? outraEl.value.trim() : '';
+      return outraVal ? outraVal : 'Outra';
+    }
+    return c.value;
+  });
+  return vals.join(', ');
 };
 
 // ─── SELEÇÃO DE OFERTA ──────────────────────────────────────────────────────
@@ -920,20 +1024,37 @@ function gerarPDF(printMode=false) {
     return x;
   }
 
-  function footer(pg, total=3) {
+  // ── Opções marcáveis (múltiplas) — retorna x final ──
+  function radioMulti(x, ry, group, options, gap=5) {
+    const val = f(group);
+    const borderCol = printMode ? [100,100,100] : NAVY;
+    for (const v of options) {
+      const sel = val===v;
+      doc.setFillColor(...(sel ? (printMode?[80,80,80]:NAVY) : WHITE));
+      doc.setDrawColor(...borderCol);
+      doc.rect(x, ry, 3.5, 3.5, sel?'F':'S');
+      if(sel){doc.setTextColor(...WHITE);doc.setFontSize(5);doc.text('✓',x+0.7,ry+2.8);}
+      doc.setTextColor(...BODY); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      doc.text(v, x+4.5, ry+3);
+      x += 4.5+doc.getTextWidth(v)+gap;
+    }
+    return x;
+  }
+
+  function footer(pg, total=4) {
     const lbl = `0${pg} / 0${total}`;
     if (printMode) {
       doc.setFillColor(255,255,255); doc.rect(0,287,W,10,'F');
       doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,287,W,287);
       doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
-      doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 292);
+      doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', ML, 292);
       doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
       doc.text(lbl, MR, 292, {align:'right'});
     } else {
       doc.setFillColor(...DARK); doc.rect(0,286,W,11,'F');
       doc.setFillColor(...GOLD); doc.rect(0,286,W,0.8,'F');
       doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...MUTED);
-      doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 291);
+      doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', ML, 291);
       doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
       doc.text(lbl, MR, 291, {align:'right'});
     }
@@ -953,7 +1074,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(30,30,30);
     doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(80,80,80);
-    doc.text('Pág. 1 de 3', MR, 20, {align:'right'});
+    doc.text('Pág. 1 de 4', MR, 20, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,22,'F');
     doc.setFillColor(...GOLD); doc.rect(0,22,W,1.2,'F');
@@ -964,7 +1085,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...WHITE);
     doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
-    doc.text('Pág. 1 de 3', MR, 20, {align:'right'});
+    doc.text('Pág. 1 de 4', MR, 20, {align:'right'});
   }
 
   // Badge linha (data abertura / validade / documento)
@@ -993,7 +1114,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold');doc.setFontSize(7);
     doc.setTextColor(...(printMode?[30,30,30]:WHITE));
     doc.text(title.toUpperCase(),ML+5,py+4.2);
-    py+=8;
+    py+=10.5;
   }
 
   function pText(txt) {
@@ -1162,16 +1283,16 @@ function gerarPDF(printMode=false) {
     doc.setFillColor(255,255,255); doc.rect(0,287,W,10,'F');
     doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,287,W,287);
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
-    doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 292);
+    doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', ML, 292);
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
-    doc.text('01 / 03', MR, 292, {align:'right'});
+    doc.text('01 / 04', MR, 292, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,286,W,11,'F');
     doc.setFillColor(...GOLD); doc.rect(0,286,W,0.8,'F');
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...MUTED);
-    doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', ML, 291);
+    doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', ML, 291);
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
-    doc.text('01 / 03', MR, 291, {align:'right'});
+    doc.text('01 / 04', MR, 291, {align:'right'});
   }
 
   doc.addPage();
@@ -1189,7 +1310,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,30,30);
     doc.text('FICHA CADASTRAL — CLIENTES', MR, 18, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('Proposta Comercial  ·  Pág. 2 de 3', MR, 24, {align:'right'});
+    doc.text('Proposta Comercial  ·  Pág. 2 de 4', MR, 24, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,28,'F');
     doc.setFillColor(...GOLD); doc.rect(0,28,W,1.5,'F');
@@ -1200,23 +1321,21 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...WHITE);
     doc.text('FICHA CADASTRAL — CLIENTES', MR, 18, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('Proposta Comercial  ·  Pág. 2 de 3', MR, 24, {align:'right'});
+    doc.text('Proposta Comercial  ·  Pág. 2 de 4', MR, 24, {align:'right'});
   }
 
-  // Page 1 layout — all sections anchored from top
-  // Available: 297 - 30 (header) - 11 (footer) = 256mm
-  // 3 sections, each: BAR_H(7.5) + BG(6) + 5*RS + gap(3) between sections
-  // SEC_H = 13.5 + 5*RS; 3*SEC_H + 2*3 = 256 → 15*RS = 216.5 → RS=14.4
-  const FH1=9, RS1=printMode?16.5:14.4, BG1=6, SEC_H1=BAR_H+BG1+5*RS1;
+  // ── PÁGINA 2: Estabelecimento + Representante Legal (layout fluido, robusto a novos campos) ──
+  const FH1=9, RS1=printMode?12.5:12, BG1=6;
   const aw=PW*0.63, cw=PW-aw-G;
   const cepw=PW*0.17, citw=PW*0.52, ufw=PW-cepw-citw-2*G;
   const tw=PW*0.26, ew=PW*0.37, sw=PW-tw-ew-2*G;
   const h2=(PW-G)/2, t3=(PW-2*G)/3;
   const nw=PW*0.44, cpfw=PW*0.27, rgw=PW-nw-cpfw-2*G;
   const nascw=PW*0.2, cargw=PW*0.42, telw=PW-nascw-cargw-2*G;
-  const qw=PW*0.16, horw=PW*0.37, topw=PW-qw-horw-2*G;
+  const conjnw=PW*0.62, conjcw=PW-conjnw-G;
+  const EC_OPTS=['Solteiro(a)','Casado(a)','Divorciado(a)','União Estável','Viúvo(a)'];
 
-  // ── Banner aceite digital ──
+  // Banner aceite digital
   const aceiteTs2 = _aceiteTimestamp || '—';
   doc.setFillColor(printMode?240:220, printMode?240:255, printMode?240:220);
   doc.rect(ML, 30, PW, 8, 'F');
@@ -1226,27 +1345,65 @@ function gerarPDF(printMode=false) {
   doc.setTextColor(printMode?40:22, printMode?40:120, printMode?40:40);
   doc.text('✓  Proposta Preenchida em: ' + aceiteTs2 + '   ·   Gerado em: ' + _dataShort + ' às ' + _horaFmt, ML+3, 30+5.2);
 
-  // ── Sec 1: Estabelecimento ──
-  let sy1=41; secBar('Dados do Estabelecimento Comercial', sy1);
-  let y=sy1+BAR_H+BG1;
+  // Sec 1: Estabelecimento
+  let y=41; secBar('Dados do Estabelecimento Comercial', y); y+=BAR_H+BG1;
   row(y,FH1,[[ML,h2,'razao_social','Razão Social *'],[ML+h2+G,h2,'nome_fantasia','Nome Fantasia']]); y+=RS1;
   row(y,FH1,[[ML,t3,'cnpj','CNPJ / CPF *'],[ML+t3+G,t3,'insc_estadual','Inscrição Estadual'],[ML+2*(t3+G),t3,'data_abertura','Data de Abertura']]); y+=RS1;
   row(y,FH1,[[ML,aw,'endereco','Endereço (Rua, Nº) *'],[ML+aw+G,cw,'complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'cep','CEP *'],[ML+cepw+G,citw,'cidade','Cidade *'],[ML+cepw+citw+2*G,ufw,'uf','UF *']]); y+=RS1;
-  row(y,FH1,[[ML,tw,'telefone','Telefone Comercial *'],[ML+tw+G,ew,'email','E-mail *'],[ML+tw+ew+2*G,sw,'site','Site / Redes Sociais']]);
+  row(y,FH1,[[ML,tw,'telefone','Telefone Comercial *'],[ML+tw+G,ew,'email','E-mail *'],[ML+tw+ew+2*G,sw,'site','Site / Redes Sociais']]); y+=RS1;
+  y+=2;
 
-  // ── Sec 2: Representante ──
-  let sy2=sy1+SEC_H1+3; secBar('Dados do Representante Legal', sy2);
-  y=sy2+BAR_H+BG1;
+  // Sec 2: Representante Legal (+ Estado Civil + Cônjuge)
+  secBar('Dados do Representante Legal', y); y+=BAR_H+BG1;
   row(y,FH1,[[ML,nw,'rep_nome','Nome Completo *'],[ML+nw+G,cpfw,'rep_cpf','CPF *'],[ML+nw+cpfw+2*G,rgw,'rep_rg','RG']]); y+=RS1;
   row(y,FH1,[[ML,nascw,'rep_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'rep_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'rep_tel','Telefone / WhatsApp *']]); y+=RS1;
   row(y,FH1,[[ML,aw,'rep_endereco','Endereço Residencial'],[ML+aw+G,cw,'rep_complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'rep_cep','CEP'],[ML+cepw+G,citw,'rep_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'rep_uf','UF']]); y+=RS1;
-  row(y,FH1,[[ML,PW,'rep_email','E-mail *']]);
+  row(y,FH1,[[ML,PW,'rep_email','E-mail *']]); y+=RS1;
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  doc.text('Estado Civil:', ML, y+3);
+  radioMulti(ML+22, y, 'rep_estado_civil', EC_OPTS); y+=RS1;
+  row(y,FH1,[[ML,conjnw,'rep_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'rep_conjuge_cpf','Cônjuge — CPF']]); y+=RS1;
 
-  // ── Sec 3: Estrutura ──
-  let sy3=sy2+SEC_H1+3; secBar('Estrutura Comercial e Operacional', sy3);
-  y=sy3+BAR_H+BG1;
+  footer(2);
+
+  // ════════════════════════════════════════
+  //  PÁGINA 3 — 2º SÓCIO + ESTRUTURA
+  // ════════════════════════════════════════
+  doc.addPage();
+  if (printMode) {
+    doc.setFillColor(255,255,255); doc.rect(0,0,W,14,'F');
+    doc.setDrawColor(60,60,60); doc.setLineWidth(0.5); doc.line(0,14,W,14);
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
+    doc.text('Monetz', ML, 10);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
+    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
+  } else {
+    doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
+    doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
+    doc.text('Monetz', ML, 10);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
+    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
+  }
+
+  // Sec: 2º Sócio (espelha Representante Legal)
+  y=20; secBar('Dados do 2º Sócio (se houver)', y); y+=BAR_H+BG1;
+  row(y,FH1,[[ML,nw,'soc_nome','Nome Completo'],[ML+nw+G,cpfw,'soc_cpf','CPF'],[ML+nw+cpfw+2*G,rgw,'soc_rg','RG']]); y+=RS1;
+  row(y,FH1,[[ML,nascw,'soc_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'soc_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'soc_tel','Telefone / WhatsApp']]); y+=RS1;
+  row(y,FH1,[[ML,aw,'soc_endereco','Endereço Residencial'],[ML+aw+G,cw,'soc_complemento','Complemento']]); y+=RS1;
+  row(y,FH1,[[ML,cepw,'soc_cep','CEP'],[ML+cepw+G,citw,'soc_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'soc_uf','UF']]); y+=RS1;
+  row(y,FH1,[[ML,PW,'soc_email','E-mail']]); y+=RS1;
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  doc.text('Estado Civil:', ML, y+3);
+  radioMulti(ML+22, y, 'soc_estado_civil', EC_OPTS); y+=RS1;
+  row(y,FH1,[[ML,conjnw,'soc_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'soc_conjuge_cpf','Cônjuge — CPF']]); y+=RS1;
+  y+=2;
+
+  // Sec: Estrutura Comercial e Operacional
+  const qw=PW*0.16, horw=PW*0.37, topw=PW-qw-horw-2*G;
+  secBar('Estrutura Comercial e Operacional', y); y+=BAR_H+BG1;
   row(y,FH1,[[ML,qw,'funcionarios','Qtde. de Funcionários'],[ML+qw+G,horw,'horario','Horário de Funcionamento'],[ML+qw+horw+2*G,topw,'tempo_operacao','Tempo de Operação no Endereço Atual']]); y+=RS1;
   const ry1=y+FH1/2-1.75;
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
@@ -1254,7 +1411,7 @@ function gerarPDF(printMode=false) {
   let cx1=radio(ML+44, ry1, 'outras_unidades');
   cx1+=4; field(cx1+18, y, 30, FH1, 'Se sim, quantas:', f('qtd_unidades'));
 
-  footer(2);
+  footer(3);
 
   // ══════════════════════════════════════
   //  PAGE 2
@@ -1300,14 +1457,14 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 3', MR, 10, {align:'right'});
+    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
     doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 3', MR, 10, {align:'right'});
+    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
   }
 
   // ── Financeiras ──
@@ -1329,9 +1486,9 @@ function gerarPDF(printMode=false) {
   }
   y += 10; // past radios (radios end at y+3.5, need label below)
 
-  // Row 2: Tipo de produto — explicit label line, then box
+  // Row 2: Maquininha de cartão — explicit label line, then box
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
-  doc.text('TIPO DE PRODUTO (CRÉDITO, DÉBITO, PARCELADO, BOLETO E PIX)', ML, y);
+  doc.text('QUAL MAQUININHA DE CARTÃO VOCÊ UTILIZA', ML, y);
   y += 4; // label→box gap
   if (printMode) {
     doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
@@ -1339,7 +1496,7 @@ function gerarPDF(printMode=false) {
   } else {
     doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
     doc.rect(ML, y, PW, FH2, 'FD');
-    const vtp=f('tipo_produto');
+    const vtp=fCheckList('maquininha','maquininha_outra');
     if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...BODY);
       while(doc.getTextWidth(v)>PW-3&&v.length>2)v=v.slice(0,-1);doc.text(v,ML+2,y+FH2/2+2.5);}
   }
@@ -1453,7 +1610,7 @@ function gerarPDF(printMode=false) {
   // ── Declaração ──
   // Print mode: start new page for signatures to guarantee they always fit
   if (printMode) {
-    footer(3);
+    footer(4);
     doc.addPage();
     y = 20;
     doc.setFont('helvetica','bold'); doc.setFontSize(7.8); doc.setTextColor(30,30,30);
@@ -1520,17 +1677,109 @@ function gerarPDF(printMode=false) {
     doc.setFillColor(255,255,255); doc.rect(0,286,210,11,'F');
     doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,286,210,286);
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
-    doc.text('Rua Iguatemi, 192 · Sala 63 – 6º andar · Itaim Bibi, São Paulo - SP  |  Tel. +55 (11) 2131-5060', 15, 291);
+    doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', 15, 291);
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
-    doc.text('03 / 03', 195, 291, {align:'right'});
+    doc.text('04 / 04', 195, 291, {align:'right'});
   } else {
-    footer(3);
+    footer(4);
   }
 
   // ── Salvar ──
   const razao = f('razao_social') || 'cliente';
   const suffix = '_impressao';
   doc.save(`MONETZ_Ficha_${razao.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30)}${suffix}.pdf`);
+}
+
+// ─── GERAR PDF E ENVIAR POR E-MAIL ─────────────────────────────────────────
+function gerarPDFeEmail() {
+  const btn = document.getElementById('btnEmail');
+  btn.disabled = true;
+  btn.textContent = 'Gerando PDF...';
+
+  setTimeout(() => {
+    try {
+      // 1. Gera e baixa o PDF
+      const razao = f('razao_social') || 'Cliente';
+      const nomeArquivo = 'MONETZ_Ficha_' + razao.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) + '_impressao.pdf';
+      gerarPDF(true);
+
+      // 2. Monta o e-mail com aviso de anexo e resumo dos dados principais
+      const ofertaLabel = f('oferta_escolhida') === 'A'
+        ? 'Oferta A — R$ 20.000,00 (Total: R$ 24.948,00 / 126 dias úteis)'
+        : f('oferta_escolhida') === 'B'
+        ? 'Oferta B — R$ 10.000,00 (Total: R$ 12.492,62 / 126 dias úteis)'
+        : 'Nenhuma selecionada';
+
+      const corpo = [
+        'Prezados,',
+        '',
+        'Segue a Ficha Cadastral Monetz preenchida pelo cliente abaixo.',
+        '',
+        '⚠ ATENÇÃO: O PDF foi baixado automaticamente na sua pasta de Downloads.',
+        'Por favor, ANEXE o arquivo "' + nomeArquivo + '" antes de enviar este e-mail.',
+        '',
+        '════════════════════════════════════',
+        ' RESUMO DA FICHA',
+        '════════════════════════════════════',
+        'Data/Hora:        ' + _dataShort + ' às ' + _horaFmt,
+        'Aceite proposta:  ' + (_aceiteTimestamp || '—'),
+        'Oferta:           ' + ofertaLabel,
+        '',
+        'Razão Social:     ' + (f('razao_social') || '—'),
+        'Nome Fantasia:    ' + (f('nome_fantasia') || '—'),
+        'CNPJ/CPF:         ' + (f('cnpj') || '—'),
+        'Endereço:         ' + (f('endereco') || '—') + ', ' + (f('numero') || 's/n') + ' — ' + (f('cidade') || '—') + '/' + (f('uf') || '—'),
+        '',
+        'Representante:    ' + (f('rep_nome') || '—'),
+        'CPF:              ' + (f('rep_cpf') || '—'),
+        'WhatsApp:         ' + (f('rep_tel') || '—'),
+        'E-mail cliente:   ' + (f('rep_email') || '—'),
+        'Estado civil:     ' + (f('rep_estado_civil') || '—'),
+        'Cônjuge:          ' + (f('rep_conjuge_nome') || '—') + (f('rep_conjuge_cpf') ? '  CPF: ' + f('rep_conjuge_cpf') : ''),
+        '',
+        '2º Sócio:         ' + (f('soc_nome') || '—'),
+        'CPF 2º sócio:     ' + (f('soc_cpf') || '—'),
+        'Estado civil:     ' + (f('soc_estado_civil') || '—'),
+        'Cônjuge 2º sócio: ' + (f('soc_conjuge_nome') || '—') + (f('soc_conjuge_cpf') ? '  CPF: ' + f('soc_conjuge_cpf') : ''),
+        '',
+        'Banco:            ' + (f('banco') || '—') + '  Ag: ' + (f('agencia') || '—') + '  CC: ' + (f('conta') || '—'),
+        'Chave PIX:        ' + (f('chave_pix') || '—'),
+        '════════════════════════════════════',
+        '',
+        'Monetz — Grupo Check',
+        'Rua Luís Gonçalves Júnior, 220 — São Paulo - SP, CEP 04173-160',
+      ].join('\n');
+
+      const subject = encodeURIComponent('Ficha Cadastral Monetz — ' + razao + ' — ' + _dataShort);
+      const body = encodeURIComponent(corpo);
+
+      // 3. Abre o cliente de e-mail após o PDF ser salvo
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = 'mailto:contato@nearmax.com.br?subject=' + subject + '&body=' + body;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        btn.textContent = '✓ PDF gerado — e-mail aberto';
+        btn.style.borderColor = '#16A34A';
+        btn.style.color = '#16A34A';
+        setTimeout(() => {
+          btn.textContent = '📎 Gerar PDF e Enviar por E-mail';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 4000);
+      }, 600);
+
+    } catch (err) {
+      btn.textContent = 'Erro — tente novamente';
+      btn.style.borderColor = '#dc2626';
+      btn.style.color = '#dc2626';
+      btn.disabled = false;
+      console.error(err);
+    }
+  }, 300);
 }
 
 // ─── SUBMIT ─────────────────────────────────────────────────────────────────
