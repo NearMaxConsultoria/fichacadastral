@@ -55,6 +55,7 @@
   .g-bank  { grid-template-columns: 1fr 105px 148px; }
   .g-equip1{ grid-template-columns: 1fr 148px; }
   .g-equip2{ grid-template-columns: 1fr 1fr 105px; }
+  .g-conj  { grid-template-columns: 1.3fr 0.85fr 1.25fr; }
   .field-half { max-width: calc(50% - 9px); }
   .field { display: flex; flex-direction: column; gap: 2px; }
   .field label { font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
@@ -118,7 +119,7 @@
     .topbar-date { font-size: 11px; }
     .form-wrapper { padding: 20px 14px 40px; }
     .section-body { padding: 18px 16px 14px; }
-    .g-3, .g-4, .g-cnpj, .g-nasc, .g-struct, .g-equip2 { grid-template-columns: 1fr 1fr; }
+    .g-3, .g-4, .g-cnpj, .g-nasc, .g-struct, .g-equip2, .g-conj { grid-template-columns: 1fr 1fr; }
     .g-addr  { grid-template-columns: 1fr 80px; }
     .g-cep   { grid-template-columns: 103px 1fr 58px; }
     .g-tel   { grid-template-columns: 148px 1fr; }
@@ -154,7 +155,7 @@
     .section-body { padding: 14px 12px 12px; }
     .section-header { padding: 10px 14px; }
     .g-2, .g-3, .g-4, .g-cnpj, .g-addr, .g-cep, .g-tel, .g-rep,
-    .g-nasc, .g-struct, .g-bank, .g-equip1, .g-equip2 { grid-template-columns: 1fr; }
+    .g-nasc, .g-struct, .g-bank, .g-equip1, .g-equip2, .g-conj { grid-template-columns: 1fr; }
     .field-half { max-width: 100%; }
     .doc-cols { grid-template-columns: 1fr; }
     .sig-row { grid-template-columns: 1fr; gap: 20px; }
@@ -613,9 +614,10 @@
         <label>Estado Civil <span class="req">*</span></label>
         <div class="check-group" style="display:flex; gap:18px; flex-wrap:wrap; margin-top:6px;"><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Solteiro(a)"> Solteiro(a)</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Casado(a)"> Casado(a)</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Divorciado(a)"> Divorciado(a)</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="União Estável"> União Estável</label><label class="check-opt"><input type="radio" name="rep_estado_civil" value="Viúvo(a)"> Viúvo(a)</label></div>
       </div>
-      <div class="grid g-conj" style="grid-template-columns:1.6fr 1fr; margin-top:9px">
+      <div class="grid g-conj" style="margin-top:9px">
         <div class="field"><label>Cônjuge — Nome Completo</label><input type="text" name="rep_conjuge_nome"></div>
         <div class="field"><label>Cônjuge — CPF</label><input type="text" name="rep_conjuge_cpf"></div>
+        <div class="field"><label>Cônjuge — E-mail</label><input type="email" name="rep_conjuge_email"></div>
       </div>
     </div>
   </div>
@@ -654,9 +656,10 @@
         <label>Estado Civil</label>
         <div class="check-group" style="display:flex; gap:18px; flex-wrap:wrap; margin-top:6px;"><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Solteiro(a)"> Solteiro(a)</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Casado(a)"> Casado(a)</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Divorciado(a)"> Divorciado(a)</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="União Estável"> União Estável</label><label class="check-opt"><input type="radio" name="soc_estado_civil" value="Viúvo(a)"> Viúvo(a)</label></div>
       </div>
-      <div class="grid g-conj" style="grid-template-columns:1.6fr 1fr">
+      <div class="grid g-conj">
         <div class="field"><label>Cônjuge — Nome Completo</label><input type="text" name="soc_conjuge_nome"></div>
         <div class="field"><label>Cônjuge — CPF</label><input type="text" name="soc_conjuge_cpf"></div>
+        <div class="field"><label>Cônjuge — E-mail</label><input type="email" name="soc_conjuge_email"></div>
       </div>
     </div>
   </div>
@@ -727,12 +730,23 @@
       <div class="divider"></div>
       <div class="yn-rows">
         <div class="yn-row">
-          <span class="yn-q">Faz antecipação?</span>
+          <span class="yn-q">Faz antecipação de suas agendas?</span>
           <div class="yn-opts">
             <label class="check-opt"><input type="radio" name="antecipacao" value="Sim"> Sim</label>
             <label class="check-opt"><input type="radio" name="antecipacao" value="Não"> Não</label>
           </div>
         </div>
+      </div>
+      <div class="field" style="margin-top:11px; margin-bottom:9px">
+        <label>Eu recebo meus pagamentos em</label>
+        <div class="check-group" style="display:flex; gap:16px; flex-wrap:wrap; margin-top:6px; align-items:center;">
+          <label class="check-opt"><input type="radio" name="prazo_recebimento_tipo" value="Dzero"> Dzero (recebo tudo no mesmo dia)</label>
+          <label class="check-opt"><input type="radio" name="prazo_recebimento_tipo" value="D1"> D1 (recebo no próximo dia útil)</label>
+          <label class="check-opt"><input type="radio" name="prazo_recebimento_tipo" value="Outro Prazo"> Outro Prazo</label>
+          <input type="text" name="prazo_recebimento_outro_dias" placeholder="Em quantos dias você recebe?" style="border:none; border-bottom:1.5px solid var(--line); padding:4px 2px; font-size:13px; color:var(--body); min-width:190px; outline:none; background:transparent;">
+        </div>
+      </div>
+      <div class="yn-rows">
         <div class="yn-row">
           <span class="yn-q">Possui crédito fumaça, empréstimos, financiamentos e/ou similar?</span>
           <div class="yn-opts">
@@ -1332,7 +1346,7 @@ function gerarPDF(printMode=false) {
   const h2=(PW-G)/2, t3=(PW-2*G)/3;
   const nw=PW*0.44, cpfw=PW*0.27, rgw=PW-nw-cpfw-2*G;
   const nascw=PW*0.2, cargw=PW*0.42, telw=PW-nascw-cargw-2*G;
-  const conjnw=PW*0.62, conjcw=PW-conjnw-G;
+  const conjnw=PW*0.36, conjcw=PW*0.22, conjew=PW-conjnw-conjcw-2*G;
   const EC_OPTS=['Solteiro(a)','Casado(a)','Divorciado(a)','União Estável','Viúvo(a)'];
 
   // Banner aceite digital
@@ -1364,7 +1378,7 @@ function gerarPDF(printMode=false) {
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
   doc.text('Estado Civil:', ML, y+3);
   radioMulti(ML+22, y, 'rep_estado_civil', EC_OPTS); y+=RS1;
-  row(y,FH1,[[ML,conjnw,'rep_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'rep_conjuge_cpf','Cônjuge — CPF']]); y+=RS1;
+  row(y,FH1,[[ML,conjnw,'rep_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'rep_conjuge_cpf','Cônjuge — CPF'],[ML+conjnw+conjcw+2*G,conjew,'rep_conjuge_email','Cônjuge — E-mail']]); y+=RS1;
 
   footer(2);
 
@@ -1398,7 +1412,7 @@ function gerarPDF(printMode=false) {
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
   doc.text('Estado Civil:', ML, y+3);
   radioMulti(ML+22, y, 'soc_estado_civil', EC_OPTS); y+=RS1;
-  row(y,FH1,[[ML,conjnw,'soc_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'soc_conjuge_cpf','Cônjuge — CPF']]); y+=RS1;
+  row(y,FH1,[[ML,conjnw,'soc_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'soc_conjuge_cpf','Cônjuge — CPF'],[ML+conjnw+conjcw+2*G,conjew,'soc_conjuge_email','Cônjuge — E-mail']]); y+=RS1;
   y+=2;
 
   // Sec: Estrutura Comercial e Operacional
@@ -1528,10 +1542,24 @@ function gerarPDF(printMode=false) {
 
   // Row 5: Antecipação
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
-  doc.text('Faz antecipação?', ML, y+3);
-  radio(ML+30,y,'antecipacao'); y+=10;
+  const antecLbl = 'Faz antecipação de suas agendas?';
+  doc.text(antecLbl, ML, y+3);
+  radio(ML+doc.getTextWidth(antecLbl)+4, y, 'antecipacao'); y+=10;
+
+  // Row 5b: Prazo de recebimento dos pagamentos
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+  const prazoLbl = 'Eu recebo meus pagamentos em:';
+  doc.text(prazoLbl, ML, y+3);
+  const prazoEndX = radioMulti(ML+doc.getTextWidth(prazoLbl)+4, y, 'prazo_recebimento_tipo', ['Dzero','D1','Outro Prazo'], 4);
+  const prazoOutroDias = f('prazo_recebimento_outro_dias');
+  if (prazoOutroDias) {
+    doc.setFont('helvetica','italic'); doc.setFontSize(7); doc.setTextColor(...BODY);
+    doc.text('(' + prazoOutroDias + ' dias)', prazoEndX, y+3);
+  }
+  y += 10;
 
   // Row 6: Crédito fumaça
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
   doc.text('Possui crédito fumaça, empréstimos, financiamentos e/ou similar?', ML, y+3);
   radio(ML+107,y,'credito_ativo'); y+=12;
 
@@ -1735,12 +1763,15 @@ function gerarPDFeEmail() {
         'WhatsApp:         ' + (f('rep_tel') || '—'),
         'E-mail cliente:   ' + (f('rep_email') || '—'),
         'Estado civil:     ' + (f('rep_estado_civil') || '—'),
-        'Cônjuge:          ' + (f('rep_conjuge_nome') || '—') + (f('rep_conjuge_cpf') ? '  CPF: ' + f('rep_conjuge_cpf') : ''),
+        'Cônjuge:          ' + (f('rep_conjuge_nome') || '—') + (f('rep_conjuge_cpf') ? '  CPF: ' + f('rep_conjuge_cpf') : '') + (f('rep_conjuge_email') ? '  E-mail: ' + f('rep_conjuge_email') : ''),
         '',
         '2º Sócio:         ' + (f('soc_nome') || '—'),
         'CPF 2º sócio:     ' + (f('soc_cpf') || '—'),
         'Estado civil:     ' + (f('soc_estado_civil') || '—'),
-        'Cônjuge 2º sócio: ' + (f('soc_conjuge_nome') || '—') + (f('soc_conjuge_cpf') ? '  CPF: ' + f('soc_conjuge_cpf') : ''),
+        'Cônjuge 2º sócio: ' + (f('soc_conjuge_nome') || '—') + (f('soc_conjuge_cpf') ? '  CPF: ' + f('soc_conjuge_cpf') : '') + (f('soc_conjuge_email') ? '  E-mail: ' + f('soc_conjuge_email') : ''),
+        '',
+        'Faz antecipação:  ' + (f('antecipacao') || '—'),
+        'Recebe pagtos em: ' + (f('prazo_recebimento_tipo') || '—') + (f('prazo_recebimento_tipo')==='Outro Prazo' && f('prazo_recebimento_outro_dias') ? ' (' + f('prazo_recebimento_outro_dias') + ' dias)' : ''),
         '',
         'Banco:            ' + (f('banco') || '—') + '  Ag: ' + (f('agencia') || '—') + '  CC: ' + (f('conta') || '—'),
         'Chave PIX:        ' + (f('chave_pix') || '—'),
