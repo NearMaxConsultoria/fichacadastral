@@ -562,7 +562,7 @@
       </div>
       <div class="grid g-addr" style="margin-bottom:9px">
         <div class="field"><label>Endereço <span class="req">*</span></label><input type="text" name="endereco" required></div>
-        <div class="field"><label>Número</label><input type="text" name="numero"></div>
+        <div class="field"><label>Número <span class="req">*</span></label><input type="text" name="numero"></div>
         <div class="field"><label>Complemento</label><input type="text" name="complemento"></div>
       </div>
       <div class="grid g-cep" style="margin-bottom:9px">
@@ -596,7 +596,7 @@
       </div>
       <div class="grid g-addr" style="margin-bottom:9px">
         <div class="field"><label>Endereço Residencial</label><input type="text" name="rep_endereco"></div>
-        <div class="field"><label>Número</label><input type="text" name="rep_numero"></div>
+        <div class="field"><label>Número <span class="req">*</span></label><input type="text" name="rep_numero"></div>
         <div class="field"><label>Complemento</label><input type="text" name="rep_complemento"></div>
       </div>
       <div class="grid g-cep" style="margin-bottom:9px">
@@ -638,7 +638,7 @@
       </div>
       <div class="grid g-addr" style="margin-bottom:9px">
         <div class="field"><label>Endereço Residencial</label><input type="text" name="soc_endereco"></div>
-        <div class="field"><label>Número</label><input type="text" name="soc_numero"></div>
+        <div class="field"><label>Número <span class="req">*</span></label><input type="text" name="soc_numero"></div>
         <div class="field"><label>Complemento</label><input type="text" name="soc_complemento"></div>
       </div>
       <div class="grid g-cep" style="margin-bottom:9px">
@@ -1341,6 +1341,7 @@ function gerarPDF(printMode=false) {
   // ── PÁGINA 2: Estabelecimento + Representante Legal (layout fluido, robusto a novos campos) ──
   const FH1=9, RS1=printMode?12.5:12, BG1=6;
   const aw=PW*0.63, cw=PW-aw-G;
+  const endw=PW*0.52, numw=PW*0.13, compw=PW-endw-numw-2*G;
   const cepw=PW*0.17, citw=PW*0.52, ufw=PW-cepw-citw-2*G;
   const tw=PW*0.26, ew=PW*0.37, sw=PW-tw-ew-2*G;
   const h2=(PW-G)/2, t3=(PW-2*G)/3;
@@ -1363,7 +1364,7 @@ function gerarPDF(printMode=false) {
   let y=41; secBar('Dados do Estabelecimento Comercial', y); y+=BAR_H+BG1;
   row(y,FH1,[[ML,h2,'razao_social','Razão Social *'],[ML+h2+G,h2,'nome_fantasia','Nome Fantasia']]); y+=RS1;
   row(y,FH1,[[ML,t3,'cnpj','CNPJ / CPF *'],[ML+t3+G,t3,'insc_estadual','Inscrição Estadual'],[ML+2*(t3+G),t3,'data_abertura','Data de Abertura']]); y+=RS1;
-  row(y,FH1,[[ML,aw,'endereco','Endereço (Rua, Nº) *'],[ML+aw+G,cw,'complemento','Complemento']]); y+=RS1;
+  row(y,FH1,[[ML,endw,'endereco','Endereço (Rua) *'],[ML+endw+G,numw,'numero','Número *'],[ML+endw+numw+2*G,compw,'complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'cep','CEP *'],[ML+cepw+G,citw,'cidade','Cidade *'],[ML+cepw+citw+2*G,ufw,'uf','UF *']]); y+=RS1;
   row(y,FH1,[[ML,tw,'telefone','Telefone Comercial *'],[ML+tw+G,ew,'email','E-mail *'],[ML+tw+ew+2*G,sw,'site','Site / Redes Sociais']]); y+=RS1;
   y+=2;
@@ -1372,7 +1373,7 @@ function gerarPDF(printMode=false) {
   secBar('Dados do Representante Legal', y); y+=BAR_H+BG1;
   row(y,FH1,[[ML,nw,'rep_nome','Nome Completo *'],[ML+nw+G,cpfw,'rep_cpf','CPF *'],[ML+nw+cpfw+2*G,rgw,'rep_rg','RG']]); y+=RS1;
   row(y,FH1,[[ML,nascw,'rep_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'rep_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'rep_tel','Telefone / WhatsApp *']]); y+=RS1;
-  row(y,FH1,[[ML,aw,'rep_endereco','Endereço Residencial'],[ML+aw+G,cw,'rep_complemento','Complemento']]); y+=RS1;
+  row(y,FH1,[[ML,endw,'rep_endereco','Endereço Residencial'],[ML+endw+G,numw,'rep_numero','Número'],[ML+endw+numw+2*G,compw,'rep_complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'rep_cep','CEP'],[ML+cepw+G,citw,'rep_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'rep_uf','UF']]); y+=RS1;
   row(y,FH1,[[ML,PW,'rep_email','E-mail *']]); y+=RS1;
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
@@ -1406,7 +1407,7 @@ function gerarPDF(printMode=false) {
   y=20; secBar('Dados do 2º Sócio (se houver)', y); y+=BAR_H+BG1;
   row(y,FH1,[[ML,nw,'soc_nome','Nome Completo'],[ML+nw+G,cpfw,'soc_cpf','CPF'],[ML+nw+cpfw+2*G,rgw,'soc_rg','RG']]); y+=RS1;
   row(y,FH1,[[ML,nascw,'soc_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'soc_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'soc_tel','Telefone / WhatsApp']]); y+=RS1;
-  row(y,FH1,[[ML,aw,'soc_endereco','Endereço Residencial'],[ML+aw+G,cw,'soc_complemento','Complemento']]); y+=RS1;
+  row(y,FH1,[[ML,endw,'soc_endereco','Endereço Residencial'],[ML+endw+G,numw,'soc_numero','Número'],[ML+endw+numw+2*G,compw,'soc_complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'soc_cep','CEP'],[ML+cepw+G,citw,'soc_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'soc_uf','UF']]); y+=RS1;
   row(y,FH1,[[ML,PW,'soc_email','E-mail']]); y+=RS1;
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
