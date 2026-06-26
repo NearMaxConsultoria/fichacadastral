@@ -1858,6 +1858,27 @@ document.querySelectorAll('input[name="cnpj"]').forEach(el => {
     this.value=v;
   });
 });
+
+// ─── MÁSCARA MONETÁRIA (centavos ao vivo): "2.102,20" — rótulo já traz "R$" ───
+function aplicarMascaraMoeda(el){
+  el.addEventListener('input', function(){
+    let v = this.value.replace(/\D/g,'');      // mantém apenas dígitos
+    if(!v){ this.value=''; return; }
+    v = v.replace(/^0+/,'') || '0';            // remove zeros à esquerda
+    while(v.length < 3) v = '0' + v;           // garante 2 casas de centavos
+    let inteiro = v.slice(0,-2);
+    const centavos = v.slice(-2);
+    inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // separador de milhar
+    this.value = inteiro + ',' + centavos;
+  });
+}
+[
+  'ticket_debito','ticket_credito','ticket_pix','ticket_boleto',
+  'vendas_debito','vendas_credito','vendas_pix','vendas_boleto',
+  'emprestimo','credito_fumaca','financiamento'
+].forEach(nm => {
+  document.querySelectorAll(`input[name="${nm}"]`).forEach(aplicarMascaraMoeda);
+});
 </script>
 </body>
 </html>
