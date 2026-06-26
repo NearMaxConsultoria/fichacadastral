@@ -1449,6 +1449,12 @@ function gerarPDF(printMode=false) {
     if (printMode) {
       doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
       doc.line(x, fy+fh, x+w, fy+fh);
+      if (value) {
+        let v=String(value);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(20,20,20);
+        while(doc.getTextWidth(v)>w-2&&v.length>2) v=v.slice(0,-1);
+        doc.text(v, x, fy+fh-1.5);
+      }
     } else {
       doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
       doc.rect(x, fy, w, fh, 'FD');
@@ -1505,13 +1511,15 @@ function gerarPDF(printMode=false) {
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
   doc.text('QUAL MAQUININHA DE CARTÃO VOCÊ UTILIZA', ML, y);
   y += 4; // label→box gap
+  const vtp=fCheckList('maquininha','maquininha_outra');
   if (printMode) {
     doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
     doc.line(ML, y+FH2, ML+PW, y+FH2);
+    if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(20,20,20);
+      while(doc.getTextWidth(v)>PW-2&&v.length>2)v=v.slice(0,-1);doc.text(v,ML,y+FH2-1.5);}
   } else {
     doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
     doc.rect(ML, y, PW, FH2, 'FD');
-    const vtp=fCheckList('maquininha','maquininha_outra');
     if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...BODY);
       while(doc.getTextWidth(v)>PW-3&&v.length>2)v=v.slice(0,-1);doc.text(v,ML+2,y+FH2/2+2.5);}
   }
