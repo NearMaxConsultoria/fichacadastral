@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha Cadastral — Monetz</title>
+<title>Proposta Comercial — Monetz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
@@ -64,6 +64,17 @@
     font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--body); background: transparent; outline: none; transition: border-color 0.2s; width: 100%;
   }
   .field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--gold); }
+  /* ── Estados de validação ── */
+  .badge-obrig { margin-left: auto; font-size: 9px; font-weight: 700; color: var(--white); background: var(--gold); padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
+  .field.erro-validacao input, .field.erro-validacao select { border-bottom-color: #dc2626 !important; }
+  .field.erro-validacao label { color: #dc2626; }
+  .erro-validacao input[type="text"] { border-bottom: 1.5px solid #dc2626 !important; }
+  .bloco-erro { outline: 1.5px solid #dc2626; outline-offset: 4px; border-radius: 6px; background: #fef2f2; }
+  .erro-banner { display: none; background: #fef2f2; border: 1.5px solid #dc2626; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
+  .erro-banner.show { display: block; }
+  .erro-banner strong { color: #dc2626; font-size: 13px; display: block; margin-bottom: 6px; }
+  .erro-banner ul { margin: 0; padding-left: 18px; }
+  .erro-banner li { font-size: 12px; color: #7f1d1d; margin: 2px 0; }
   .field input::placeholder, .field textarea::placeholder { color: #cbd5e1; font-size: 12px; }
   .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B3A369' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; padding-right: 20px; }
   .check-group { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 8px 0; }
@@ -534,7 +545,7 @@
           ✅ Aceite registrado em: <strong id="aceiteTimestamp">—</strong>
         </div>
         <button type="button" class="btn-continuar" onclick="mostrarFormulario()">
-          Preencher Ficha Cadastral →
+          Preencher Proposta Comercial →
         </button>
       </div>
 
@@ -558,7 +569,7 @@
       <div class="grid g-cnpj" style="margin-bottom:9px">
         <div class="field"><label>CNPJ / CPF <span class="req">*</span></label><input type="text" name="cnpj" required></div>
         <div class="field"><label>Inscrição Estadual</label><input type="text" name="insc_estadual"></div>
-        <div class="field"><label>Data de Abertura</label><input type="date" name="data_abertura"></div>
+        <div class="field"><label>Data de Abertura <span class="req">*</span></label><input type="date" name="data_abertura"></div>
       </div>
       <div class="grid g-addr" style="margin-bottom:9px">
         <div class="field"><label>Endereço <span class="req">*</span></label><input type="text" name="endereco" required></div>
@@ -590,19 +601,19 @@
         <div class="field"><label>RG</label><input type="text" name="rep_rg"></div>
       </div>
       <div class="grid g-nasc" style="margin-bottom:9px">
-        <div class="field"><label>Data de Nascimento</label><input type="date" name="rep_nascimento"></div>
-        <div class="field"><label>Cargo / Função na Empresa</label><input type="text" name="rep_cargo"></div>
+        <div class="field"><label>Data de Nascimento <span class="req">*</span></label><input type="date" name="rep_nascimento"></div>
+        <div class="field"><label>Cargo / Função na Empresa <span class="req">*</span></label><input type="text" name="rep_cargo"></div>
         <div class="field"><label>Telefone / WhatsApp <span class="req">*</span></label><input type="tel" name="rep_tel" required></div>
       </div>
       <div class="grid g-addr" style="margin-bottom:9px">
-        <div class="field"><label>Endereço Residencial</label><input type="text" name="rep_endereco"></div>
+        <div class="field"><label>Endereço Residencial <span class="req">*</span></label><input type="text" name="rep_endereco"></div>
         <div class="field"><label>Número <span class="req">*</span></label><input type="text" name="rep_numero"></div>
         <div class="field"><label>Complemento</label><input type="text" name="rep_complemento"></div>
       </div>
       <div class="grid g-cep" style="margin-bottom:9px">
-        <div class="field"><label>CEP</label><input type="text" name="rep_cep"></div>
-        <div class="field"><label>Cidade</label><input type="text" name="rep_cidade"></div>
-        <div class="field"><label>UF</label>
+        <div class="field"><label>CEP <span class="req">*</span></label><input type="text" name="rep_cep"></div>
+        <div class="field"><label>Cidade <span class="req">*</span></label><input type="text" name="rep_cidade"></div>
+        <div class="field"><label>UF <span class="req">*</span></label>
           <select name="rep_uf"><option value="">—</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option selected>SP</option><option>SE</option><option>TO</option></select>
         </div>
       </div>
@@ -669,12 +680,12 @@
     <div class="section-header"><h2>Estrutura Comercial e Operacional</h2></div>
     <div class="section-body">
       <div class="grid g-struct" style="margin-bottom:9px">
-        <div class="field"><label>Qtde. de Funcionários</label><input type="text" name="funcionarios"></div>
-        <div class="field"><label>Horário de Funcionamento</label><input type="text" name="horario"></div>
+        <div class="field"><label>Qtde. de Funcionários <span class="req">*</span></label><input type="text" name="funcionarios"></div>
+        <div class="field"><label>Horário de Funcionamento <span class="req">*</span></label><input type="text" name="horario"></div>
         <div class="field"><label>Tempo de Operação no Endereço Atual</label><input type="text" name="tempo_operacao"></div>
       </div>
       <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
-        <span style="font-size:13px; color:var(--body)">Possui outras unidades?</span>
+        <span style="font-size:13px; color:var(--body)">Possui outras unidades? <span class="req">*</span></span>
         <div class="check-group">
           <label class="check-opt"><input type="radio" name="outras_unidades" value="Sim"> Sim</label>
           <label class="check-opt"><input type="radio" name="outras_unidades" value="Não"> Não</label>
@@ -689,7 +700,7 @@
 
   <!-- FINANCEIRAS -->
   <div class="card">
-    <div class="section-header"><h2>Informações Financeiras e de Faturamento Mensal</h2></div>
+    <div class="section-header"><h2>Informações Financeiras e de Faturamento Mensal</h2><span class="badge-obrig">Todos obrigatórios</span></div>
     <div class="section-body">
       <div class="check-group-label">Faturamento mensal aproximado:</div>
       <div class="fat-options" style="margin-bottom:20px">
@@ -700,7 +711,7 @@
       </div>
       <div class="field" style="margin-bottom:9px">
         <label>Qual maquininha de cartão você utiliza</label>
-        <div class="check-group" style="margin-top:6px">
+        <div class="check-group" id="grpMaquininha" style="margin-top:6px">
           <label class="check-opt"><input type="checkbox" name="maquininha" value="PagBank"> PagBank</label>
           <label class="check-opt"><input type="checkbox" name="maquininha" value="MercadoPago"> MercadoPago</label>
           <label class="check-opt"><input type="checkbox" name="maquininha" value="Stone/TON"> Stone/TON</label>
@@ -739,7 +750,7 @@
       </div>
       <div class="field" style="margin-top:11px; margin-bottom:9px">
         <label>Eu recebo meus pagamentos em</label>
-        <div class="check-group" style="display:flex; gap:16px; flex-wrap:wrap; margin-top:6px; align-items:center;">
+        <div class="check-group" id="grpPrazoReceb" style="display:flex; gap:16px; flex-wrap:wrap; margin-top:6px; align-items:center;">
           <label class="check-opt"><input type="radio" name="prazo_recebimento_tipo" value="Dzero"> Dzero (recebo tudo no mesmo dia)</label>
           <label class="check-opt"><input type="radio" name="prazo_recebimento_tipo" value="D1"> D1 (recebo no próximo dia útil)</label>
           <label class="check-opt"><input type="radio" name="prazo_recebimento_tipo" value="Outro Prazo"> Outro Prazo</label>
@@ -756,9 +767,9 @@
         </div>
       </div>
       <div class="grid g-3" style="margin-top:9px">
-        <div class="field"><label>Empréstimo Bancário R$</label><input type="text" name="emprestimo"></div>
-        <div class="field"><label>Crédito Fumaça R$</label><input type="text" name="credito_fumaca"></div>
-        <div class="field"><label>Financiamento R$</label><input type="text" name="financiamento"></div>
+        <div class="field"><label>Empréstimo Bancário (R$)</label><input type="text" name="emprestimo"></div>
+        <div class="field"><label>Crédito Fumaça (R$)</label><input type="text" name="credito_fumaca"></div>
+        <div class="field"><label>Financiamento (R$)</label><input type="text" name="financiamento"></div>
       </div>
     </div>
   </div>
@@ -784,17 +795,17 @@
     <div class="section-header"><h2>Informações sobre a Empresa</h2></div>
     <div class="section-body">
       <div class="yn-rows">
-        <div class="yn-row"><span class="yn-q">Possui restrições no CNPJ?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="restricao_cnpj" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="restricao_cnpj" value="Não"> Não</label></div></div>
-        <div class="yn-row"><span class="yn-q">Possui restrições no CPF do sócio?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="restricao_cpf" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="restricao_cpf" value="Não"> Não</label></div></div>
-        <div class="yn-row"><span class="yn-q">Existe parcelamento ativo de tributos?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="parcelamento_tributos" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="parcelamento_tributos" value="Não"> Não</label></div></div>
-        <div class="yn-row"><span class="yn-q">Há processos judiciais relevantes?</span><div class="yn-opts"><label class="check-opt"><input type="radio" name="processos_judiciais" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="processos_judiciais" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Possui restrições no CNPJ? <span class="req">*</span></span><div class="yn-opts"><label class="check-opt"><input type="radio" name="restricao_cnpj" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="restricao_cnpj" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Possui restrições no CPF do sócio? <span class="req">*</span></span><div class="yn-opts"><label class="check-opt"><input type="radio" name="restricao_cpf" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="restricao_cpf" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Existe parcelamento ativo de tributos? <span class="req">*</span></span><div class="yn-opts"><label class="check-opt"><input type="radio" name="parcelamento_tributos" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="parcelamento_tributos" value="Não"> Não</label></div></div>
+        <div class="yn-row"><span class="yn-q">Há processos judiciais relevantes? <span class="req">*</span></span><div class="yn-opts"><label class="check-opt"><input type="radio" name="processos_judiciais" value="Sim"> Sim</label><label class="check-opt"><input type="radio" name="processos_judiciais" value="Não"> Não</label></div></div>
       </div>
     </div>
   </div>
 
   <!-- BANCÁRIAS -->
   <div class="card">
-    <div class="section-header"><h2>Informações Bancárias</h2></div>
+    <div class="section-header"><h2>Informações Bancárias</h2><span class="badge-obrig">Todos obrigatórios</span></div>
     <div class="section-body">
       <div class="grid g-bank" style="margin-bottom:9px">
         <div class="field"><label>Banco <span class="req">*</span></label><input type="text" name="banco" required></div>
@@ -803,7 +814,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; margin-bottom:9px">
         <span style="font-size:10px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px">Tipo de Conta:</span>
-        <div class="check-group">
+        <div class="check-group" id="grpTipoConta">
           <label class="check-opt"><input type="radio" name="tipo_conta" value="Conta Corrente"> Conta Corrente</label>
           <label class="check-opt"><input type="radio" name="tipo_conta" value="Conta Poupança"> Conta Poupança</label>
         </div>
@@ -820,14 +831,14 @@
     <div class="section-header"><h2>Documentação Necessária</h2></div>
     <div class="section-body">
       <div class="doc-cols">
-        <div class="doc-col">
-          <h3>Representante Legal</h3>
+        <div class="doc-col" id="docColRep">
+          <h3>Representante Legal <span class="req">*</span></h3>
           <label class="doc-item"><input type="checkbox" name="doc_cpf" value="CPF"> CPF</label>
           <label class="doc-item"><input type="checkbox" name="doc_rg" value="RG"> RG</label>
           <label class="doc-item"><input type="checkbox" name="doc_end_rep" value="Comprovante de Endereço"> Comprovante de Endereço</label>
         </div>
-        <div class="doc-col">
-          <h3>Empresa</h3>
+        <div class="doc-col" id="docColEmp">
+          <h3>Empresa <span class="req">*</span></h3>
           <label class="doc-item"><input type="checkbox" name="doc_contrato" value="Contrato Social / Última Alteração"> Contrato Social / Última Alteração</label>
           <label class="doc-item"><input type="checkbox" name="doc_rep_legal" value="Documento do Representante Legal"> Documento do Representante Legal</label>
           <label class="doc-item"><input type="checkbox" name="doc_mei" value="Certificado MEI"> Certificado MEI (se aplicável)</label>
@@ -854,6 +865,10 @@
       </div>
     </div>
     <div class="submit-area">
+      <div class="erro-banner" id="erroBanner">
+        <strong>⚠ Preencha os campos obrigatórios antes de gerar o PDF:</strong>
+        <ul id="erroLista"></ul>
+      </div>
       <p class="submit-note">Ao gerar o PDF, confirme que todas as informações são verdadeiras e autorize a consulta aos bureaus de crédito.</p>
       <div class="submit-btns">
         <button type="submit" class="btn-submit" id="btnSubmit">
@@ -1322,7 +1337,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
     doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 24);
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,30,30);
-    doc.text('FICHA CADASTRAL — CLIENTES', MR, 18, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — CLIENTES', MR, 18, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
     doc.text('Proposta Comercial  ·  Pág. 2 de 4', MR, 24, {align:'right'});
   } else {
@@ -1333,7 +1348,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
     doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 24);
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...WHITE);
-    doc.text('FICHA CADASTRAL — CLIENTES', MR, 18, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — CLIENTES', MR, 18, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
     doc.text('Proposta Comercial  ·  Pág. 2 de 4', MR, 24, {align:'right'});
   }
@@ -1393,14 +1408,14 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
     doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
   }
 
   // Sec: 2º Sócio (espelha Representante Legal)
@@ -1478,14 +1493,14 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
     doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('FICHA CADASTRAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
   }
 
   // ── Financeiras ──
@@ -1511,15 +1526,16 @@ function gerarPDF(printMode=false) {
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
   doc.text('QUAL MAQUININHA DE CARTÃO VOCÊ UTILIZA', ML, y);
   y += 4; // label→box gap
-  const vtp=fCheckList('maquininha','maquininha_outra');
   if (printMode) {
     doc.setDrawColor(150,150,150); doc.setLineWidth(0.5);
     doc.line(ML, y+FH2, ML+PW, y+FH2);
+    const vtp=fCheckList('maquininha','maquininha_outra');
     if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(20,20,20);
       while(doc.getTextWidth(v)>PW-2&&v.length>2)v=v.slice(0,-1);doc.text(v,ML,y+FH2-1.5);}
   } else {
     doc.setFillColor(...FBKG); doc.setDrawColor(...LINE); doc.setLineWidth(0.4);
     doc.rect(ML, y, PW, FH2, 'FD');
+    const vtp=fCheckList('maquininha','maquininha_outra');
     if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...BODY);
       while(doc.getTextWidth(v)>PW-3&&v.length>2)v=v.slice(0,-1);doc.text(v,ML+2,y+FH2/2+2.5);}
   }
@@ -1527,7 +1543,7 @@ function gerarPDF(printMode=false) {
 
   // Row 3: Ticket médio — label line then boxes
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
-  doc.text('TICKET MÉDIO  R$', ML, y);
+  doc.text('TICKET MÉDIO', ML, y);
   let ox=ML+24;
   for (const lb of ['DÉBITO','CRÉDITO','PIX','BOLETO']) { doc.text(lb,ox,y); ox+=seg; }
   y += 4;
@@ -1539,7 +1555,7 @@ function gerarPDF(printMode=false) {
 
   // Row 4: Vendas diárias
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
-  doc.text('VENDAS DIÁRIAS  R$', ML, y);
+  doc.text('VENDAS DIÁRIAS', ML, y);
   ox=ML+24;
   for (const lb of ['DÉBITO','CRÉDITO','PIX','BOLETO']) { doc.text(lb,ox,y); ox+=seg; }
   y += 4;
@@ -1574,7 +1590,7 @@ function gerarPDF(printMode=false) {
 
   // Row 7: Valores
   const t3b=(PW-2*G2)/3;
-  row2(y,[[ML,t3b,'emprestimo','Empréstimo Bancário  R$'],[ML+t3b+G2,t3b,'credito_fumaca','Crédito Fumaça  R$'],[ML+2*(t3b+G2),t3b,'financiamento','Financiamento  R$']]); y+=RS2+2;
+  row2(y,[[ML,t3b,'emprestimo','Empréstimo Bancário'],[ML+t3b+G2,t3b,'credito_fumaca','Crédito Fumaça'],[ML+2*(t3b+G2),t3b,'financiamento','Financiamento']]); y+=RS2+2;
 
 
   // ── Equipamentos ──
@@ -1651,7 +1667,7 @@ function gerarPDF(printMode=false) {
     doc.addPage();
     y = 20;
     doc.setFont('helvetica','bold'); doc.setFontSize(7.8); doc.setTextColor(30,30,30);
-    doc.text('MONETZ — FICHA CADASTRAL  ·  DECLARAÇÃO E ASSINATURAS', ML, 12);
+    doc.text('MONETZ — PROPOSTA COMERCIAL  ·  DECLARAÇÃO E ASSINATURAS', ML, 12);
     doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(ML, 14, MR, 14);
   }
   y=sec2('Declaração', y);
@@ -1724,11 +1740,12 @@ function gerarPDF(printMode=false) {
   // ── Salvar ──
   const razao = f('razao_social') || 'cliente';
   const suffix = '_impressao';
-  doc.save(`MONETZ_Ficha_${razao.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30)}${suffix}.pdf`);
+  doc.save(`MONETZ_Proposta_${razao.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30)}${suffix}.pdf`);
 }
 
 // ─── GERAR PDF E ENVIAR POR E-MAIL ─────────────────────────────────────────
 function gerarPDFeEmail() {
+  if (!validarObrigatorios()) return;
   const btn = document.getElementById('btnEmail');
   btn.disabled = true;
   btn.textContent = 'Gerando PDF...';
@@ -1737,7 +1754,7 @@ function gerarPDFeEmail() {
     try {
       // 1. Gera e baixa o PDF
       const razao = f('razao_social') || 'Cliente';
-      const nomeArquivo = 'MONETZ_Ficha_' + razao.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) + '_impressao.pdf';
+      const nomeArquivo = 'MONETZ_Proposta_' + razao.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) + '_impressao.pdf';
       gerarPDF(true);
 
       // 2. Monta o e-mail com aviso de anexo e resumo dos dados principais
@@ -1750,13 +1767,13 @@ function gerarPDFeEmail() {
       const corpo = [
         'Prezados,',
         '',
-        'Segue a Ficha Cadastral Monetz preenchida pelo cliente abaixo.',
+        'Segue a Proposta Comercial Monetz preenchida pelo cliente abaixo.',
         '',
         '⚠ ATENÇÃO: O PDF foi baixado automaticamente na sua pasta de Downloads.',
         'Por favor, ANEXE o arquivo "' + nomeArquivo + '" antes de enviar este e-mail.',
         '',
         '════════════════════════════════════',
-        ' RESUMO DA FICHA',
+        ' RESUMO DA PROPOSTA',
         '════════════════════════════════════',
         'Data/Hora:        ' + _dataShort + ' às ' + _horaFmt,
         'Aceite proposta:  ' + (_aceiteTimestamp || '—'),
@@ -1790,7 +1807,7 @@ function gerarPDFeEmail() {
         'Rua Luís Gonçalves Júnior, 220 — São Paulo - SP, CEP 04173-160',
       ].join('\n');
 
-      const subject = encodeURIComponent('Ficha Cadastral Monetz — ' + razao + ' — ' + _dataShort);
+      const subject = encodeURIComponent('Proposta Comercial Monetz — ' + razao + ' — ' + _dataShort);
       const body = encodeURIComponent(corpo);
 
       // 3. Abre o cliente de e-mail após o PDF ser salvo
@@ -1822,9 +1839,134 @@ function gerarPDFeEmail() {
   }, 300);
 }
 
+// ─── VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS ───────────────────────────────────────
+function validarObrigatorios() {
+  document.querySelectorAll('.erro-validacao, .bloco-erro').forEach(el =>
+    el.classList.remove('erro-validacao', 'bloco-erro'));
+  const banner = document.getElementById('erroBanner');
+  const lista  = document.getElementById('erroLista');
+  lista.innerHTML = '';
+  const erros = [];
+  let primeiroEl = null;
+
+  const marcar = (el, cls) => {
+    if (!el) return;
+    el.classList.add(cls || 'erro-validacao');
+    if (!primeiroEl) primeiroEl = el;
+  };
+  const reqTexto = (name, label) => {
+    const el = document.querySelector(`[name="${name}"]`);
+    if (!el || !el.value.trim()) { erros.push(label); marcar(el ? el.closest('.field') : null); }
+  };
+  const reqRadio = (name, label, containerSel) => {
+    if (!document.querySelector(`input[name="${name}"]:checked`)) {
+      erros.push(label);
+      const first = document.querySelector(`input[name="${name}"]`);
+      const cont = containerSel ? document.querySelector(containerSel)
+                 : (first ? first.closest('.yn-row, .field, .check-group') : null);
+      marcar(cont, 'bloco-erro');
+    }
+  };
+  const reqCheckGroup = (name, label, containerSel) => {
+    if (!document.querySelector(`input[name="${name}"]:checked`)) {
+      erros.push(label); marcar(document.querySelector(containerSel), 'bloco-erro');
+    }
+  };
+  // Ao menos um checkbox marcado dentre vários names distintos
+  const reqAlgumCheckbox = (names, label, containerSel) => {
+    const algum = names.some(n => document.querySelector(`input[name="${n}"]:checked`));
+    if (!algum) { erros.push(label); marcar(document.querySelector(containerSel), 'bloco-erro'); }
+  };
+
+  // ── CARD ESTABELECIMENTO ──
+  reqTexto('razao_social', 'Razão Social');
+  reqTexto('cnpj', 'CNPJ / CPF');
+  reqTexto('data_abertura', 'Data de Abertura');
+  reqTexto('endereco', 'Endereço (estabelecimento)');
+  reqTexto('numero', 'Número (estabelecimento)');
+  reqTexto('cep', 'CEP (estabelecimento)');
+  reqTexto('cidade', 'Cidade (estabelecimento)');
+  reqTexto('uf', 'UF (estabelecimento)');
+  reqTexto('telefone', 'Telefone Comercial');
+  reqTexto('email', 'E-mail para Contato');
+
+  // ── CARD REPRESENTANTE LEGAL ──
+  reqTexto('rep_nome', 'Nome Completo (representante)');
+  reqTexto('rep_cpf', 'CPF (representante)');
+  reqTexto('rep_nascimento', 'Data de Nascimento (representante)');
+  reqTexto('rep_tel', 'Telefone / WhatsApp (representante)');
+  reqTexto('rep_cargo', 'Cargo / Função na Empresa');
+  reqTexto('rep_endereco', 'Endereço Residencial');
+  reqTexto('rep_numero', 'Número (residencial)');
+  reqTexto('rep_cep', 'CEP (residencial)');
+  reqTexto('rep_cidade', 'Cidade (residencial)');
+  reqTexto('rep_uf', 'UF (residencial)');
+  reqTexto('rep_email', 'E-mail (representante)');
+  reqRadio('rep_estado_civil', 'Estado Civil');
+
+  // ── CARD ESTRUTURA COMERCIAL E OPERACIONAL ──
+  reqTexto('funcionarios', 'Qtde. de Funcionários');
+  reqTexto('horario', 'Horário de Funcionamento');
+  reqRadio('outras_unidades', 'Possui outras unidades?');
+
+  // ── CARD FINANCEIRAS ──
+  reqRadio('faturamento', 'Faturamento mensal aproximado', '.fat-options');
+  reqCheckGroup('maquininha', 'Maquininha de cartão (selecione ao menos uma)', '#grpMaquininha');
+  const outraChk = document.querySelector('input[name="maquininha"][value="Outra"]');
+  if (outraChk && outraChk.checked) reqTexto('maquininha_outra', 'Especifique a maquininha "Outra"');
+  reqTexto('ticket_debito',  'Ticket Médio — Débito');
+  reqTexto('ticket_credito', 'Ticket Médio — Crédito');
+  reqTexto('ticket_pix',     'Ticket Médio — PIX');
+  reqTexto('ticket_boleto',  'Ticket Médio — Boleto');
+  reqTexto('vendas_debito',  'Vendas Diárias — Débito');
+  reqTexto('vendas_credito', 'Vendas Diárias — Crédito');
+  reqTexto('vendas_pix',     'Vendas Diárias — PIX');
+  reqTexto('vendas_boleto',  'Vendas Diárias — Boleto');
+  reqRadio('antecipacao', 'Faz antecipação de agendas?');
+  reqRadio('prazo_recebimento_tipo', 'Prazo em que recebe os pagamentos', '#grpPrazoReceb');
+  const prazoOutro = document.querySelector('input[name="prazo_recebimento_tipo"][value="Outro Prazo"]');
+  if (prazoOutro && prazoOutro.checked) reqTexto('prazo_recebimento_outro_dias', 'Em quantos dias recebe (Outro Prazo)');
+  reqRadio('credito_ativo', 'Possui crédito fumaça/empréstimo/financiamento?');
+  const creditoSim = document.querySelector('input[name="credito_ativo"][value="Sim"]');
+  if (creditoSim && creditoSim.checked) {
+    reqTexto('emprestimo',     'Empréstimo Bancário R$');
+    reqTexto('credito_fumaca', 'Crédito Fumaça R$');
+    reqTexto('financiamento',  'Financiamento R$');
+  }
+
+  // ── CARD INFORMAÇÕES SOBRE A EMPRESA ──
+  reqRadio('restricao_cnpj', 'Possui restrições no CNPJ?');
+  reqRadio('restricao_cpf', 'Possui restrições no CPF do sócio?');
+  reqRadio('parcelamento_tributos', 'Existe parcelamento ativo de tributos?');
+  reqRadio('processos_judiciais', 'Há processos judiciais relevantes?');
+
+  // ── CARD BANCÁRIAS ──
+  reqTexto('banco',   'Banco');
+  reqTexto('agencia', 'Agência');
+  reqTexto('conta',   'Conta Corrente');
+  reqRadio('tipo_conta', 'Tipo de Conta', '#grpTipoConta');
+  reqTexto('chave_pix', 'Chave PIX');
+
+  // ── CARD DOCUMENTAÇÃO NECESSÁRIA ──
+  reqAlgumCheckbox(['doc_cpf','doc_rg','doc_end_rep'],
+    'Documentação — Representante Legal (marque ao menos um)', '#docColRep');
+  reqAlgumCheckbox(['doc_contrato','doc_rep_legal','doc_mei','doc_end_emp','doc_fat'],
+    'Documentação — Empresa (marque ao menos um)', '#docColEmp');
+
+  if (erros.length) {
+    lista.innerHTML = erros.map(e => `<li>${e}</li>`).join('');
+    banner.classList.add('show');
+    if (primeiroEl) primeiroEl.scrollIntoView({ behavior:'smooth', block:'center' });
+    return false;
+  }
+  banner.classList.remove('show');
+  return true;
+}
+
 // ─── SUBMIT ─────────────────────────────────────────────────────────────────
 document.getElementById('fichaForm').addEventListener('submit', function(e) {
   e.preventDefault();
+  if (!validarObrigatorios()) return;
   const btn = document.getElementById('btnSubmit');
   btn.disabled = true;
   btn.querySelector('span:last-child').textContent = 'Gerando PDF...';
@@ -1859,25 +2001,28 @@ document.querySelectorAll('input[name="cnpj"]').forEach(el => {
   });
 });
 
-// ─── MÁSCARA MONETÁRIA (centavos ao vivo): "2.102,20" — rótulo já traz "R$" ───
-function aplicarMascaraMoeda(el){
-  el.addEventListener('input', function(){
-    let v = this.value.replace(/\D/g,'');      // mantém apenas dígitos
-    if(!v){ this.value=''; return; }
-    v = v.replace(/^0+/,'') || '0';            // remove zeros à esquerda
-    while(v.length < 3) v = '0' + v;           // garante 2 casas de centavos
-    let inteiro = v.slice(0,-2);
-    const centavos = v.slice(-2);
-    inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // separador de milhar
-    this.value = inteiro + ',' + centavos;
-  });
+// ─── MÁSCARA DE MOEDA (R$) — campos financeiros ──────────────────────────────
+function maskBRL(el) {
+  let d = el.value.replace(/\D/g, '');
+  if (!d) { el.value = ''; return; }
+  d = d.slice(0, 13);                 // limite de segurança
+  d = d.replace(/^0+/, '') || '0';    // remove zeros à esquerda
+  while (d.length < 3) d = '0' + d;   // garante centavos
+  const cents = d.slice(-2);
+  let int = d.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  el.value = 'R$ ' + int + ',' + cents;
 }
-[
+const _camposMoeda = [
   'ticket_debito','ticket_credito','ticket_pix','ticket_boleto',
   'vendas_debito','vendas_credito','vendas_pix','vendas_boleto',
   'emprestimo','credito_fumaca','financiamento'
-].forEach(nm => {
-  document.querySelectorAll(`input[name="${nm}"]`).forEach(aplicarMascaraMoeda);
+];
+_camposMoeda.forEach(nm => {
+  const el = document.querySelector(`input[name="${nm}"]`);
+  if (!el) return;
+  el.setAttribute('inputmode', 'numeric');
+  el.placeholder = 'R$ 0,00';
+  el.addEventListener('input', () => maskBRL(el));
 });
 </script>
 </body>
