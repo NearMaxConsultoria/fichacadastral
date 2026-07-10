@@ -329,8 +329,8 @@
   .oferta-card.selected .oferta-badge-escolhida { display: block; }
   .oferta-rows { display: flex; flex-direction: column; gap: 6px; }
   .oferta-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; }
-  .oferta-row .olbl { color: var(--muted); }
-  .oferta-row .oval { font-weight: 600; color: var(--dark); }
+  .oferta-row .olbl { color: var(--muted); min-width: 0; }
+  .oferta-row .oval { font-weight: 600; color: var(--dark); white-space: nowrap; flex-shrink: 0; margin-left: 8px; }
   .oferta-row.destaque .oval { color: var(--navy); font-size: 15px; font-weight: 700; }
   .oferta-aviso { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 8px; text-align: center; }
   .oferta-selecionar-label {
@@ -1626,7 +1626,7 @@ function gerarPDF(printMode=false) {
     if(vtp){let v=vtp;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...BODY);
       while(doc.getTextWidth(v)>PW-3&&v.length>2)v=v.slice(0,-1);doc.text(v,ML+2,y+FH2/2+2.5);}
   }
-  y += FH2 + 10; // box + generous gap before ticket
+  y += FH2 + 6; // box + gap before ticket
 
   // Row 3: Ticket médio — label line then boxes
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
@@ -1638,7 +1638,7 @@ function gerarPDF(printMode=false) {
   for (const nm of ['ticket_debito','ticket_credito','ticket_pix','ticket_boleto']) {
     fieldBox(ox,y,seg-G2,FH2,f(nm)); ox+=seg;
   }
-  y += FH2 + 10;
+  y += FH2 + 6;
 
   // Row 4: Vendas diárias
   doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(...MUTED);
@@ -1650,7 +1650,7 @@ function gerarPDF(printMode=false) {
   for (const nm of ['vendas_debito','vendas_credito','vendas_pix','vendas_boleto']) {
     fieldBox(ox,y,seg-G2,FH2,f(nm)); ox+=seg;
   }
-  y += FH2 + 10;
+  y += FH2 + 6;
 
   // Row 5: Antecipação
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
