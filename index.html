@@ -289,7 +289,8 @@
   #formWrapper.visible { display: block; }
 
   /* ─── SELEÇÃO DE OFERTA ─── */
-  .ofertas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0 8px; }
+  .ofertas-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 16px 0 8px; }
+  @media (max-width: 900px) { .ofertas-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { .ofertas-grid { grid-template-columns: 1fr; } }
   .oferta-card {
     border: 2px solid var(--line); border-radius: 8px; padding: 18px 18px 14px;
@@ -425,51 +426,15 @@
 
         <div class="ofertas-grid">
 
-          <!-- OFERTA A — R$ 20.000 -->
+          <!-- OFERTA A — R$ 10.000 -->
           <label class="oferta-card" id="cardOfertaA" onclick="selecionarOferta('A')">
             <input type="radio" name="oferta_escolhida" value="A" id="ofertaA">
             <div class="oferta-badge-escolhida">✓ Escolhida</div>
             <div class="oferta-card-header">
               <div class="oferta-radio-indicator"></div>
               <div>
-                <div class="oferta-titulo">Oferta A — R$ 20.000</div>
-                <div class="oferta-subtitulo">Crédito maior · Liquidação em 126 dias úteis</div>
-              </div>
-            </div>
-            <div class="oferta-rows">
-              <div class="oferta-row destaque">
-                <span class="olbl">Valor Bruto do Crédito</span>
-                <span class="oval">R$ 20.000,00</span>
-              </div>
-              <div class="oferta-row">
-                <span class="olbl">Valor Líquido Disponibilizado</span>
-                <span class="oval">R$ 19.200,00</span>
-              </div>
-              <div class="oferta-row">
-                <span class="olbl">Parcela de Liquidação Diária</span>
-                <span class="oval">R$ 198,00</span>
-              </div>
-              <div class="oferta-row">
-                <span class="olbl">Prazo Estimado</span>
-                <span class="oval">126 dias úteis</span>
-              </div>
-              <div class="oferta-row">
-                <span class="olbl">Total a Liquidar</span>
-                <span class="oval">R$ 24.948,00</span>
-              </div>
-            </div>
-            <span class="oferta-selecionar-label">Clique para selecionar</span>
-          </label>
-
-          <!-- OFERTA B — R$ 10.000 -->
-          <label class="oferta-card" id="cardOfertaB" onclick="selecionarOferta('B')">
-            <input type="radio" name="oferta_escolhida" value="B" id="ofertaB">
-            <div class="oferta-badge-escolhida">✓ Escolhida</div>
-            <div class="oferta-card-header">
-              <div class="oferta-radio-indicator"></div>
-              <div>
-                <div class="oferta-titulo">Oferta B — R$ 10.000</div>
-                <div class="oferta-subtitulo">Crédito menor · Liquidação em 126 dias úteis</div>
+                <div class="oferta-titulo">Oferta A — R$ 10.000</div>
+                <div class="oferta-subtitulo">Prazo 6 meses · ~140 parcelas</div>
               </div>
             </div>
             <div class="oferta-rows">
@@ -482,16 +447,100 @@
                 <span class="oval">R$ 9.600,00</span>
               </div>
               <div class="oferta-row">
+                <span class="olbl">Parcelas (aprox.)</span>
+                <span class="oval">~140</span>
+              </div>
+              <div class="oferta-row">
                 <span class="olbl">Parcela de Liquidação Diária</span>
-                <span class="oval">R$ 99,15</span>
+                <span class="oval">R$ 99,00</span>
               </div>
               <div class="oferta-row">
                 <span class="olbl">Prazo Estimado</span>
-                <span class="oval">126 dias úteis</span>
+                <span class="oval">6 meses</span>
               </div>
               <div class="oferta-row">
                 <span class="olbl">Total a Liquidar</span>
-                <span class="oval">R$ 12.492,62</span>
+                <span class="oval">R$ 13.860,00</span>
+              </div>
+            </div>
+            <span class="oferta-selecionar-label">Clique para selecionar</span>
+          </label>
+
+          <!-- OFERTA B — R$ 20.000 -->
+          <label class="oferta-card" id="cardOfertaB" onclick="selecionarOferta('B')">
+            <input type="radio" name="oferta_escolhida" value="B" id="ofertaB">
+            <div class="oferta-badge-escolhida">✓ Escolhida</div>
+            <div class="oferta-card-header">
+              <div class="oferta-radio-indicator"></div>
+              <div>
+                <div class="oferta-titulo">Oferta B — R$ 20.000</div>
+                <div class="oferta-subtitulo">Prazo 6 meses · ~140 parcelas</div>
+              </div>
+            </div>
+            <div class="oferta-rows">
+              <div class="oferta-row destaque">
+                <span class="olbl">Valor Bruto do Crédito</span>
+                <span class="oval">R$ 20.000,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Valor Líquido Disponibilizado</span>
+                <span class="oval">R$ 19.200,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Parcelas (aprox.)</span>
+                <span class="oval">~140</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Parcela de Liquidação Diária</span>
+                <span class="oval">R$ 199,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Prazo Estimado</span>
+                <span class="oval">6 meses</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Total a Liquidar</span>
+                <span class="oval">R$ 27.860,00</span>
+              </div>
+            </div>
+            <span class="oferta-selecionar-label">Clique para selecionar</span>
+          </label>
+
+          <!-- OFERTA C — R$ 30.000 -->
+          <label class="oferta-card" id="cardOfertaC" onclick="selecionarOferta('C')">
+            <input type="radio" name="oferta_escolhida" value="C" id="ofertaC">
+            <div class="oferta-badge-escolhida">✓ Escolhida</div>
+            <div class="oferta-card-header">
+              <div class="oferta-radio-indicator"></div>
+              <div>
+                <div class="oferta-titulo">Oferta C — R$ 30.000</div>
+                <div class="oferta-subtitulo">Prazo 6 meses · ~140 parcelas</div>
+              </div>
+            </div>
+            <div class="oferta-rows">
+              <div class="oferta-row destaque">
+                <span class="olbl">Valor Bruto do Crédito</span>
+                <span class="oval">R$ 30.000,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Valor Líquido Disponibilizado</span>
+                <span class="oval">R$ 28.800,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Parcelas (aprox.)</span>
+                <span class="oval">~140</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Parcela de Liquidação Diária</span>
+                <span class="oval">R$ 299,00</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Prazo Estimado</span>
+                <span class="oval">6 meses</span>
+              </div>
+              <div class="oferta-row">
+                <span class="olbl">Total a Liquidar</span>
+                <span class="oval">R$ 41.860,00</span>
               </div>
             </div>
             <span class="oferta-selecionar-label">Clique para selecionar</span>
@@ -726,17 +775,17 @@
       </div>
       <div class="check-group-label">Ticket Médio (R$)</div>
       <div class="grid g-4" style="margin-bottom:9px">
-        <div class="field"><label>Débito</label><input type="text" name="ticket_debito"></div>
-        <div class="field"><label>Crédito</label><input type="text" name="ticket_credito"></div>
-        <div class="field"><label>PIX</label><input type="text" name="ticket_pix"></div>
-        <div class="field"><label>Boleto</label><input type="text" name="ticket_boleto"></div>
+        <div class="field"><label>Débito <span class="req">*</span></label><input type="text" name="ticket_debito" required></div>
+        <div class="field"><label>Crédito <span class="req">*</span></label><input type="text" name="ticket_credito" required></div>
+        <div class="field"><label>PIX <span class="req">*</span></label><input type="text" name="ticket_pix" required></div>
+        <div class="field"><label>Boleto <span class="req">*</span></label><input type="text" name="ticket_boleto" required></div>
       </div>
       <div class="check-group-label">Vendas Diárias (R$)</div>
       <div class="grid g-4" style="margin-bottom:20px">
-        <div class="field"><label>Débito</label><input type="text" name="vendas_debito"></div>
-        <div class="field"><label>Crédito</label><input type="text" name="vendas_credito"></div>
-        <div class="field"><label>PIX</label><input type="text" name="vendas_pix"></div>
-        <div class="field"><label>Boleto</label><input type="text" name="vendas_boleto"></div>
+        <div class="field"><label>Débito <span class="req">*</span></label><input type="text" name="vendas_debito" required></div>
+        <div class="field"><label>Crédito <span class="req">*</span></label><input type="text" name="vendas_credito" required></div>
+        <div class="field"><label>PIX <span class="req">*</span></label><input type="text" name="vendas_pix" required></div>
+        <div class="field"><label>Boleto <span class="req">*</span></label><input type="text" name="vendas_boleto" required></div>
       </div>
       <div class="divider"></div>
       <div class="yn-rows">
@@ -964,8 +1013,10 @@ const fCheckList = (name, outraFieldName) => {
 function selecionarOferta(letra) {
   document.getElementById('ofertaA').checked = letra === 'A';
   document.getElementById('ofertaB').checked = letra === 'B';
+  document.getElementById('ofertaC').checked = letra === 'C';
   document.getElementById('cardOfertaA').classList.toggle('selected', letra === 'A');
   document.getElementById('cardOfertaB').classList.toggle('selected', letra === 'B');
+  document.getElementById('cardOfertaC').classList.toggle('selected', letra === 'C');
   document.getElementById('ofertaAviso').style.display = 'none';
 }
 
@@ -1103,7 +1154,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(30,30,30);
     doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(80,80,80);
-    doc.text('Pág. 1 de 4', MR, 20, {align:'right'});
+    doc.text('Pág. 1 de 5', MR, 20, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,22,'F');
     doc.setFillColor(...GOLD); doc.rect(0,22,W,1.2,'F');
@@ -1114,7 +1165,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...WHITE);
     doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
-    doc.text('Pág. 1 de 4', MR, 20, {align:'right'});
+    doc.text('Pág. 1 de 5', MR, 20, {align:'right'});
   }
 
   // Badge linha (data abertura / validade / documento)
@@ -1184,31 +1235,76 @@ function gerarPDF(printMode=false) {
     'Sem Boletos: A liquidação ocorre diretamente na agenda de recebíveis, eliminando o risco de inadimplência por falha operacional.'
   ]);
 
+  // ── Fim da Página 1 (Proposta) ──
+  footer(1,5);
+  doc.addPage();
+
+  // ══════════════════════════════════════
+  //  PÁGINA 2 — CONDIÇÕES COMERCIAIS
+  // ══════════════════════════════════════
+  if (printMode) {
+    doc.setFillColor(255,255,255); doc.rect(0,0,W,22,'F');
+    doc.setDrawColor(60,60,60); doc.setLineWidth(0.5); doc.line(0,22,W,22);
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(30,30,30);
+    doc.text('Monetz', ML, 14);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(80,80,80);
+    doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 20);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(30,30,30);
+    doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(80,80,80);
+    doc.text('Pág. 2 de 5', MR, 20, {align:'right'});
+  } else {
+    doc.setFillColor(...DARK); doc.rect(0,0,W,22,'F');
+    doc.setFillColor(...GOLD); doc.rect(0,22,W,1.2,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(...GOLD);
+    doc.text('Monetz', ML, 14);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
+    doc.text('Securitizadora  ·  Crédito para o seu negócio', ML, 20);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...WHITE);
+    doc.text('PROPOSTA COMERCIAL', MR, 14, {align:'right'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(148,163,184);
+    doc.text('Pág. 2 de 5', MR, 20, {align:'right'});
+  }
+  py = 30;
+
   // ── Condições Comerciais ──
   pSecBar('5. Condições Comerciais');
 
   // Identificar oferta escolhida
-  const ofertaEscolhida = f('oferta_escolhida'); // 'A', 'B' ou ''
+  const ofertaEscolhida = f('oferta_escolhida'); // 'A', 'B', 'C' ou ''
 
   const ofertas = {
     A: {
-      label: 'OFERTA A — R$ 20.000,00',
-      rows: [
-        ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 20.000,00'],
-        ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 19.200,00'],
-        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 198,00'],
-        ['Prazo Estimado','Período de amortização da operação','126 dias úteis'],
-        ['Total a Liquidar','Valor total ao final do período','R$ 24.948,00'],
-      ]
-    },
-    B: {
-      label: 'OFERTA B — R$ 10.000,00',
+      label: 'OFERTA A — R$ 10.000,00',
       rows: [
         ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 10.000,00'],
         ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 9.600,00'],
-        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 99,15'],
-        ['Prazo Estimado','Período de amortização da operação','126 dias úteis'],
-        ['Total a Liquidar','Valor total ao final do período','R$ 12.492,62'],
+        ['Parcelas (aprox.)','Quantidade estimada de parcelas','~140'],
+        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 99,00'],
+        ['Prazo Estimado','Período de amortização da operação','6 meses'],
+        ['Total a Liquidar','Valor total ao final do período','R$ 13.860,00'],
+      ]
+    },
+    B: {
+      label: 'OFERTA B — R$ 20.000,00',
+      rows: [
+        ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 20.000,00'],
+        ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 19.200,00'],
+        ['Parcelas (aprox.)','Quantidade estimada de parcelas','~140'],
+        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 199,00'],
+        ['Prazo Estimado','Período de amortização da operação','6 meses'],
+        ['Total a Liquidar','Valor total ao final do período','R$ 27.860,00'],
+      ]
+    },
+    C: {
+      label: 'OFERTA C — R$ 30.000,00',
+      rows: [
+        ['Valor Bruto do Crédito','Montante total da operação estruturada','R$ 30.000,00'],
+        ['Valor Líquido Disponibilizado','Recurso creditado em conta para o cliente','R$ 28.800,00'],
+        ['Parcelas (aprox.)','Quantidade estimada de parcelas','~140'],
+        ['Parcela Diária','Retenção automática na agenda de cartões','R$ 299,00'],
+        ['Prazo Estimado','Período de amortização da operação','6 meses'],
+        ['Total a Liquidar','Valor total ao final do período','R$ 41.860,00'],
       ]
     }
   };
@@ -1308,26 +1404,12 @@ function gerarPDF(printMode=false) {
   doc.text('✓  Proposta Preenchida em: '+aceiteTs+'   ·   Gerado em: '+_dataShort+' às '+_horaFmt, ML+3, ayy+5.8);
 
   // footer proposta
-  if (printMode) {
-    doc.setFillColor(255,255,255); doc.rect(0,287,W,10,'F');
-    doc.setDrawColor(160,160,160); doc.setLineWidth(0.4); doc.line(0,287,W,287);
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
-    doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', ML, 292);
-    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
-    doc.text('01 / 04', MR, 292, {align:'right'});
-  } else {
-    doc.setFillColor(...DARK); doc.rect(0,286,W,11,'F');
-    doc.setFillColor(...GOLD); doc.rect(0,286,W,0.8,'F');
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...MUTED);
-    doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', ML, 291);
-    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...GOLD);
-    doc.text('01 / 04', MR, 291, {align:'right'});
-  }
+  footer(2,5);
 
   doc.addPage();
 
   // ══════════════════════════════════════
-  //  PÁGINA 2 — FICHA CADASTRAL (antiga pág 1)
+  //  PÁGINA 3 — FICHA CADASTRAL (antiga pág 1)
   // ══════════════════════════════════════
   if (printMode) {
     doc.setFillColor(255,255,255); doc.rect(0,0,W,28,'F');
@@ -1339,7 +1421,7 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,30,30);
     doc.text('PROPOSTA COMERCIAL — CLIENTES', MR, 18, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('Proposta Comercial  ·  Pág. 2 de 4', MR, 24, {align:'right'});
+    doc.text('Proposta Comercial  ·  Pág. 3 de 5', MR, 24, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,28,'F');
     doc.setFillColor(...GOLD); doc.rect(0,28,W,1.5,'F');
@@ -1350,11 +1432,16 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...WHITE);
     doc.text('PROPOSTA COMERCIAL — CLIENTES', MR, 18, {align:'right'});
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('Proposta Comercial  ·  Pág. 2 de 4', MR, 24, {align:'right'});
+    doc.text('Proposta Comercial  ·  Pág. 3 de 5', MR, 24, {align:'right'});
   }
 
   // ── PÁGINA 2: Estabelecimento + Representante Legal (layout fluido, robusto a novos campos) ──
-  const FH1=9, RS1=printMode?12.5:12, BG1=6;
+  const FH1=9, RS1=printMode?9.5:12, BG1=printMode?4:6;
+  // Gap extra obrigatório no modo impressão antes de qualquer elemento que comece
+  // a preencher imediatamente no topo (barra de seção nova, checkboxes de Estado Civil).
+  // Necessário porque no modo impressão o rótulo de cada campo fica ABAIXO da linha,
+  // em fy+FH1+3.5 — sem esse respiro extra, o próximo elemento cobre o rótulo anterior.
+  const SECGAP = printMode?4.5:2;
   const aw=PW*0.63, cw=PW-aw-G;
   const endw=PW*0.52, numw=PW*0.13, compw=PW-endw-numw-2*G;
   const cepw=PW*0.17, citw=PW*0.52, ufw=PW-cepw-citw-2*G;
@@ -1382,7 +1469,7 @@ function gerarPDF(printMode=false) {
   row(y,FH1,[[ML,endw,'endereco','Endereço (Rua) *'],[ML+endw+G,numw,'numero','Número *'],[ML+endw+numw+2*G,compw,'complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'cep','CEP *'],[ML+cepw+G,citw,'cidade','Cidade *'],[ML+cepw+citw+2*G,ufw,'uf','UF *']]); y+=RS1;
   row(y,FH1,[[ML,tw,'telefone','Telefone Comercial *'],[ML+tw+G,ew,'email','E-mail *'],[ML+tw+ew+2*G,sw,'site','Site / Redes Sociais']]); y+=RS1;
-  y+=2;
+  y+=SECGAP;
 
   // Sec 2: Representante Legal (+ Estado Civil + Cônjuge)
   secBar('Dados do Representante Legal', y); y+=BAR_H+BG1;
@@ -1390,13 +1477,13 @@ function gerarPDF(printMode=false) {
   row(y,FH1,[[ML,nascw,'rep_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'rep_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'rep_tel','Telefone / WhatsApp *']]); y+=RS1;
   row(y,FH1,[[ML,endw,'rep_endereco','Endereço Residencial'],[ML+endw+G,numw,'rep_numero','Número'],[ML+endw+numw+2*G,compw,'rep_complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'rep_cep','CEP'],[ML+cepw+G,citw,'rep_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'rep_uf','UF']]); y+=RS1;
-  row(y,FH1,[[ML,PW,'rep_email','E-mail *']]); y+=RS1;
+  row(y,FH1,[[ML,PW,'rep_email','E-mail *']]); y+=RS1+SECGAP;
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
   doc.text('Estado Civil:', ML, y+3);
   radioMulti(ML+22, y, 'rep_estado_civil', EC_OPTS); y+=RS1;
   row(y,FH1,[[ML,conjnw,'rep_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'rep_conjuge_cpf','Cônjuge — CPF'],[ML+conjnw+conjcw+2*G,conjew,'rep_conjuge_email','Cônjuge — E-mail']]); y+=RS1;
 
-  footer(2);
+  footer(3,5);
 
   // ════════════════════════════════════════
   //  PÁGINA 3 — 2º SÓCIO + ESTRUTURA
@@ -1408,14 +1495,14 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 4 de 5', MR, 10, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
     doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 3 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 4 de 5', MR, 10, {align:'right'});
   }
 
   // Sec: 2º Sócio (espelha Representante Legal)
@@ -1424,12 +1511,12 @@ function gerarPDF(printMode=false) {
   row(y,FH1,[[ML,nascw,'soc_nascimento','Data de Nascimento'],[ML+nascw+G,cargw,'soc_cargo','Cargo / Função'],[ML+nascw+cargw+2*G,telw,'soc_tel','Telefone / WhatsApp']]); y+=RS1;
   row(y,FH1,[[ML,endw,'soc_endereco','Endereço Residencial'],[ML+endw+G,numw,'soc_numero','Número'],[ML+endw+numw+2*G,compw,'soc_complemento','Complemento']]); y+=RS1;
   row(y,FH1,[[ML,cepw,'soc_cep','CEP'],[ML+cepw+G,citw,'soc_cidade','Cidade'],[ML+cepw+citw+2*G,ufw,'soc_uf','UF']]); y+=RS1;
-  row(y,FH1,[[ML,PW,'soc_email','E-mail']]); y+=RS1;
+  row(y,FH1,[[ML,PW,'soc_email','E-mail']]); y+=RS1+SECGAP;
   doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
   doc.text('Estado Civil:', ML, y+3);
   radioMulti(ML+22, y, 'soc_estado_civil', EC_OPTS); y+=RS1;
   row(y,FH1,[[ML,conjnw,'soc_conjuge_nome','Cônjuge — Nome Completo'],[ML+conjnw+G,conjcw,'soc_conjuge_cpf','Cônjuge — CPF'],[ML+conjnw+conjcw+2*G,conjew,'soc_conjuge_email','Cônjuge — E-mail']]); y+=RS1;
-  y+=2;
+  y+=SECGAP;
 
   // Sec: Estrutura Comercial e Operacional
   const qw=PW*0.16, horw=PW*0.37, topw=PW-qw-horw-2*G;
@@ -1441,7 +1528,7 @@ function gerarPDF(printMode=false) {
   let cx1=radio(ML+44, ry1, 'outras_unidades');
   cx1+=4; field(cx1+18, y, 30, FH1, 'Se sim, quantas:', f('qtd_unidades'));
 
-  footer(3);
+  footer(4,5);
 
   // ══════════════════════════════════════
   //  PAGE 2
@@ -1493,14 +1580,14 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,30,30);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(80,80,80);
-    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 5 de 5', MR, 10, {align:'right'});
   } else {
     doc.setFillColor(...DARK); doc.rect(0,0,W,14,'F');
     doc.setFillColor(...GOLD); doc.rect(0,14,W,1,'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(...GOLD);
     doc.text('Monetz', ML, 10);
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
-    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 4 de 4', MR, 10, {align:'right'});
+    doc.text('PROPOSTA COMERCIAL — continuação  ·  Pág. 5 de 5', MR, 10, {align:'right'});
   }
 
   // ── Financeiras ──
@@ -1663,7 +1750,7 @@ function gerarPDF(printMode=false) {
   // ── Declaração ──
   // Print mode: start new page for signatures to guarantee they always fit
   if (printMode) {
-    footer(4);
+    footer(5,5);
     doc.addPage();
     y = 20;
     doc.setFont('helvetica','bold'); doc.setFontSize(7.8); doc.setTextColor(30,30,30);
@@ -1732,9 +1819,9 @@ function gerarPDF(printMode=false) {
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(80,80,80);
     doc.text('Rua Luís Gonçalves Júnior, 220 · São Paulo - SP, CEP 04173-160  |  Tel. +55 (11) 2131-5060  ·  contato@monetz.com.br', 15, 291);
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
-    doc.text('04 / 04', 195, 291, {align:'right'});
+    doc.text('05 / 05', 195, 291, {align:'right'});
   } else {
-    footer(4);
+    footer(5,5);
   }
 
   // ── Salvar ──
