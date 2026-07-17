@@ -86,7 +86,7 @@ main{max-width:1180px;margin:28px auto;padding:0 18px 50px}.page{display:none}.p
 <script>
 /* URL do Cloudflare Worker que recebe o formulário e envia o e-mail (com anexos).
    Substitua pelo endereço real após publicar o worker (ver README do projeto). */
-const WORKER_URL = "https://SUBSTITUA-PELO-SEU-WORKER.workers.dev";
+const WORKER_URL = "https://monetz-form-backend.siprianoisaac.workers.dev";
 const MAX_TOTAL_ATTACHMENT_BYTES = 18 * 1024 * 1024;
 
 const storage=(()=>{try{const k='__monetz_storage_test__';localStorage.setItem(k,k);localStorage.removeItem(k);return localStorage}catch(e){const mem={};return{getItem:k=>Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null,setItem:(k,v)=>{mem[k]=String(v)},removeItem:k=>{delete mem[k]}}}})();

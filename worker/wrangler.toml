@@ -7,7 +7,7 @@ compatibility_date = "2025-01-01"
 [vars]
 ALLOWED_ORIGIN = "https://nearmaxconsultoria.github.io"
 TO_EMAIL = "contato@monetz.com.br"
-FROM_EMAIL = "SEU-REMETENTE-VERIFICADO@dominio.com.br"
+FROM_EMAIL = "contato@monetz.com.br"
 
 # SENDGRID_API_KEY é um secret e NÃO deve entrar aqui.
 # Configure com: wrangler secret put SENDGRID_API_KEY
