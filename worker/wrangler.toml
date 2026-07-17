@@ -1,0 +1,13 @@
+name = "monetz-form-backend"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+# Variáveis não-secretas. Ajuste ALLOWED_ORIGIN para a URL real do GitHub Pages
+# depois de publicar o site (ex: "https://seu-usuario.github.io").
+[vars]
+ALLOWED_ORIGIN = "https://nearmaxconsultoria.github.io"
+TO_EMAIL = "contato@monetz.com.br"
+FROM_EMAIL = "SEU-REMETENTE-VERIFICADO@dominio.com.br"
+
+# SENDGRID_API_KEY é um secret e NÃO deve entrar aqui.
+# Configure com: wrangler secret put SENDGRID_API_KEY
