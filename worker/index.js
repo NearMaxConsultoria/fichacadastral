@@ -64,6 +64,14 @@ export default {
       }
     }
 
+    let aceites = [];
+    try {
+      aceites = JSON.parse(fields.aceitesJson);
+    } catch (e) {}
+    if (!Array.isArray(aceites) || !aceites.length || aceites.some((a) => !a.aceito)) {
+      return json({ error: "É necessário aceitar todas as declarações obrigatórias." }, 400, corsHeaders);
+    }
+
     if (!env.SENDGRID_API_KEY || !env.TO_EMAIL || !env.FROM_EMAIL) {
       return json({ error: "Backend não configurado corretamente." }, 500, corsHeaders);
     }
