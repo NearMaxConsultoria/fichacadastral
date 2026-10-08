@@ -68,7 +68,19 @@ export default {
       return json({ error: "Backend não configurado corretamente." }, 500, corsHeaders);
     }
 
-    const html = buildEmailHtml(fields);
+    const cf = request.cf || {};
+    const meta = {
+      recebidoEm: new Date().toLocaleString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        dateStyle: "full",
+        timeStyle: "medium",
+      }),
+      ip: request.headers.get("CF-Connecting-IP"),
+      local: [cf.city, cf.region, cf.country].filter(Boolean).join(" / "),
+      asn: cf.asOrganization ? `${cf.asOrganization} (AS${cf.asn})` : "",
+      userAgent: request.headers.get("User-Agent"),
+    };
+    const html = buildEmailHtml(fields, meta);
     const razaoSocial = fields.razaoSocial || "sem razão social";
 
     const payload = {
@@ -125,25 +137,73 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function buildEmailHtml(fields) {
-  const esc = (v) =>
-    String(v ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+const esc = (v) =>
+  String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+const TD_LABEL = "padding:4px 8px;border:1px solid #ddd;background:#f4f7fa;";
+const TD_VALUE = "padding:4px 8px;border:1px solid #ddd;";
+const ACEITE_KEYS = ["veracidade", "credito", "agenda", "privacidade"];
+
+function buildAceitesHtml(raw) {
+  let list = [];
+  try {
+    list = JSON.parse(raw);
+  } catch (e) {}
+  if (!Array.isArray(list) || !list.length) return "";
+  const rows = list
+    .map(
+      (a) =>
+        `<tr>
+          <td style="${TD_VALUE}white-space:nowrap;">${
+            a.aceito
+              ? '<strong style="color:#2f8b57;">&#10004; ACEITO</strong>'
+              : '<strong style="color:#b42318;">&#10008; N&Atilde;O ACEITO</strong>'
+          }</td>
+          <td style="${TD_VALUE}"><strong>${esc(a.titulo)}</strong><br/>${esc(a.texto)}</td>
+          <td style="${TD_VALUE}white-space:nowrap;">${esc(a.dataHora)}</td>
+        </tr>`
+    )
+    .join("");
+  return `<h3 style="color:#0b1f3a;margin-top:24px;">Aceites e declarações do cliente</h3>
+    <table style="border-collapse:collapse;font-size:13px;">${rows}</table>`;
+}
+
+function buildEmailHtml(fields, meta) {
+  const hasAceites = Boolean(fields.aceitesJson);
   const rows = Object.entries(fields)
-    .filter(([k]) => k !== "website")
+    .filter(([k]) => k !== "website" && k !== "aceitesJson")
+    .filter(([k]) => !(hasAceites && ACEITE_KEYS.includes(k)))
     .map(
       ([k, v]) =>
-        `<tr><td style="padding:4px 8px;border:1px solid #ddd;background:#f4f7fa;"><strong>${esc(
-          k
-        )}</strong></td><td style="padding:4px 8px;border:1px solid #ddd;">${esc(
+        `<tr><td style="${TD_LABEL}"><strong>${esc(k)}</strong></td><td style="${TD_VALUE}">${esc(
           Array.isArray(v) ? v.join(", ") : v
+        )}</td></tr>`
+    )
+    .join("");
+  const metaRows = [
+    ["Data e hora do recebimento (servidor, Brasília)", meta.recebidoEm],
+    ["Data e hora do preenchimento (navegador do cliente)", fields.dataEnvio],
+    ["IP do cliente", meta.ip],
+    ["Localização aproximada pelo IP", meta.local],
+    ["Provedor de internet (ASN)", meta.asn],
+    ["Navegador / dispositivo", meta.userAgent],
+  ]
+    .map(
+      ([k, v]) =>
+        `<tr><td style="${TD_LABEL}"><strong>${esc(k)}</strong></td><td style="${TD_VALUE}">${esc(
+          v || "não identificado"
         )}</td></tr>`
     )
     .join("");
   return `<div style="font-family:Arial,sans-serif;">
     <h2 style="color:#0b1f3a;">Nova solicitação — Crédito Monetz</h2>
+    <h3 style="color:#0b1f3a;">Dados do envio</h3>
+    <table style="border-collapse:collapse;font-size:13px;">${metaRows}</table>
+    ${buildAceitesHtml(fields.aceitesJson)}
+    <h3 style="color:#0b1f3a;margin-top:24px;">Dados preenchidos</h3>
     <table style="border-collapse:collapse;font-size:13px;">${rows}</table>
   </div>`;
 }

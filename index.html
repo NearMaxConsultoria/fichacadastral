@@ -158,7 +158,13 @@ submitBtn.onclick=async()=>{
     const fd=new FormData(form);
     fd.append('offer',chosen);
     fd.append('offerResumo',JSON.stringify(offers[chosen]));
-    fd.append('dataEnvio',new Date().toLocaleString('pt-BR'));
+    const agora=new Date().toLocaleString('pt-BR');
+    fd.append('dataEnvio',agora);
+    const aceites=[];
+    const spTermos=page1Consent.parentElement.querySelector('span');
+    aceites.push({titulo:'Termos para prosseguimento (apresentação da solução)',texto:spTermos.textContent.trim(),aceito:page1Consent.checked,dataHora:agora});
+    form.querySelectorAll('label.check').forEach(l=>{const inp=l.querySelector('input'),sp=l.querySelector('span'),st=sp.querySelector('strong'),titulo=st?st.textContent.trim():inp.name;aceites.push({titulo,texto:sp.textContent.replace(titulo,'').trim(),aceito:inp.checked,dataHora:agora})});
+    fd.append('aceitesJson',JSON.stringify(aceites));
     const res=await fetch(WORKER_URL,{method:'POST',body:fd});
     if(!res.ok){throw new Error('Falha no envio ('+res.status+')')}
     modal.classList.remove('show');
