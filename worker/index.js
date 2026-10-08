@@ -120,7 +120,17 @@ export default {
 
     if (!sgResponse.ok) {
       const errText = await sgResponse.text();
-      console.log("SendGrid error:", sgResponse.status, errText);
+      console.log(
+        "SendGrid error:",
+        sgResponse.status,
+        sgResponse.statusText,
+        JSON.stringify([...sgResponse.headers]),
+        errText,
+        "payloadBytes=" + JSON.stringify(payload).length,
+        "keyLen=" + env.SENDGRID_API_KEY.length,
+        "keyStartsSG=" + env.SENDGRID_API_KEY.startsWith("SG."),
+        "keyBadChars=" + /[^A-Za-z0-9._-]/.test(env.SENDGRID_API_KEY)
+      );
       return json({ error: "Falha ao enviar o e-mail." }, 502, corsHeaders);
     }
 

@@ -24,9 +24,10 @@ main{max-width:1180px;margin:28px auto;padding:0 18px 50px}.page{display:none}.p
 .check.invalid{border-color:var(--red);background:#fdf1f0}
 .check.invalid:after{content:'Marque esta declaração para continuar';color:var(--red);font-size:12px;font-weight:800;margin-left:auto;align-self:center;white-space:nowrap}
 #cnpjStatus{min-height:14px}
+#docsList{margin:8px 0 12px;padding-left:20px}
 .modal{display:none;position:fixed;inset:0;background:rgba(4,14,26,.65);z-index:100;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(720px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:15px;padding:24px}.review{display:grid;grid-template-columns:220px 1fr;gap:9px;margin-top:14px}.review div{padding:9px 0;border-bottom:1px solid var(--gray)}.review strong{color:var(--text)}
 @media(max-width:850px){.offers,.grid,.summary,.meta{grid-template-columns:1fr}h1{font-size:30px}.review{grid-template-columns:1fr}.header-in{align-items:flex-start;flex-direction:column}}
-@media print{header,.actions,.form-actions,.progress,.acc-btn,.footer,.modal{display:none!important}body{background:#fff}.page{display:none!important}#page2{display:block!important}main{margin:0;max-width:none;padding:0}.form-shell{box-shadow:none;border:0}.form-head{background:#fff;color:var(--navy);padding:0 0 12px}.form-head p{color:var(--text)}.summary div{border:1px solid var(--gray);background:#fff}.summary small{color:var(--text)}.acc-content{display:block!important;padding:0 0 15px}.success{display:block!important;margin:0 0 15px}}
+@media print{header,.actions,.form-actions,.progress,.acc-btn,.footer,.modal{display:none!important}body{background:#fff}.page{display:none!important}#page2{display:block!important}main{margin:0;max-width:none;padding:0}.form-shell{box-shadow:none;border:0}.form-head{background:#fff;color:var(--navy);padding:0 0 12px}.form-head p{color:var(--text)}.summary div{border:1px solid var(--gray);background:#fff}.summary small{color:var(--text)}.acc-content{display:block!important;padding:0 0 15px}.success{display:block!important;margin:0 0 15px}input[type=file]{display:none!important}}
 </style>
 </head>
 <body class="formulario-continuo">
@@ -58,7 +59,7 @@ main{max-width:1180px;margin:28px auto;padding:0 18px 50px}.page{display:none}.p
 <form class="form-shell" id="fullForm" novalidate="">
 <div class="form-head"><span class="eyebrow" style="color:#c5daea">Ficha cadastral completa</span><h2>Informações para envio ao time de análise</h2><p>Preencha os campos abaixo.</p><div class="summary"><div><small>Opção selecionada</small><strong id="selOption">—</strong></div><div><small>Valor do crédito</small><strong id="selGross">—</strong></div><div><small>Valor líquido</small><strong id="selNet">—</strong></div><div><small>TSR (4%)</small><strong id="selTsr">—</strong></div><div><small>Parcela diária</small><strong id="selDaily">—</strong></div><div><small>Prazo estimado</small><strong id="selTerm">—</strong></div><div><small>Número de parcelas</small><strong id="selInstallments">—</strong></div><div><small>Total a pagar</small><strong id="selTotal">—</strong></div></div></div>
 <div class="progress"><div class="progress-top"><span>Progresso do preenchimento</span><strong id="progressText">0%</strong></div><div class="bar"><div id="progressBar"></div></div></div>
-<div class="success" id="success"><h3>Solicitação enviada</h3><p id="protocolText"></p></div>
+<div class="success" id="success"><h3>Solicitação preparada</h3><p id="protocolText"></p><p><strong>Próximo passo:</strong> salve a ficha em PDF e envie por e-mail para <strong>contato@monetz.com.br</strong>, anexando também os documentos listados abaixo. O site não envia os arquivos automaticamente.</p><ul id="docsList"></ul><div class="actions" style="justify-content:flex-start"><button class="btn primary" id="printBtn" type="button">Salvar / imprimir PDF</button><a class="btn secondary" id="mailBtn" href="#" style="text-decoration:none">Abrir e-mail para a Monetz</a></div></div>
 <div class="error" id="submitError" style="margin:18px 27px 0"></div>
 <!-- Campo-armadilha anti-spam: invisível para humanos, não preencher -->
 <div class="hp-field" aria-hidden="true"><label>Não preencher este campo<input autocomplete="off" name="website" tabindex="-1" type="text"/></label></div>
@@ -80,19 +81,14 @@ main{max-width:1180px;margin:28px auto;padding:0 18px 50px}.page{display:none}.p
 </div></div></section>
 <section class="acc"><button class="acc-btn" type="button"><span>5. Comprometimento atual dos recebíveis<small>Sem pergunta genérica sobre dívidas</small></span><span class="chev">⌄</span></button><div class="acc-content"><div class="grid"><div class="field full"><label class="req">Existe alguma operação com pagamento descontado das vendas ou vinculada aos recebíveis de cartões de crédito e/ou débito?</label><select id="operacaoRecebiveis" name="operacaoRecebiveis" required=""><option value="">Selecione</option><option value="nao">Não</option><option value="sim">Sim</option></select></div><div class="conditional" id="opBox"><div class="grid"><div class="field"><label class="req">Instituição / empresa</label><input data-cond="" name="opInstituicao"/></div><div class="field"><label class="req">Valor aproximado da parcela ou do desconto diário</label><input data-cond="" min="0" name="opParcelaDesconto" step=".01" type="number"/></div><div class="field"><label>% aproximado das vendas comprometido</label><input max="100" min="0" name="opPercentual" step=".01" type="number"/></div><div class="field"><label>Prazo restante</label><input name="opPrazo"/></div><div class="field full"><label>Adquirente / agenda vinculada</label><input name="opAgenda"/></div></div></div></div></div></section>
 <section class="acc"><button class="acc-btn" type="button"><span>6. Domicílio Bancário<small>Conta vinculada ao estabelecimento</small></span><span class="chev">⌄</span></button><div class="acc-content"><div class="grid"><div class="field"><label class="req">Banco</label><input name="banco" required=""/></div><div class="field"><label class="req">Agência</label><input name="agencia" required=""/></div><div class="field"><label class="req">Conta</label><input name="conta" required=""/></div><div class="field"><label class="req">Tipo de Conta</label><select name="tipoConta" required=""><option value="">Selecione</option><option>Conta Corrente</option><option>Conta Poupança</option></select></div><div class="field full"><label class="req">Chave Pix</label><input name="chavePix" required=""/></div><div class="full help">Os dados serão utilizados para análise cadastral e, em caso de aprovação, para os procedimentos da operação.</div></div></div></section>
-<section class="acc"><button class="acc-btn" type="button"><span>7. Documentação necessária<small>Arquivos para o time de análise</small></span><span class="chev">⌄</span></button><div class="acc-content"><div class="grid"><div class="subhead">Representante Legal</div><div class="field"><label class="req">RG ou CNH</label><input accept=".pdf,.jpg,.jpeg,.png" name="docId" required="" type="file"/></div><div class="field"><label class="req">Comprovante de Endereço</label><input accept=".pdf,.jpg,.jpeg,.png" name="docEndRep" required="" type="file"/></div><div class="subhead">Empresa</div><div class="field"><label class="req">Contrato Social / Última Alteração</label><input accept=".pdf,.jpg,.jpeg,.png" name="docContrato" required="" type="file"/></div><div class="field"><label>Certificado MEI, se aplicável</label><input accept=".pdf,.jpg,.jpeg,.png" name="docMei" type="file"/></div><div class="field"><label class="req">Comprovante de Endereço da Empresa</label><input accept=".pdf,.jpg,.jpeg,.png" name="docEndEmp" required="" type="file"/></div><div class="field"><label class="req">Extratos de Vendas nas Maquininhas (últimos 3 meses)</label><input accept=".pdf,.jpg,.jpeg,.png" multiple="" name="docExtratos" required="" type="file"/><div class="help">Pode selecionar os 3 extratos mensais de uma vez, ou um único arquivo com os 3 meses.</div></div></div><p class="help">Tamanho total de todos os anexos limitado a 18MB. Prefira PDF ou imagens compactadas.</p></div></section>
+<section class="acc"><button class="acc-btn" type="button"><span>7. Documentação necessária<small>Arquivos para o time de análise</small></span><span class="chev">⌄</span></button><div class="acc-content"><div class="grid"><div class="subhead">Representante Legal</div><div class="field"><label class="req">RG ou CNH</label><input accept=".pdf,.jpg,.jpeg,.png" name="docId" required="" type="file"/></div><div class="field"><label class="req">Comprovante de Endereço</label><input accept=".pdf,.jpg,.jpeg,.png" name="docEndRep" required="" type="file"/></div><div class="subhead">Empresa</div><div class="field"><label class="req">Contrato Social / Última Alteração</label><input accept=".pdf,.jpg,.jpeg,.png" name="docContrato" required="" type="file"/></div><div class="field"><label>Certificado MEI, se aplicável</label><input accept=".pdf,.jpg,.jpeg,.png" name="docMei" type="file"/></div><div class="field"><label class="req">Comprovante de Endereço da Empresa</label><input accept=".pdf,.jpg,.jpeg,.png" name="docEndEmp" required="" type="file"/></div><div class="field"><label class="req">Extratos de Vendas nas Maquininhas (últimos 3 meses)</label><input accept=".pdf,.jpg,.jpeg,.png" multiple="" name="docExtratos" required="" type="file"/><div class="help">Pode selecionar os 3 extratos mensais de uma vez, ou um único arquivo com os 3 meses.</div></div></div><p class="help">Selecione os arquivos para conferência. O site não envia os documentos: depois de gerar o PDF, anexe-os ao e-mail para contato@monetz.com.br.</p></div></section>
 <section class="acc"><button class="acc-btn" type="button"><span>8. Declarações e origem do contato<small>Confirmação final para envio</small></span><span class="chev">⌄</span></button><div class="acc-content"><p class="help" style="margin:0"><strong>Todas as declarações abaixo são obrigatórias</strong> para enviar a solicitação.</p><label class="check"><input name="veracidade" required="" type="checkbox"/><span><strong>Declaração de veracidade</strong><br/>Confirmo que as informações e os documentos fornecidos são verdadeiros, completos e atualizados.</span></label><label class="check"><input name="credito" required="" type="checkbox"/><span><strong>Consultas cadastrais e de crédito</strong><br/>Autorizo as consultas necessárias aos bureaus de crédito, ao SCR e às demais bases aplicáveis, conforme os termos validados.</span></label><label class="check"><input name="agenda" required="" type="checkbox"/><span><strong>Agenda de recebíveis</strong><br/>Autorizo a consulta e o monitoramento da agenda para análise do histórico de vendas, cálculo de limite e elegibilidade.</span></label><label class="check"><input name="privacidade" required="" type="checkbox"/><span><strong>Aviso de Privacidade</strong><br/>Declaro que li e estou ciente das finalidades, do compartilhamento e do tratamento dos dados, inclusive do registro do meu endereço IP, da data e da hora do preenchimento, para fins de segurança e comprovação desta solicitação.</span></label><div class="grid" style="margin-top:16px"><div class="field full"><label class="req">Como conheceu a Monetz?</label><select id="comoConheceu" name="comoConheceu" required=""><option value="">Selecione</option><option value="Agente Comercial">Agente Comercial</option><option value="Busca Google">Busca Google</option><option value="Instagram">Instagram</option><option value="Indicação de Amigos">Indicação de Amigos</option><option value="Facebook">Facebook</option><option value="Outros">Outros</option></select></div><div class="conditional" id="agenteComercialBox"><div class="field"><label class="req">Nome do Agente Comercial</label><input data-cond="" name="agenteComercialNome"/></div></div><div class="conditional" id="comoConheceuOutrosBox"><div class="field"><label class="req">Descreva</label><input data-cond="" name="comoConheceuOutros"/></div></div></div><p class="help">O texto definitivo das autorizações deve ser validado pelo jurídico, pela área de privacidade e pela instituição responsável pelas consultas.</p></div></section>
-<div class="form-actions"><button class="btn secondary" id="backBtn" type="button">← Voltar à apresentação</button><div><button class="btn ghost" id="saveBtn" type="button">Salvar rascunho</button><button class="btn primary" id="reviewBtn" type="button">Revisar e enviar para análise</button></div></div>
-</form><div class="footer">Os dados e anexos são enviados diretamente ao time de análise da Monetz.</div>
+<div class="form-actions"><button class="btn secondary" id="backBtn" type="button">← Voltar à apresentação</button><div><button class="btn ghost" id="saveBtn" type="button">Salvar rascunho</button><button class="btn primary" id="reviewBtn" type="button">Revisar e gerar PDF</button></div></div>
+</form><div class="footer">Ao finalizar, salve o PDF e envie por e-mail para contato@monetz.com.br junto com os documentos anexados.</div>
 </section>
 </main>
-<div class="modal" id="modal"><div class="modal-card"><span class="eyebrow">Revisão final</span><h2>Confirme os dados principais</h2><p class="help">Os anexos e as informações completas permanecem na ficha.</p><div class="review" id="review"></div><div class="error" id="modalError" style="font-size:14px"></div><div class="actions"><button class="btn secondary" id="closeModal" type="button">Continuar editando</button><button class="btn primary" id="submitBtn" type="button">Enviar solicitação e gerar comprovante</button></div></div></div>
+<div class="modal" id="modal"><div class="modal-card"><span class="eyebrow">Revisão final</span><h2>Confirme os dados principais</h2><p class="help">Os anexos e as informações completas permanecem na ficha.</p><div class="review" id="review"></div><div class="actions"><button class="btn secondary" id="closeModal" type="button">Continuar editando</button><button class="btn primary" id="submitBtn" type="button">Gerar PDF da solicitação</button></div></div></div>
 <script>
-/* URL do Cloudflare Worker que recebe o formulário e envia o e-mail (com anexos).
-   Substitua pelo endereço real após publicar o worker (ver README do projeto). */
-const WORKER_URL = "https://monetz-form-backend.siprianoisaac.workers.dev";
-const MAX_TOTAL_ATTACHMENT_BYTES = 18 * 1024 * 1024;
-
 const storage=(()=>{try{const k='__monetz_storage_test__';localStorage.setItem(k,k);localStorage.removeItem(k);return localStorage}catch(e){const mem={};return{getItem:k=>Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null,setItem:(k,v)=>{mem[k]=String(v)},removeItem:k=>{delete mem[k]}}}})();
 const offers={A:{label:'Opção A',gross:'R$ 10.000',net:'R$ 9.600',tsr:'R$ 400',daily:'R$ 99',term:'6 meses',installments:'140',total:'R$ 13.860'},B:{label:'Opção B',gross:'R$ 20.000',net:'R$ 19.200',tsr:'R$ 800',daily:'R$ 199',term:'6 meses',installments:'140',total:'R$ 27.860'},C:{label:'Opção C',gross:'R$ 30.000',net:'R$ 28.800',tsr:'R$ 1.200',daily:'R$ 299',term:'6 meses',installments:'140',total:'R$ 41.860'}};let chosen=storage.getItem('monetz_offer')||'';const $=id=>document.getElementById(id);const form=$('fullForm');const page1=$('page1'),page2=$('page2');const continueBtn=$('continueBtn'),backBtn=$('backBtn'),page1Consent=$('page1Consent'),offerError=$('offerError'),selOption=$('selOption'),selGross=$('selGross'),selNet=$('selNet'),selTsr=$('selTsr'),selDaily=$('selDaily'),selTerm=$('selTerm'),selInstallments=$('selInstallments'),selTotal=$('selTotal'),repCivil=$('repCivil'),spouseBox=$('spouseBox'),partnerBox=$('partnerBox'),operacaoRecebiveis=$('operacaoRecebiveis'),opBox=$('opBox'),machineRequired=$('machineRequired'),otherMachineBox=$('otherMachineBox'),comoConheceu=$('comoConheceu'),agenteComercialBox=$('agenteComercialBox'),comoConheceuOutrosBox=$('comoConheceuOutrosBox'),cnpjInput=form.elements['cnpj'],cnpjStatus=$('cnpjStatus'),progressBar=$('progressBar'),progressText=$('progressText'),saveBtn=$('saveBtn'),reviewBtn=$('reviewBtn'),review=$('review'),modal=$('modal'),closeModal=$('closeModal'),submitBtn=$('submitBtn'),protocolText=$('protocolText'),success=$('success'),submitError=$('submitError');
 document.getElementById('requestDate').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
@@ -146,50 +142,33 @@ function val(n){const x=form.elements[n];return x?x.value:''}function money(v){r
 function summary(){const o=offers[chosen],machines=[...document.querySelectorAll('input[name=machine]:checked')].map(x=>x.value).join(', '),rows=[['Opção selecionada',o.label],['Valor do crédito',o.gross],['Valor líquido',o.net],['TSR (4%)',o.tsr],['Parcela diária',o.daily],['Prazo estimado',o.term],['Número de parcelas',o.installments],['Total a pagar',o.total],['Razão Social',val('razaoSocial')],['CNPJ',val('cnpj')],['Representante',val('repNome')],['Telefone',val('repTelefone')],['E-mail',val('repEmail')],['Faturamento mensal total',money(val('faturamentoMensal'))],['Maquininhas',machines],['Volume mensal em cartão — débito',money(val('volumeMensalDebito'))],['Volume mensal em cartão — crédito',money(val('volumeMensalCredito'))],['Operação vinculada aos recebíveis',val('operacaoRecebiveis')],['Banco',val('banco')],['Como conheceu a Monetz',val('comoConheceu')==='Agente Comercial'?'Agente Comercial — '+val('agenteComercialNome'):(val('comoConheceu')==='Outros'?'Outros — '+val('comoConheceuOutros'):val('comoConheceu'))]];review.innerHTML=rows.map(r=>`<div><strong>${r[0]}</strong></div><div>${r[1]||'Não informado'}</div>`).join('')}
 reviewBtn.onclick=()=>{validateMachines();document.querySelectorAll('.check.invalid').forEach(l=>l.classList.remove('invalid'));document.querySelectorAll('.check input[required]').forEach(i=>{if(!i.checked)i.closest('.check').classList.add('invalid')});const bad=reqs().find(x=>!x.checkValidity()||!filled(x));if(bad){bad.closest('.acc')?.classList.add('open');bad.reportValidity();bad.scrollIntoView({behavior:'smooth',block:'center'});return}summary();modal.classList.add('show')};closeModal.onclick=()=>modal.classList.remove('show');updateOtherMachine();
 
-function totalAttachmentBytes(){return [...form.querySelectorAll('input[type=file]')].reduce((sum,x)=>sum+[...(x.files||[])].reduce((s,f)=>s+f.size,0),0)}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const docsList=$('docsList'),printBtn=$('printBtn'),mailBtn=$('mailBtn');
+function listaDocumentos(){return [...form.querySelectorAll('input[type=file]')].map(i=>({rotulo:i.closest('.field').querySelector('label').textContent.trim(),arquivos:[...(i.files||[])].map(f=>f.name)})).filter(d=>d.arquivos.length)}
+printBtn.onclick=()=>window.print();
 
-submitBtn.onclick=async()=>{
+submitBtn.onclick=()=>{
   submitError.style.display='none';
-  const modalError=document.getElementById('modalError');modalError.style.display='none';
   if(form.elements['website'] && form.elements['website'].value){return}
   if(!page1Consent.checked||[...form.querySelectorAll('.check input')].some(i=>!i.checked)){
     modal.classList.remove('show');
-    submitError.textContent='É necessário aceitar todas as declarações obrigatórias para enviar a solicitação.';
+    submitError.textContent='É necessário aceitar todas as declarações obrigatórias para gerar a solicitação.';
     submitError.style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
     return;
   }
-  if(totalAttachmentBytes()>MAX_TOTAL_ATTACHMENT_BYTES){
-    modalError.textContent='O total dos anexos excede 18MB. Feche esta janela, reduza o tamanho dos arquivos (comprima imagens ou PDFs) e tente novamente.';
-    modalError.style.display='block';
-    return;
-  }
-  submitBtn.disabled=true;submitBtn.textContent='Enviando...';
-  try{
-    const fd=new FormData(form);
-    fd.append('offer',chosen);
-    fd.append('offerResumo',JSON.stringify(offers[chosen]));
-    const agora=new Date().toLocaleString('pt-BR');
-    fd.append('dataEnvio',agora);
-    const aceites=[];
-    const spTermos=page1Consent.parentElement.querySelector('span');
-    aceites.push({titulo:'Termos para prosseguimento (apresentação da solução)',texto:spTermos.textContent.trim(),aceito:page1Consent.checked,dataHora:agora});
-    form.querySelectorAll('label.check').forEach(l=>{const inp=l.querySelector('input'),sp=l.querySelector('span'),st=sp.querySelector('strong'),titulo=st?st.textContent.trim():inp.name;aceites.push({titulo,texto:sp.textContent.replace(titulo,'').trim(),aceito:inp.checked,dataHora:agora})});
-    fd.append('aceitesJson',JSON.stringify(aceites));
-    const res=await fetch(WORKER_URL,{method:'POST',body:fd});
-    if(!res.ok){throw new Error('Falha no envio ('+res.status+')')}
-    modal.classList.remove('show');
-    const p='MNZ-'+new Date().toISOString().slice(0,10).replaceAll('-','')+'-'+Math.floor(1000+Math.random()*9000);
-    protocolText.textContent='Protocolo: '+p+'. Sua solicitação e os anexos foram enviados ao time de análise da Monetz. Guarde este número para referência.';
-    success.style.display='block';
-    storage.removeItem('monetz_draft');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }catch(err){
-    modalError.textContent='Não foi possível enviar sua solicitação agora. Verifique sua conexão e tente novamente. Se o problema persistir, entre em contato com a Monetz em contato@monetz.com.br.';
-    modalError.style.display='block';
-  }finally{
-    submitBtn.disabled=false;submitBtn.textContent='Enviar solicitação e gerar comprovante';
-  }
+  const agora=new Date(),dataHora=agora.toLocaleString('pt-BR');
+  const p='MNZ-'+agora.toISOString().slice(0,10).replaceAll('-','')+'-'+Math.floor(1000+Math.random()*9000);
+  protocolText.textContent='Protocolo: '+p+' — gerado em '+dataHora+'.';
+  docsList.innerHTML=listaDocumentos().map(d=>'<li><strong>'+esc(d.rotulo)+':</strong> '+d.arquivos.map(esc).join(', ')+'</li>').join('');
+  const assunto='Solicitação de análise de crédito Monetz — '+val('razaoSocial')+' — '+p;
+  const corpo=['Olá,','','Segue em anexo a ficha cadastral em PDF (protocolo '+p+') e os documentos da solicitação.','','Razão Social: '+val('razaoSocial'),'CNPJ: '+val('cnpj'),'Representante: '+val('repNome')].join('\n');
+  mailBtn.href='mailto:contato@monetz.com.br?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(corpo);
+  modal.classList.remove('show');
+  success.style.display='block';
+  storage.removeItem('monetz_draft');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>window.print(),400);
 };
 update();
 </script>
